@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>QP 2.0 HUB - WBBSE Class 10 (Madhyamik)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCO6ah6cTQ3mEC99WsY48vGthSeuMTg6ao",
+    authDomain: "qp-2-0-hub-09012011.firebaseapp.com",
+    projectId: "qp-2-0-hub-09012011",
+    storageBucket: "qp-2-0-hub-09012011.firebasestorage.app",
+    messagingSenderId: "121603897628",
+    appId: "1:121603897628:web:cfa31e4a0c7b652c32a2d9",
+    measurementId: "G-1VBD4XWFE1"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              950: '#090b16',
+              900: '#0f1221',
+              800: '#1c1f3a',
+              700: '#252a4d',
+            },
+            gold: {
+              300: '#f3dfb8',
+              400: '#e8c88a',
+              500: '#d4af68',
+              600: '#b58e46',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    body {
+      background-color: #090b16;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f1221;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #252a4d;
+      border-radius: 10px;
+    }
+    .gold-gradient {
+      background: linear-gradient(135deg, #e8c88a 0%, #b58e46 100%);
+    }
+    .gold-text-gradient {
+      background: linear-gradient(135deg, #fff3db 0%, #e8c88a 60%, #b58e46 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card-surface {
+      background: rgba(28, 31, 58, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(232, 200, 138, 0.16);
+    }
+    .nav-active {
+      color: #e8c88a !important;
+    }
+    .nav-active .nav-indicator {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(0.9); }
+      100% { opacity: 0; transform: translateY(-28px) scale(1.05); }
+    }
+    .xp-float {
+      animation: floatUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="flex justify-center items-center h-screen w-screen">
+
+  <!-- MOBILE APP SHELL -->
+  <div class="relative w-full max-w-[430px] h-full sm:h-[92vh] sm:rounded-[36px] bg-navy-900 flex flex-col overflow-hidden shadow-2xl border border-gold-400/20">
+
+    <!-- ==========================================
+         GC PASSWORD LOCK OVERLAY (AUTH GATE)
+    =========================================== -->
+    <div id="auth-gate" class="absolute inset-0 z-50 bg-navy-900 flex flex-col justify-between p-7 transition-all duration-500">
+      <div class="pt-6 flex flex-col items-center text-center">
+        <div class="w-20 h-20 rounded-3xl gold-gradient p-[2px] shadow-lg shadow-gold-400/20 mb-4">
+          <div class="w-full h-full bg-navy-900 rounded-[22px] flex items-center justify-center">
+            <i data-lucide="shield-check" class="w-10 h-10 text-gold-400"></i>
+          </div>
+        </div>
+        <span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase bg-gold-400/10 text-gold-400 border border-gold-400/25 mb-2.5">
+          WBBSE Madhyamik • Verified GC Access
+        </span>
+        <h1 class="text-2xl font-black tracking-tight gold-text-gradient">QP 2.0 HUB</h1>
+        <p class="text-xs font-semibold text-gold-300/90 mt-0.5">WBBSE Class 10 (Madhyamik)</p>
+        <p class="text-[11px] text-slate-400 mt-1.5 max-w-[270px]">
+          Enter your name and the secret GC password (<code class="text-gold-400">QP2025</code>). First user to log in becomes the <strong class="text-gold-400">OWNER</strong>.
+        </p>
+      </div>
+
+      <form id="login-form" class="space-y-4 my-auto">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gold-400/90 mb-1.5">Your Name</label>
+          <div class="relative">
+            <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input id="input-username" type="text" required maxlength="24" placeholder="Enter your full name"
+              class="w-full bg-navy-800 border border-gold-400/20 focus:border-gold-400 rounded-xl pl-10 pr-4 py-3.5 text-sm text-white placeholder-slate-500 outline-none transition" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gold-400/90 mb-1.5">Target Board & Stream</label>
+          <div class="relative">
+            <i data-lucide="graduation-cap" class="w-4 h-4 text-gold-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+            <select id="input-batch" class="w-full bg-navy-800 border border-gold-400/20 focus:border-gold-400 rounded-xl pl-10 pr-3.5 py-3.5 text-sm text-white outline-none transition">
+              <option value="Class 10 - WBBSE Board (Madhyamik)">Class 10 - WBBSE Board (Madhyamik)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gold-400/90 mb-1.5">GC Secret Password</label>
+          <div class="relative">
+            <i data-lucide="key-round" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input id="input-password" type="password" required placeholder="Enter GC Password (QP2025)"
+              class="w-full bg-navy-800 border border-gold-400/20 focus:border-gold-400 rounded-xl pl-10 pr-4 py-3.5 text-sm text-white placeholder-slate-500 outline-none transition" />
+          </div>
+          <p id="login-error" class="text-xs text-rose-400 mt-1.5 hidden flex items-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Wrong GC Password! Only verified members allowed.
+          </p>
+        </div>
+
+        <button type="submit"
+          class="w-full gold-gradient text-navy-950 font-extrabold py-3.5 rounded-xl shadow-lg shadow-gold-400/20 active:scale-[0.98] transition flex items-center justify-center gap-2 mt-2">
+          <span>VERIFY & ENTER HUB</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+
+      <div class="text-center text-[11px] text-slate-500">
+        Protected by QP 2.0 Security • Persistent WBBSE Profile Storage
+      </div>
+    </div>
+
+    <!-- ==========================================
+         TOP APP HEADER (PERSISTENT)
+    =========================================== -->
+    <header class="px-4 pt-4 pb-3 bg-navy-900/95 border-b border-gold-400/15 z-20 shrink-0">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl gold-gradient flex items-center justify-center text-navy-950 font-black text-sm shadow">
+            QP
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h2 class="font-extrabold text-xs sm:text-sm tracking-tight text-white">QP 2.0 HUB</h2>
+              <span id="header-role-badge" class="text-[9px] px-1.5 py-0.5 rounded bg-gold-400/15 text-gold-400 font-extrabold border border-gold-400/30 uppercase">
+                MEMBER
+              </span>
+            </div>
+            <p id="header-user-subtitle" class="text-[10.5px] text-slate-400 truncate max-w-[155px]">WBBSE Class 10</p>
+          </div>
+        </div>
+
+        <!-- Level & XP Pill -->
+        <div class="relative flex items-center gap-2.5 bg-navy-800 border border-gold-400/25 px-3 py-1.5 rounded-xl">
+          <div id="xp-toast-anchor" class="absolute -top-2 right-2 pointer-events-none"></div>
+          <div class="text-right">
+            <div class="flex items-center justify-end gap-1">
+              <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">LVL</span>
+              <span id="header-lvl" class="text-xs font-extrabold text-gold-400">1</span>
+            </div>
+            <div class="w-16 h-1.5 bg-navy-950 rounded-full overflow-hidden mt-0.5">
+              <div id="header-xp-bar" class="h-full gold-gradient transition-all duration-300" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="text-xs font-bold text-gold-300 border-l border-white/10 pl-2">
+            <span id="header-xp">0</span> <span class="text-[10px] text-slate-400">XP</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==========================================
+         MAIN VIEWPORT (5 SEPARATE SCREENS)
+    =========================================== -->
+    <main class="flex-1 overflow-y-auto relative">
+
+      <!-- ==========================================
+           1. HOME SCREEN (WELCOME + OVERVIEW + RANKINGS)
+      =========================================== -->
+      <section id="screen-home" class="p-4 space-y-4 pb-6">
+        <!-- Hero Banner Card -->
+        <div class="card-surface rounded-2xl p-4 relative overflow-hidden">
+          <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-gold-400/10 blur-xl pointer-events-none"></div>
+          <div class="flex justify-between items-start gap-2">
+            <div>
+              <span id="home-batch-tag" class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-gold-400/15 text-gold-400 border border-gold-400/25">
+                Class 10 - WBBSE Board (Madhyamik)
+              </span>
+              <h3 class="text-lg font-extrabold mt-2.5">
+                Welcome, <span id="home-username" class="text-gold-400">Scholar</span>!
+              </h3>
+              <p class="text-xs text-slate-300 mt-0.5 leading-relaxed">
+                Welcome to <strong class="text-gold-300">QP 2.0 HUB - WBBSE Class 10 (Madhyamik)</strong>. Access chapter-wise PYQ PDFs, Pinned Notices, Mock Tests, and Verified GC Chat.
+              </p>
+            </div>
+            <button onclick="logoutProfile()" title="Switch / Lock User" class="p-2 rounded-xl bg-navy-900/80 text-slate-400 hover:text-gold-400 border border-white/10 shrink-0">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Owner & Member Status Strip -->
+          <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
+            <span>👑 Batch Owner: <strong id="home-owner-name" class="text-gold-400">—</strong></span>
+            <span>Role: <strong id="home-role-text" class="text-white">MEMBER</strong></span>
+          </div>
+
+          <!-- Detailed XP Progress Box (Level = xp/100 + 1) -->
+          <div class="mt-3 bg-navy-900/90 rounded-xl p-3 border border-gold-400/15">
+            <div class="flex justify-between items-center text-xs mb-1.5">
+              <span class="font-semibold text-slate-300 flex items-center gap-1.5">
+                <i data-lucide="zap" class="w-3.5 h-3.5 text-gold-400"></i>
+                Level <span id="home-level-int" class="text-gold-400 font-bold">1</span>
+                <span class="text-[10px] text-slate-400">(<span id="home-level-exact">1.00</span>)</span>
+              </span>
+              <span id="home-xp-fraction" class="text-gold-400 font-bold">0 / 100 XP</span>
+            </div>
+            <div class="w-full h-2.5 bg-navy-950 rounded-full overflow-hidden p-[1px]">
+              <div id="home-xp-bar" class="h-full gold-gradient rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center mt-2 text-[10.5px] text-slate-400">
+              <span>Chat in GC: <strong class="text-gold-400">+2 XP / msg</strong></span>
+              <span>Formula: <code class="text-gold-300">Level = xp/100 + 1</code></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Action Grid (4 Cards) -->
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="show('pyq')" class="card-surface p-3.5 rounded-2xl text-left hover:border-emerald-400/40 transition group">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-2 group-active:scale-95 transition">
+              <i data-lucide="file-text" class="w-5 h-5"></i>
+            </div>
+            <div class="font-bold text-sm">WBBSE PYQs</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">2024, 2023 Board PDFs</div>
+          </button>
+
+          <button onclick="show('notice')" class="card-surface p-3.5 rounded-2xl text-left hover:border-gold-400/40 transition group">
+            <div class="w-9 h-9 rounded-xl bg-gold-400/15 border border-gold-400/30 flex items-center justify-center text-gold-400 mb-2 group-active:scale-95 transition">
+              <i data-lucide="bell-ring" class="w-5 h-5"></i>
+            </div>
+            <div class="font-bold text-sm">Notice Board</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Pinned Batch Updates</div>
+          </button>
+
+          <button onclick="show('mock')" class="card-surface p-3.5 rounded-2xl text-left hover:border-gold-400/40 transition group">
+            <div class="w-9 h-9 rounded-xl bg-gold-400/15 border border-gold-400/30 flex items-center justify-center text-gold-400 mb-2 group-active:scale-95 transition">
+              <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+            </div>
+            <div class="font-bold text-sm">Mock Tests</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Tests & Daily Quiz</div>
+          </button>
+
+          <button onclick="show('chat')" class="card-surface p-3.5 rounded-2xl text-left hover:border-gold-400/40 transition group">
+            <div class="w-9 h-9 rounded-xl bg-gold-400/15 border border-gold-400/30 flex items-center justify-center text-gold-400 mb-2 group-active:scale-95 transition">
+              <i data-lucide="messages-square" class="w-5 h-5"></i>
+            </div>
+            <div class="font-bold text-sm">GC Chat</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Approved Members (+2 XP)</div>
+          </button>
+        </div>
+
+        <!-- Preserved Leaderboard Section on Home -->
+        <div class="card-surface rounded-2xl p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h4 class="text-xs font-extrabold uppercase tracking-wider gold-text-gradient flex items-center gap-1.5">
+                <i data-lucide="trophy" class="w-4 h-4 text-gold-400"></i> WBBSE All-Member Leaderboard
+              </h4>
+              <p class="text-[10.5px] text-slate-400 mt-0.5">Ranked by Live XP • Level = XP/100 + 1</p>
+            </div>
+            <span id="rank-user-pos" class="px-2.5 py-1 rounded-lg gold-gradient text-navy-950 font-black text-xs">#1</span>
+          </div>
+          <div id="leaderboard-list" class="space-y-2">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           2. PYQ SCREEN (NEW - GREEN LEFT BORDER)
+      =========================================== -->
+      <section id="screen-pyq" class="hidden p-4 space-y-4 pb-6">
+        <!-- OWNER ONLY: Upload PYQ Form -->
+        <div id="pyq-owner-form" class="card-surface rounded-2xl p-4 border border-gold-400/30 hidden">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-extrabold text-gold-400 flex items-center gap-1.5">
+              <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload WBBSE PYQ PDF
+            </h3>
+            <span class="text-[10px] bg-gold-400/15 text-gold-300 px-2 py-0.5 rounded font-bold border border-gold-400/30">OWNER ONLY</span>
+          </div>
+          <p class="text-xs text-slate-400 mb-3">Upload Madhyamik Previous Year Question PDFs for all members.</p>
+
+          <form id="form-upload-pyq" class="space-y-3">
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Subject</label>
+                <select id="pyq-subject" required class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
+                  <option value="Bengali">Bengali</option>
+                  <option value="English">English</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="Physical Science">Physical Science</option>
+                  <option value="Life Science">Life Science</option>
+                  <option value="History">History</option>
+                  <option value="Geography">Geography</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Year</label>
+                <input id="pyq-year" type="text" required placeholder="e.g. 2024, 2023"
+                  class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">PDF Link (Google Drive Link)</label>
+              <input id="pyq-link" type="url" required placeholder="https://drive.google.com/..."
+                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
+            </div>
+            <button type="submit" class="w-full gold-gradient text-navy-950 font-extrabold py-2.5 rounded-xl text-xs shadow active:scale-[0.99] transition flex items-center justify-center gap-1.5">
+              <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+              <span>Upload PYQ</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- PYQ Archive List for All Members -->
+        <div class="flex items-center justify-between px-1">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+            <i data-lucide="book-open-check" class="w-4 h-4"></i> Madhyamik PYQ PDFs
+          </h3>
+          <span class="text-[10px] text-slate-400">WBBSE Board</span>
+        </div>
+
+        <div id="pyq-list" class="space-y-3">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- ==========================================
+           3. NOTICE BOARD SCREEN (GOLD LEFT BORDER, PINNED)
+      =========================================== -->
+      <section id="screen-notice" class="hidden p-4 space-y-4 pb-6">
+        <!-- OWNER ONLY: Post Notice Form -->
+        <div id="notice-owner-form" class="card-surface rounded-2xl p-4 border border-gold-400/30 hidden">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-extrabold text-gold-400 flex items-center gap-1.5">
+              <i data-lucide="megaphone" class="w-4 h-4"></i> Post Official Notice
+            </h3>
+            <span class="text-[10px] bg-gold-400/15 text-gold-300 px-2 py-0.5 rounded font-bold border border-gold-400/30">OWNER ONLY</span>
+          </div>
+
+          <form id="form-post-notice" class="space-y-3">
+            <div>
+              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Notice Title</label>
+              <input id="notice-title" type="text" required placeholder="e.g. Physical Science Mock Test Schedule"
+                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Details</label>
+              <textarea id="notice-details" rows="3" required placeholder="Write full announcement details for Class 10 members..."
+                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none"></textarea>
+            </div>
+            <button type="submit" class="w-full gold-gradient text-navy-950 font-extrabold py-2.5 rounded-xl text-xs shadow active:scale-[0.99] transition flex items-center justify-center gap-1.5">
+              <i data-lucide="pin" class="w-4 h-4"></i>
+              <span>Post</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Pinned Notices Header -->
+        <div class="flex items-center justify-between px-1">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-gold-400 flex items-center gap-1.5">
+            <i data-lucide="pin" class="w-4 h-4"></i> Pinned Notice Board
+          </h3>
+          <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-semibold">LIVE</span>
+        </div>
+
+        <div id="notice-list" class="space-y-3">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- ==========================================
+           4. MOCK TESTS SCREEN (OWNER UPLOAD + QUIZ + REQUESTS)
+      =========================================== -->
+      <section id="screen-mock" class="hidden p-4 space-y-4 pb-6">
+        <!-- OWNER ONLY: Upload Mock Form -->
+        <div id="mock-owner-form" class="card-surface rounded-2xl p-4 border border-gold-400/30 hidden">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-extrabold text-gold-400 flex items-center gap-1.5">
+              <i data-lucide="file-check-2" class="w-4 h-4"></i> Upload Mock Test
+            </h3>
+            <span class="text-[10px] bg-gold-400/15 text-gold-300 px-2 py-0.5 rounded font-bold border border-gold-400/30">OWNER ONLY</span>
+          </div>
+
+          <form id="form-upload-mock" class="space-y-3">
+            <div>
+              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Mock Name</label>
+              <input id="mock-name" type="text" required placeholder="e.g. Madhyamik Mathematics Full Mock #1"
+                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Test Link</label>
+              <input id="mock-link" type="url" required placeholder="https://docs.google.com/forms/..."
+                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
+            </div>
+            <button type="submit" class="w-full gold-gradient text-navy-950 font-extrabold py-2.5 rounded-xl text-xs shadow active:scale-[0.99] transition flex items-center justify-center gap-1.5">
+              <i data-lucide="upload" class="w-4 h-4"></i>
+              <span>Upload</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Available Mock Tests List (All Members Can View & Open) -->
+        <div class="card-surface rounded-2xl p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="text-xs font-extrabold uppercase tracking-wider text-gold-400 flex items-center gap-1.5">
+              <i data-lucide="clipboard-list" class="w-4 h-4"></i> Official WBBSE Mock Tests
+            </h4>
+            <span class="text-[10px] text-slate-400">Open to All</span>
+          </div>
+          <div id="mock-list" class="space-y-2.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Preserved Daily Booster Question -->
+        <div class="card-surface rounded-2xl p-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Madhyamik Daily Booster</span>
+            <span class="text-xs text-gold-400 font-bold">+10 XP</span>
+          </div>
+          <p class="text-xs font-medium text-slate-200 leading-relaxed">
+            In WBBSE Physical Science: At STP, what is the volume occupied by <code class="text-gold-300">1 mole</code> of any ideal gas?
+          </p>
+          <div id="quiz-options" class="grid grid-cols-2 gap-2 mt-3 text-xs">
+            <button onclick="answerQuiz(this, false)" class="p-2.5 rounded-xl bg-navy-900 border border-white/10 hover:border-gold-400/40 text-left">A) 11.2 Litres</button>
+            <button onclick="answerQuiz(this, true)" class="p-2.5 rounded-xl bg-navy-900 border border-white/10 hover:border-gold-400/40 text-left">B) 22.4 Litres</button>
+            <button onclick="answerQuiz(this, false)" class="p-2.5 rounded-xl bg-navy-900 border border-white/10 hover:border-gold-400/40 text-left">C) 44.8 Litres</button>
+            <button onclick="answerQuiz(this, false)" class="p-2.5 rounded-xl bg-navy-900 border border-white/10 hover:border-gold-400/40 text-left">D) 24.0 Litres</button>
+          </div>
+          <p id="quiz-feedback" class="text-[11px] mt-2 hidden"></p>
+        </div>
+
+        <!-- Preserved Member Test Request Form & Queue -->
+        <div class="card-surface rounded-2xl p-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-extrabold text-gold-400 flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-4 h-4"></i> Request a Chapter Test
+            </h3>
+            <span class="text-[10px] bg-gold-400/10 text-gold-300 px-2 py-0.5 rounded border border-gold-400/20">+5 XP</span>
+          </div>
+          <form id="test-request-form" class="space-y-2.5 mb-4">
+            <input id="req-topic" type="text" required placeholder="Chapter Name (e.g. Light, Quadratic Equations)"
+              class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 outline-none" />
+            <div class="grid grid-cols-2 gap-2">
+              <select id="req-subject" class="bg-navy-900 border border-gold-400/20 rounded-xl px-3 py-2 text-xs text-white outline-none">
+                <option value="Physical Science">Physical Science</option>
+                <option value="Life Science">Life Science</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="History">History</option>
+                <option value="Geography">Geography</option>
+                <option value="English">English</option>
+                <option value="Bengali">Bengali</option>
+              </select>
+              <select id="req-difficulty" class="bg-navy-900 border border-gold-400/20 rounded-xl px-3 py-2 text-xs text-white outline-none">
+                <option value="Madhyamik Board Level">Board Level</option>
+                <option value="Test Paper Sprint">Test Paper (ABTA)</option>
+                <option value="Star Marks High-Order">Star Marks</option>
+              </select>
+            </div>
+            <button type="submit" class="w-full bg-gold-400/15 hover:bg-gold-400/25 text-gold-300 border border-gold-400/35 font-bold py-2 rounded-xl text-xs transition">
+              Submit Test Request (+5 XP)
+            </button>
+          </form>
+
+          <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Submitted Request Queue</h4>
+          <div id="test-requests-list" class="space-y-2 text-xs"></div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           5. CHAT + APPROVAL SCREEN (220px CHAT BOX + OWNER APPROVALS)
+      =========================================== -->
+      <section id="screen-chat" class="hidden p-4 space-y-4 pb-6">
+        <div class="card-surface rounded-2xl p-4">
+          <!-- Subheader -->
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="font-bold text-xs text-white">Madhyamik GC Chat Room</span>
+            </div>
+            <span class="text-[11px] text-gold-400 font-bold">+2 XP / Message</span>
+          </div>
+
+          <!-- 220px Height Chat Box (Exact Requirement) -->
+          <div id="chat-messages" class="h-[220px] overflow-y-auto bg-navy-900/90 border border-gold-400/15 rounded-xl p-3 space-y-2.5 mb-3">
+            <!-- Populated dynamically via JS -->
+          </div>
+
+          <!-- Approved Chat Input Bar -->
+          <form id="chat-form" class="flex items-center gap-2">
+            <input id="chat-input" type="text" placeholder="Message WBBSE GC (+2 XP)..." autocomplete="off"
+              class="flex-1 bg-navy-900 border border-gold-400/25 focus:border-gold-400 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
+            <button type="submit"
+              class="gold-gradient text-navy-950 font-extrabold px-4 py-2.5 rounded-xl shadow active:scale-95 transition flex items-center gap-1 text-xs">
+              <span>Send</span>
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            </button>
+          </form>
+
+          <!-- Unapproved Member Lock Box -->
+          <div id="chat-approval-lock" class="hidden bg-navy-900/95 border border-gold-400/25 rounded-xl p-3.5 text-center">
+            <p class="text-xs text-slate-300 mb-2.5 flex items-center justify-center gap-1.5">
+              <i data-lucide="lock" class="w-4 h-4 text-gold-400"></i>
+              <span>Normal members cannot chat until approved by OWNER.</span>
+            </p>
+            <button id="btn-send-chat-req" onclick="requestChatApproval()"
+              class="w-full gold-gradient text-navy-950 font-extrabold py-2.5 rounded-xl text-xs shadow active:scale-98 transition">
+              Send Chat Request for Approval
+            </button>
+          </div>
+        </div>
+
+        <!-- OWNER ONLY: Pending Approvals (Only You See) -->
+        <div id="owner-approvals-box" class="card-surface rounded-2xl p-4 border-2 border-gold-400/40 hidden">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-gold-400 flex items-center gap-1.5">
+              <i data-lucide="shield-alert" class="w-4 h-4"></i> Pending Approvals (Only You See)
+            </h3>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-gold-400/20 text-gold-300 font-bold">OWNER</span>
+          </div>
+          <div id="pending-approvals-list" class="space-y-2 text-xs">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==========================================
+         BOTTOM NAVIGATION BAR (5 TABS WITH show())
+    =========================================== -->
+    <nav class="bg-navy-900/95 border-t border-gold-400/15 px-1 py-1.5 grid grid-cols-5 shrink-0 z-20">
+      <button onclick="show('home')" id="nav-home" class="nav-btn nav-active flex flex-col items-center py-1.5 text-slate-400 transition relative">
+        <span class="nav-indicator absolute top-0 w-7 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
+        <i data-lucide="home" class="w-4 h-4"></i>
+        <span class="text-[9.5px] font-bold mt-1">HOME</span>
+      </button>
+
+      <button onclick="show('pyq')" id="nav-pyq" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
+        <span class="nav-indicator absolute top-0 w-7 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
+        <i data-lucide="file-text" class="w-4 h-4"></i>
+        <span class="text-[9.5px] font-bold mt-1">PYQ</span>
+      </button>
+
+      <button onclick="show('notice')" id="nav-notice" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
+        <span class="nav-indicator absolute top-0 w-7 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
+        <i data-lucide="bell" class="w-4 h-4"></i>
+        <span class="text-[9.5px] font-bold mt-1">NOTICE</span>
+      </button>
+
+      <button onclick="show('mock')" id="nav-mock" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
+        <span class="nav-indicator absolute top-0 w-7 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
+        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+        <span class="text-[9.5px] font-bold mt-1">MOCKS</span>
+      </button>
+
+      <button onclick="show('chat')" id="nav-chat" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
+        <span class="nav-indicator absolute top-0 w-7 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+        <span class="text-[9.5px] font-bold mt-1">CHAT</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- ==========================================
+       APPLICATION LOGIC & STORAGE ENGINE
+  =========================================== -->
+  <script>
+    // Required Persistent Storage Keys
+    const USER_STORAGE_KEY = 'qp_user_v2';
+    const ROLE_STORAGE_KEY = 'qp_role';
+    const XP_STORAGE_KEY   = 'qp_xp';
+    const OWNER_KEY        = 'qp_owner';
+    const APPROVED_KEY     = 'approved';
+    const REQUESTS_KEY     = 'requests';
+    const PYQS_KEY         = 'pyqs';
+    const NOTICES_KEY      = 'notices';
+    const MOCKS_KEY        = 'mocks';
+    const CHAT_STORAGE_KEY = 'qp_chats_v2';
+    const REQ_STORAGE_KEY  = 'qp_test_reqs_v2';
+    const GC_PASSWORD      = 'QP2025';
+
+    // Default Simulated WBBSE Peers for Leaderboard
+    const defaultPeers = [
+      { name: 'Soham_WBBSE', batch: 'Class 10 - WBBSE Board', xp: 420 },
+      { name: 'Ananya_X', batch: 'Class 10 - WBBSE Board', xp: 310 },
+      { name: 'Ritwik_Madhyamik', batch: 'Class 10 - WBBSE Board', xp: 190 },
+      { name: 'Poulami_QP', batch: 'Class 10 - WBBSE Board', xp: 110 }
+    ];
+
+    const defaultPYQs = [
+      { subject: 'Physical Science', year: '2024', link: 'https://drive.google.com/', by: 'OWNER' },
+      { subject: 'Mathematics', year: '2024', link: 'https://drive.google.com/', by: 'OWNER' },
+      { subject: 'Life Science', year: '2023', link: 'https://drive.google.com/', by: 'OWNER' }
+    ];
+
+    const defaultNotices = [
+      {
+        title: 'Welcome to QP 2.0 HUB - WBBSE Class 10 (Madhyamik)',
+        details: 'All 7 subject PYQ PDFs, ABTA Test Paper solutions, and WBBSE Full Mock Tests are updated here. Keep studying and earn XP!',
+        by: 'OWNER',
+        time: 'Pinned Official Notice'
+      }
+    ];
+
+    const defaultMocks = [
+      { name: 'WBBSE Class 10 Physical Science Full Mock #1', link: 'https://docs.google.com/forms/', by: 'OWNER' },
+      { name: 'Madhyamik Mathematics Geometry & Algebra Sprint', link: 'https://docs.google.com/forms/', by: 'OWNER' }
+    ];
+
+    const defaultChats = [
+      { sender: 'Soham_WBBSE', role: 'MEMBER', text: 'Welcome to QP 2.0 WBBSE Madhyamik Hub! Check out the PYQ tab for 2024 papers.', time: '10:15 AM' },
+      { sender: 'Ananya_X', role: 'MEMBER', text: 'Physical Science Mock #1 is live in the Mocks tab!', time: '10:18 AM' }
+    ];
+
+    const defaultTestReqs = [
+      { topic: 'Light & Current Electricity', subject: 'Physical Science', difficulty: 'Madhyamik Board Level', by: 'Soham_WBBSE', status: 'Scheduled' },
+      { topic: 'Theorems on Circles & Trigonometry', subject: 'Mathematics', difficulty: 'Test Paper Sprint', by: 'Ananya_X', status: 'Queued' }
+    ];
+
+    // State
+    let currentUsername = '';
+    let currentRole = 'MEMBER';
+    let currentXP = 0;
+
+    // Helpers for JSON arrays in localStorage
+    function getStoredList(key, fallback) {
+      const raw = localStorage.getItem(key);
+      if (!raw) {
+        localStorage.setItem(key, JSON.stringify(fallback));
+        return fallback;
+      }
+      try { return JSON.parse(raw); } catch { return fallback; }
+    }
+
+    function saveStoredList(key, list) {
+      localStorage.setItem(key, JSON.stringify(list));
+    }
+
+    function isOwnerUser(name) {
+      const owner = localStorage.getItem(OWNER_KEY);
+      return Boolean(name && owner && name.toLowerCase() === owner.toLowerCase());
+    }
+
+    function isApprovedMember(name) {
+      if (!name) return false;
+      if (isOwnerUser(name)) return true;
+      const approvedList = getStoredList(APPROVED_KEY, []);
+      return approvedList.some(u => u.toLowerCase() === name.toLowerCase());
+    }
+
+    // Initialize App
+    function initApp() {
+      lucide.createIcons();
+
+      // Seed default lists if not present
+      getStoredList(PYQS_KEY, defaultPYQs);
+      getStoredList(NOTICES_KEY, defaultNotices);
+      getStoredList(MOCKS_KEY, defaultMocks);
+      getStoredList(APPROVED_KEY, []);
+      getStoredList(REQUESTS_KEY, []);
+
+      // Load persistent XP
+      const savedXP = localStorage.getItem(XP_STORAGE_KEY);
+      currentXP = savedXP !== null ? parseInt(savedXP, 10) || 0 : 0;
+
+      // Load persistent User (`qp_user_v2` supports both plain username string and legacy object)
+      const savedUserRaw = localStorage.getItem(USER_STORAGE_KEY);
+      if (savedUserRaw) {
+        let extractedName = savedUserRaw;
+        try {
+          const parsed = JSON.parse(savedUserRaw);
+          if (parsed && typeof parsed === 'object' && parsed.name) {
+            extractedName = parsed.name;
+            localStorage.setItem(USER_STORAGE_KEY, extractedName);
+          }
+        } catch {
+          // Plain username string in qp_user_v2
+        }
+
+        if (extractedName && extractedName.trim()) {
+          currentUsername = extractedName.trim();
+          unlockApp();
+        }
+      }
+
+      renderAllSections();
+      updateXPUI();
+    }
+
+    // Handle GC Password Gate Form
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('input-username').value.trim();
+      const passInput = document.getElementById('input-password').value.trim();
+      const errorEl = document.getElementById('login-error');
+
+      if (passInput !== GC_PASSWORD) {
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      errorEl.classList.add('hidden');
+      currentUsername = nameInput;
+
+      // First user who logs in becomes OWNER
+      let existingOwner = localStorage.getItem(OWNER_KEY);
+      if (!existingOwner) {
+        existingOwner = currentUsername;
+        localStorage.setItem(OWNER_KEY, existingOwner);
+      }
+
+      currentRole = isOwnerUser(currentUsername) ? 'OWNER' : 'MEMBER';
+
+      // Save persistent state
+      localStorage.setItem(USER_STORAGE_KEY, currentUsername);
+      localStorage.setItem(ROLE_STORAGE_KEY, currentRole);
+
+      if (localStorage.getItem(XP_STORAGE_KEY) === null) {
+        localStorage.setItem(XP_STORAGE_KEY, String(currentXP));
+      }
+
+      // Ensure OWNER is automatically in approved list
+      const approvedList = getStoredList(APPROVED_KEY, []);
+      if (currentRole === 'OWNER' && !approvedList.some(u => u.toLowerCase() === currentUsername.toLowerCase())) {
+        approvedList.push(currentUsername);
+        saveStoredList(APPROVED_KEY, approvedList);
+      }
+
+      unlockApp();
+    });
+
+    function unlockApp() {
+      // Ensure owner exists if storage was partial
+      let owner = localStorage.getItem(OWNER_KEY);
+      if (!owner) {
+        owner = currentUsername;
+        localStorage.setItem(OWNER_KEY, owner);
+      }
+
+      currentRole = isOwnerUser(currentUsername) ? 'OWNER' : 'MEMBER';
+      localStorage.setItem(ROLE_STORAGE_KEY, currentRole);
+
+      const gate = document.getElementById('auth-gate');
+      gate.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => gate.classList.add('hidden'), 400);
+
+      // Update Header & Home Profile
+      document.getElementById('home-username').textContent = currentUsername;
+      document.getElementById('home-owner-name').textContent = owner;
+      document.getElementById('home-role-text').textContent = currentRole;
+      document.getElementById('header-user-subtitle').textContent = `${currentUsername} • WBBSE Class 10`;
+
+      const roleBadge = document.getElementById('header-role-badge');
+      roleBadge.textContent = currentRole;
+      if (currentRole === 'OWNER') {
+        roleBadge.className = 'text-[9px] px-1.5 py-0.5 rounded gold-gradient text-navy-950 font-black uppercase';
+      } else {
+        roleBadge.className = 'text-[9px] px-1.5 py-0.5 rounded bg-gold-400/15 text-gold-400 font-extrabold border border-gold-400/30 uppercase';
+      }
+
+      // Show/Hide OWNER-only upload forms and approval box
+      const ownerFormIds = ['pyq-owner-form', 'notice-owner-form', 'mock-owner-form', 'owner-approvals-box'];
+      ownerFormIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (currentRole === 'OWNER') {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+
+      updateXPUI();
+      renderAllSections();
+    }
+
+    function logoutProfile() {
+      if (confirm('Switch User / Lock Hub? Your XP, Owner status, and data stay saved, and you can log in with another name to test Member/Owner views.')) {
+        currentUsername = '';
+        localStorage.removeItem(USER_STORAGE_KEY);
+        localStorage.removeItem(ROLE_STORAGE_KEY);
+        const gate = document.getElementById('auth-gate');
+        document.getElementById('input-password').value = '';
+        gate.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+      }
+    }
+
+    // Required Navigation Function: show(tabName)
+    function show(screenName) {
+      if (!currentUsername) return;
+
+      const screens = ['home', 'pyq', 'notice', 'mock', 'chat'];
+      screens.forEach(s => {
+        const el = document.getElementById(`screen-${s}`);
+        const nav = document.getElementById(`nav-${s}`);
+        if (s === screenName) {
+          el.classList.remove('hidden');
+          nav.classList.add('nav-active');
+        } else {
+          el.classList.add('hidden');
+          nav.classList.remove('nav-active');
+        }
+      });
+
+      if (screenName === 'chat') {
+        renderChatAndApprovals();
+        scrollToBottomChat();
+      } else if (screenName === 'home') {
+        renderLeaderboard();
+      }
+    }
+
+    // Alias for backwards compatibility
+    const switchScreen = show;
+
+    // XP Engine: +2 XP per chat, Level = xp/100 + 1
+    function addXP(amount) {
+      currentXP += amount;
+      localStorage.setItem(XP_STORAGE_KEY, String(currentXP));
+      showXPToast(`+${amount} XP`);
+      updateXPUI();
+      renderLeaderboard();
+    }
+
+    function updateXPUI() {
+      const displayFloorLvl = Math.floor(currentXP / 100) + 1;
+      const exactLevel = (currentXP / 100 + 1).toFixed(2);
+      const progressPercent = currentXP % 100;
+
+      // Header
+      document.getElementById('header-lvl').textContent = displayFloorLvl;
+      document.getElementById('header-xp').textContent = currentXP;
+      document.getElementById('header-xp-bar').style.width = `${progressPercent}%`;
+
+      // Home Card
+      document.getElementById('home-level-int').textContent = displayFloorLvl;
+      document.getElementById('home-level-exact').textContent = `LVL ${exactLevel}`;
+      document.getElementById('home-xp-fraction').textContent = `${progressPercent} / 100 XP to LVL ${displayFloorLvl + 1}`;
+      document.getElementById('home-xp-bar').style.width = `${progressPercent}%`;
+    }
+
+    function showXPToast(text) {
+      const anchor = document.getElementById('xp-toast-anchor');
+      const badge = document.createElement('div');
+      badge.className = 'xp-float text-[11px] font-black text-gold-400 bg-navy-950 border border-gold-400/40 px-2 py-0.5 rounded-full shadow-lg';
+      badge.textContent = text;
+      anchor.appendChild(badge);
+      setTimeout(() => badge.remove(), 900);
+    }
+
+    function renderAllSections() {
+      renderPYQs();
+      renderNotices();
+      renderMocks();
+      renderTestRequests();
+      renderChatAndApprovals();
+      renderLeaderboard();
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // 2. PYQ SECTION (GREEN LEFT BORDER, `pyqs`)
+    // ==========================================
+    document.getElementById('form-upload-pyq').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (currentRole !== 'OWNER') return;
+
+      const subject = document.getElementById('pyq-subject').value;
+      const year = document.getElementById('pyq-year').value.trim();
+      const link = document.getElementById('pyq-link').value.trim();
+
+      const pyqs = getStoredList(PYQS_KEY, defaultPYQs);
+      pyqs.unshift({
+        subject,
+        year,
+        link,
+        by: currentUsername
+      });
+      saveStoredList(PYQS_KEY, pyqs);
+
+      document.getElementById('pyq-year').value = '';
+      document.getElementById('pyq-link').value = '';
+      renderPYQs();
+    });
+
+    function renderPYQs() {
+      const container = document.getElementById('pyq-list');
+      const pyqs = getStoredList(PYQS_KEY, defaultPYQs);
+      container.innerHTML = '';
+
+      pyqs.forEach(item => {
+        const card = document.createElement('div');
+        // Styled with green left border as required
+        card.className = 'card-surface rounded-2xl p-4 border-l-4 border-l-emerald-400 flex items-center justify-between gap-3';
+        card.innerHTML = `
+          <div>
+            <div class="text-sm font-extrabold text-white">
+              ${escapeHTML(item.subject)} - <span class="text-gold-400">${escapeHTML(item.year)}</span>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">
+              Uploaded By: <strong class="text-slate-200">${escapeHTML(item.by)}</strong>
+            </div>
+          </div>
+          <a href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer"
+            class="px-3.5 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/35 text-xs font-extrabold shrink-0 transition flex items-center gap-1.5">
+            <span>Open PDF</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // 3. NOTICE BOARD (`notices`, GOLD LEFT BORDER)
+    // ==========================================
+    document.getElementById('form-post-notice').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (currentRole !== 'OWNER') return;
+
+      const title = document.getElementById('notice-title').value.trim();
+      const details = document.getElementById('notice-details').value.trim();
+      const timeStr = new Date().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+
+      const notices = getStoredList(NOTICES_KEY, defaultNotices);
+      notices.unshift({
+        title,
+        details,
+        by: currentUsername,
+        time: timeStr
+      });
+      saveStoredList(NOTICES_KEY, notices);
+
+      document.getElementById('notice-title').value = '';
+      document.getElementById('notice-details').value = '';
+      renderNotices();
+    });
+
+    function renderNotices() {
+      const container = document.getElementById('notice-list');
+      const notices = getStoredList(NOTICES_KEY, defaultNotices);
+      container.innerHTML = '';
+
+      notices.forEach(n => {
+        const card = document.createElement('div');
+        // Styled with gold left border, pinned on top, with By and Time
+        card.className = 'card-surface rounded-2xl p-4 border-l-4 border-l-gold-400 space-y-1.5';
+        card.innerHTML = `
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="px-2 py-0.5 rounded bg-gold-400/15 text-gold-400 font-bold uppercase tracking-wider">📌 Pinned</span>
+            <span class="text-slate-400">${escapeHTML(n.time)}</span>
+          </div>
+          <h4 class="text-sm font-extrabold text-gold-300 pt-0.5">${escapeHTML(n.title)}</h4>
+          <p class="text-xs text-slate-200 leading-relaxed">${escapeHTML(n.details)}</p>
+          <div class="pt-1 text-[10.5px] text-slate-400">
+            By: <strong class="text-gold-400">${escapeHTML(n.by)}</strong>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ==========================================
+    // 4. MOCK TESTS (`mocks` + QUIZ + REQUESTS)
+    // ==========================================
+    document.getElementById('form-upload-mock').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (currentRole !== 'OWNER') return;
+
+      const name = document.getElementById('mock-name').value.trim();
+      const link = document.getElementById('mock-link').value.trim();
+
+      const mocks = getStoredList(MOCKS_KEY, defaultMocks);
+      mocks.unshift({
+        name,
+        link,
+        by: currentUsername
+      });
+      saveStoredList(MOCKS_KEY, mocks);
+
+      document.getElementById('mock-name').value = '';
+      document.getElementById('mock-link').value = '';
+      renderMocks();
+    });
+
+    function renderMocks() {
+      const container = document.getElementById('mock-list');
+      const mocks = getStoredList(MOCKS_KEY, defaultMocks);
+      container.innerHTML = '';
+
+      mocks.forEach(m => {
+        const item = document.createElement('div');
+        item.className = 'p-3 rounded-xl bg-navy-900/90 border border-gold-400/20 flex items-center justify-between gap-3';
+        item.innerHTML = `
+          <div>
+            <div class="text-xs font-extrabold text-white">${escapeHTML(m.name)}</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Uploaded By: <span class="text-gold-400 font-semibold">${escapeHTML(m.by || 'OWNER')}</span></div>
+          </div>
+          <a href="${escapeHTML(m.link)}" target="_blank" rel="noopener noreferrer"
+            class="px-3 py-1.5 rounded-xl gold-gradient text-navy-950 font-extrabold text-[11px] shrink-0 shadow">
+            Open Test ↗
+          </a>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderTestRequests() {
+      const list = document.getElementById('test-requests-list');
+      const reqs = getStoredList(REQ_STORAGE_KEY, defaultTestReqs);
+      list.innerHTML = '';
+
+      reqs.forEach(r => {
+        const item = document.createElement('div');
+        item.className = 'p-3 rounded-xl bg-navy-900/90 border border-white/5 flex items-center justify-between gap-2';
+        item.innerHTML = `
+          <div>
+            <div class="font-bold text-white">${escapeHTML(r.topic)}</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">
+              <span class="text-gold-400 font-semibold">${escapeHTML(r.subject)}</span> • ${escapeHTML(r.difficulty)} • By ${escapeHTML(r.by)}
+            </div>
+          </div>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-gold-400/15 text-gold-300 border border-gold-400/25 shrink-0 font-semibold">
+            ${escapeHTML(r.status)}
+          </span>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    document.getElementById('test-request-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!currentUsername) return;
+
+      const topicEl = document.getElementById('req-topic');
+      const subjectEl = document.getElementById('req-subject');
+      const diffEl = document.getElementById('req-difficulty');
+
+      const reqs = getStoredList(REQ_STORAGE_KEY, defaultTestReqs);
+      reqs.unshift({
+        topic: topicEl.value.trim(),
+        subject: subjectEl.value,
+        difficulty: diffEl.value,
+        by: currentUsername,
+        status: 'Queued'
+      });
+
+      saveStoredList(REQ_STORAGE_KEY, reqs.slice(0, 15));
+      topicEl.value = '';
+      renderTestRequests();
+      addXP(5);
+    });
+
+    let quizAnswered = false;
+    function answerQuiz(btn, isCorrect) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.classList.remove('hidden');
+
+      if (isCorrect) {
+        btn.classList.add('border-emerald-400', 'bg-emerald-500/20', 'text-emerald-200');
+        feedback.className = 'text-[11px] mt-2 text-emerald-400 font-semibold';
+        feedback.textContent = 'Correct! 1 mole of any ideal gas at STP occupies 22.4 L (+10 XP awarded).';
+        addXP(10);
+      } else {
+        btn.classList.add('border-rose-400', 'bg-rose-500/20', 'text-rose-200');
+        feedback.className = 'text-[11px] mt-2 text-rose-400 font-semibold';
+        feedback.textContent = 'Not quite! Correct answer is B (22.4 Litres).';
+      }
+    }
+
+    // ==========================================
+    // 5. CHAT + APPROVAL SYSTEM (`requests`, `approved`)
+    // ==========================================
+    function renderChatAndApprovals() {
+      const container = document.getElementById('chat-messages');
+      const chats = getStoredList(CHAT_STORAGE_KEY, defaultChats);
+      container.innerHTML = '';
+
+      chats.forEach(msg => {
+        const isMe = currentUsername && msg.sender.toLowerCase() === currentUsername.toLowerCase();
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'}`;
+
+        msgDiv.innerHTML = `
+          <div class="flex items-center gap-1.5 mb-1 px-1">
+            <span class="text-[10px] font-bold ${isMe ? 'text-gold-400' : 'text-slate-300'}">
+              ${escapeHTML(msg.sender)} ${msg.role === 'OWNER' ? '👑' : ''}
+            </span>
+            <span class="text-[9px] text-slate-500">${escapeHTML(msg.time)}</span>
+          </div>
+          <div class="max-w-[82%] px-3 py-2 rounded-2xl text-xs leading-relaxed ${
+            isMe
+              ? 'gold-gradient text-navy-950 font-semibold rounded-br-xs'
+              : 'bg-navy-800 border border-white/10 text-slate-100 rounded-bl-xs'
+          }">
+            ${escapeHTML(msg.text)}
+          </div>
+        `;
+        container.appendChild(msgDiv);
+      });
+
+      scrollToBottomChat();
+
+      // Approval Gate Check
+      const canChat = isApprovedMember(currentUsername);
+      const chatForm = document.getElementById('chat-form');
+      const lockBox = document.getElementById('chat-approval-lock');
+      const reqBtn = document.getElementById('btn-send-chat-req');
+
+      if (canChat) {
+        chatForm.classList.remove('hidden');
+        lockBox.classList.add('hidden');
+      } else {
+        chatForm.classList.add('hidden');
+        lockBox.classList.remove('hidden');
+
+        const pendingReqs = getStoredList(REQUESTS_KEY, []);
+        const hasRequested = pendingReqs.some(r => r.toLowerCase() === currentUsername.toLowerCase());
+        if (hasRequested) {
+          reqBtn.textContent = '⏳ Chat Request Sent (Waiting for OWNER Approval)';
+          reqBtn.disabled = true;
+          reqBtn.classList.add('opacity-60');
+        } else {
+          reqBtn.textContent = 'Send Chat Request for Approval';
+          reqBtn.disabled = false;
+          reqBtn.classList.remove('opacity-60');
+        }
+      }
+
+      // Render OWNER's Pending Approvals Box (Visible ONLY to OWNER)
+      const ownerBox = document.getElementById('owner-approvals-box');
+      const pendingListEl = document.getElementById('pending-approvals-list');
+
+      if (currentRole === 'OWNER') {
+        ownerBox.classList.remove('hidden');
+        const pendingReqs = getStoredList(REQUESTS_KEY, []);
+
+        if (pendingReqs.length === 0) {
+          pendingListEl.innerHTML = `<div class="text-slate-400 text-center py-3">No pending member chat requests right now.</div>`;
+        } else {
+          pendingListEl.innerHTML = '';
+          pendingReqs.forEach(memberName => {
+            const row = document.createElement('div');
+            row.className = 'p-3 rounded-xl bg-navy-900 border border-gold-400/25 flex items-center justify-between gap-2';
+            row.innerHTML = `
+              <div>
+                <div class="font-bold text-white text-xs">${escapeHTML(memberName)}</div>
+                <div class="text-[10px] text-slate-400">Requested GC Chat Permission</div>
+              </div>
+              <button onclick="approveChatMember('${escapeHTML(memberName)}')"
+                class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 font-extrabold text-xs transition">
+                Approve ✓
+              </button>
+            `;
+            pendingListEl.appendChild(row);
+          });
+        }
+      } else {
+        ownerBox.classList.add('hidden');
+      }
+
+      lucide.createIcons();
+    }
+
+    function requestChatApproval() {
+      if (!currentUsername) return;
+      const pendingReqs = getStoredList(REQUESTS_KEY, []);
+      if (!pendingReqs.some(r => r.toLowerCase() === currentUsername.toLowerCase())) {
+        pendingReqs.push(currentUsername);
+        saveStoredList(REQUESTS_KEY, pendingReqs);
+      }
+      renderChatAndApprovals();
+    }
+
+    function approveChatMember(memberName) {
+      if (currentRole !== 'OWNER') return;
+
+      const approvedList = getStoredList(APPROVED_KEY, []);
+      if (!approvedList.some(u => u.toLowerCase() === memberName.toLowerCase())) {
+        approvedList.push(memberName);
+        saveStoredList(APPROVED_KEY, approvedList);
+      }
+
+      const updatedReqs = getStoredList(REQUESTS_KEY, []).filter(
+        r => r.toLowerCase() !== memberName.toLowerCase()
+      );
+      saveStoredList(REQUESTS_KEY, updatedReqs);
+
+      renderChatAndApprovals();
+    }
+
+    function scrollToBottomChat() {
+      const container = document.getElementById('chat-messages');
+      if (container) container.scrollTop = container.scrollHeight;
+    }
+
+    document.getElementById('chat-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!currentUsername || !isApprovedMember(currentUsername)) return;
+
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chats = getStoredList(CHAT_STORAGE_KEY, defaultChats);
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      chats.push({
+        sender: currentUsername,
+        role: currentRole,
+        text: text,
+        time: timeStr
+      });
+
+      saveStoredList(CHAT_STORAGE_KEY, chats.slice(-50));
+      input.value = '';
+      renderChatAndApprovals();
+
+      // Award +2 XP per chat message
+      addXP(2);
+    });
+
+    // Leaderboard System (Level = xp/100 + 1)
+    function renderLeaderboard() {
+      const container = document.getElementById('leaderboard-list');
+      const playerEntry = {
+        name: currentUsername || 'You',
+        batch: 'Class 10 - WBBSE Board',
+        xp: currentXP,
+        isMe: true
+      };
+
+      const allMembers = [...defaultPeers.filter(p => p.name.toLowerCase() !== playerEntry.name.toLowerCase()), playerEntry];
+      allMembers.sort((a, b) => b.xp - a.xp);
+
+      container.innerHTML = '';
+      allMembers.forEach((member, idx) => {
+        const rank = idx + 1;
+        const lvl = (member.xp / 100 + 1).toFixed(2);
+
+        if (member.isMe) {
+          document.getElementById('rank-user-pos').textContent = `#${rank}`;
+        }
+
+        const row = document.createElement('div');
+        row.className = `p-2.5 rounded-xl bg-navy-900/90 border flex items-center justify-between ${
+          member.isMe ? 'border-gold-400/60 bg-gold-400/10' : 'border-white/5'
+        }`;
+
+        const badgeColor =
+          rank === 1 ? 'gold-gradient text-navy-950' :
+          rank === 2 ? 'bg-slate-300 text-navy-950' :
+          rank === 3 ? 'bg-amber-700 text-white' : 'bg-navy-800 text-slate-400 border border-white/10';
+
+        row.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <div class="w-6 h-6 rounded-lg font-extrabold text-[11px] flex items-center justify-center ${badgeColor}">
+              ${rank}
+            </div>
+            <div>
+              <div class="text-xs font-bold ${member.isMe ? 'text-gold-400' : 'text-white'}">
+                ${escapeHTML(member.name)} ${member.isMe ? '(You)' : ''}
+              </div>
+              <div class="text-[10px] text-slate-400">${escapeHTML(member.batch)} • LVL ${lvl}</div>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-extrabold text-gold-300">${member.xp} XP</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[s]));
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+
+<script>
+/* QP 2.0 HUB — AUTH & CONTROL PANEL EXTENSION
+   Frontend demo only. Use a backend for real multi-device security. */
+(() => {
+  'use strict';
+
+  const ACCOUNTS_KEY = 'qp_hub_accounts_v3';
+  const SESSION_KEY = 'qp_hub_session_v3';
+  const ENTRY_PASS = 'QP2025';
+  const ROLE_KEYS = {
+    OWNER: 'QP2.0HUBOWNER@2026',
+    ADMIN: 'QP2.0HUBADMIN@2026',
+    MEMBER: 'MEMBER@2026'
+  };
+
+  const $ = id => document.getElementById(id);
+  const read = (key, fallback) => {
+    try {
+      const value = JSON.parse(localStorage.getItem(key));
+      return value ?? fallback;
+    } catch {
+      return fallback;
+    }
+  };
+  const write = (key, value) =>
+    localStorage.setItem(key, JSON.stringify(value));
+
+  let accounts = read(ACCOUNTS_KEY, []);
+  let activeAccount = null;
+
+  async function hashPassword(password) {
+    if (!crypto.subtle) {
+      throw new Error('Secure password hashing requires HTTPS or localhost.');
+    }
+    const bytes = new TextEncoder().encode(password);
+    const digest = await crypto.subtle.digest('SHA-256', bytes);
+    return Array.from(new Uint8Array(digest))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function findAccount(name) {
+    return accounts.find(a =>
+      a.name.toLowerCase() === name.trim().toLowerCase()
+    );
+  }
+
+  function saveAccounts() {
+    write(ACCOUNTS_KEY, accounts);
+  }
+
+  function notice(message) {
+    alert(message);
+  }
+
+  function addField(id, label, placeholder, type = 'text') {
+    if ($(id)) return;
+    const form = $('login-form');
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <label for="${id}"
+        class="block text-xs font-semibold uppercase tracking-wider
+        text-gold-400/90 mb-1.5">${label}</label>
+      <input id="${id}" type="${type}" placeholder="${placeholder}"
+        autocomplete="${type === 'password' ? 'current-password' : 'off'}"
+        class="w-full bg-navy-800 border border-gold-400/20
+        focus:border-gold-400 rounded-xl px-4 py-3.5 text-sm text-white
+        placeholder-slate-500 outline-none" />
+    `;
+    const submit = form.querySelector('button[type="submit"]');
+    form.insertBefore(wrap, submit);
+  }
+
+  function prepareLogin() {
+    const oldForm = $('login-form');
+    const form = oldForm.cloneNode(true);
+    oldForm.replaceWith(form);
+
+    $('input-password').placeholder = 'Your personal password';
+    $('input-password').autocomplete = 'current-password';
+
+    addField('qp-entry-pass', 'Entry Pass (Registration Only)',
+      'Enter the GC Entry Pass', 'password');
+    addField('qp-role-key', 'Role Key (Optional)',
+      'Leave blank for Member', 'password');
+
+    const actions = document.createElement('div');
+    actions.className = 'grid grid-cols-2 gap-2';
+    actions.innerHTML = `
+      <button type="button" id="qp-register"
+        class="bg-navy-800 border border-gold-400/30 text-gold-300
+        font-bold py-3 rounded-xl text-xs">CREATE ACCOUNT</button>
+      <button type="button" id="qp-forgot"
+        class="bg-navy-800 border border-white/10 text-slate-300
+        font-bold py-3 rounded-xl text-xs">FORGOT PASSWORD</button>
+    `;
+    form.insertBefore(actions, form.querySelector('button[type="submit"]'));
+
+    form.querySelector('button[type="submit"]').innerHTML =
+      '<span>LOGIN</span>';
+
+    $('qp-register').addEventListener('click', registerAccount);
+    $('qp-forgot').addEventListener('click', resetPassword);
+    form.addEventListener('submit', loginAccount);
+  }
+
+  function showGate() {
+    const gate = $('auth-gate');
+    gate.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+    $('input-password').value = '';
+    $('qp-entry-pass').value = '';
+    $('qp-role-key').value = '';
+  }
+
+  function hideGate() {
+    const gate = $('auth-gate');
+    gate.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => gate.classList.add('hidden'), 400);
+  }
+
+  async function registerAccount() {
+    const name = $('input-username').value.trim();
+    const password = $('input-password').value;
+    const entry = $('qp-entry-pass').value;
+    const roleKey = $('qp-role-key').value;
+
+    if (name.length < 2 || name.length > 24) {
+      return notice('Enter a name between 2 and 24 characters.');
+    }
+    if (password.length < 8) {
+      return notice('Use a personal password of at least 8 characters.');
+    }
+    if (entry !== ENTRY_PASS) {
+      return notice('Invalid Entry Pass.');
+    }
+    if (findAccount(name)) {
+      return notice('This GC Name is already registered. Please log in.');
+    }
+
+    try {
+      const firstAccount = accounts.length === 0;
+      let role = firstAccount ? 'OWNER' : 'MEMBER';
+
+      if (roleKey === ROLE_KEYS.OWNER && firstAccount) role = 'OWNER';
+      else if (roleKey === ROLE_KEYS.ADMIN) role = 'ADMIN';
+      else if (roleKey && roleKey !== ROLE_KEYS.MEMBER) {
+        return notice('Invalid role key.');
+      }
+
+      const account = {
+        name,
+        passwordHash: await hashPassword(password),
+        role,
+        status: firstAccount ? 'approved' : 'pending',
+        xp: 0,
+        batch: $('input-batch').value,
+        createdAt: new Date().toISOString()
+      };
+
+      accounts.push(account);
+      saveAccounts();
+
+      if (firstAccount) {
+        localStorage.setItem('qp_owner', name);
+        write('approved', [name]);
+        notice('Owner account created. You can now log in.');
+      } else {
+        notice('Registration submitted. Wait for Owner approval before entering the Hub.');
+      }
+    } catch (error) {
+      notice(error.message || 'Could not create account.');
+    }
+  }
+
+  async function loginAccount(event) {
+    event.preventDefault();
+    const name = $('input-username').value.trim();
+    const password = $('input-password').value;
+    const account = findAccount(name);
+
+    if (!account) {
+      return notice('Account not found. Create an account first.');
+    }
+
+    try {
+      if (await hashPassword(password) !== account.passwordHash) {
+        return notice('Incorrect personal password.');
+      }
+    } catch (error) {
+      return notice(error.message);
+    }
+
+    if (account.status !== 'approved') {
+      return notice('Approval pending. Please wait for the Owner.');
+    }
+
+    activeAccount = account;
+    currentUsername = account.name;
+    currentRole = account.role;
+    currentXP = account.xp || 0;
+
+    localStorage.setItem(SESSION_KEY, account.name);
+    localStorage.setItem(USER_STORAGE_KEY, account.name);
+    localStorage.setItem(ROLE_STORAGE_KEY, account.role);
+    localStorage.setItem(XP_STORAGE_KEY, String(currentXP));
+
+    unlockApp();
+  }
+
+  async function resetPassword() {
+    const name = $('input-username').value.trim();
+    const entry = $('qp-entry-pass').value;
+    const newPassword = $('input-password').value;
+
+    if (!name || entry !== ENTRY_PASS) {
+      return notice('Enter your GC Name and valid Entry Pass.');
+    }
+    if (newPassword.length < 8) {
+      return notice('Enter a new password of at least 8 characters.');
+    }
+
+    const account = findAccount(name);
+    if (!account) return notice('Account not found.');
+
+    try {
+      account.passwordHash = await hashPassword(newPassword);
+      saveAccounts();
+      notice('Password reset successfully. You can now log in.');
+    } catch (error) {
+      notice(error.message || 'Password reset failed.');
+    }
+  }
+
+  // Control Panel
+  function openControlPanel() {
+    if (!activeAccount ||
+        !['OWNER', 'ADMIN'].includes(activeAccount.role)) {
+      return notice('Access Locked.');
+    }
+
+    let panel = $('qp-control-panel');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'qp-control-panel';
+      panel.className =
+        'absolute inset-0 z-40 bg-navy-900 p-4 overflow-y-auto';
+      document.querySelector('main').appendChild(panel);
+    }
+
+    const owner = activeAccount.role === 'OWNER';
+    panel.innerHTML = `
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-lg font-black text-gold-400">Control Panel</h2>
+          <p class="text-xs text-slate-400">${activeAccount.role} ACCESS</p>
+        </div>
+        <button id="qp-close-panel"
+          class="px-3 py-2 rounded-lg bg-navy-800 text-white">Close</button>
+      </div>
+
+      ${owner ? `
+        <div class="card-surface rounded-xl p-3 mb-3">
+          <h3 class="font-bold text-gold-300 mb-2">Pending Registrations</h3>
+          <div id="qp-pending-accounts" class="space-y-2"></div>
+        </div>
+        <div class="card-surface rounded-xl p-3 mb-3">
+          <h3 class="font-bold text-gold-300 mb-2">All Accounts</h3>
+          <p class="text-xs text-slate-400 mb-3">
+            Passwords are never displayed. Use Reset Password to issue a new one.
+          </p>
+          <div id="qp-all-accounts" class="space-y-2"></div>
+        </div>
+        <button id="qp-reset-data"
+          class="w-full p-3 rounded-xl border border-rose-400/40
+          text-rose-300 font-bold text-xs">RESET HUB CONTENT DATA</button>
+      ` : `
+        <div class="card-surface rounded-xl p-4">
+          <h3 class="font-bold text-gold-300">Admin Access</h3>
+          <p class="text-xs text-slate-300 mt-2">
+            Admins can upload PYQs, Notices and Mock Tests. Account management
+            is restricted to the Owner.
+          </p>
+        </div>
+      `}
+    `;
+
+    $('qp-close-panel').onclick = () => panel.remove();
+
+    if (owner) {
+      renderAccountManagement();
+      $('qp-reset-data').onclick = () => {
+        if (!confirm('Reset PYQs, notices, mocks, chat and test requests on this browser?')) return;
+        [
+          PYQS_KEY, NOTICES_KEY, MOCKS_KEY, CHAT_STORAGE_KEY,
+          REQ_STORAGE_KEY, REQUESTS_KEY, APPROVED_KEY
+        ].forEach(key => localStorage.removeItem(key));
+        renderAllSections();
+        notice('Local content data reset.');
+        openControlPanel();
+      };
+    }
+  }
+
+  function renderAccountManagement() {
+    const pending = $('qp-pending-accounts');
+    const all = $('qp-all-accounts');
+
+    const pendingAccounts = accounts.filter(a => a.status === 'pending');
+    pending.innerHTML = pendingAccounts.length ? '' :
+      '<p class="text-xs text-slate-400">No pending registrations.</p>';
+
+    pendingAccounts.forEach(account => {
+      const row = document.createElement('div');
+      row.className = 'p-3 rounded-lg bg-navy-800 flex items-center justify-between gap-2';
+      const name = document.createElement('span');
+      name.className = 'text-xs font-bold';
+      name.textContent = account.name;
+      const buttons = document.createElement('div');
+      buttons.className = 'flex gap-1';
+      buttons.innerHTML = `
+        <button class="approve px-2 py-1 bg-emerald-500/20 text-emerald-300 rounded text-xs">Approve</button>
+        <button class="reject px-2 py-1 bg-rose-500/20 text-rose-300 rounded text-xs">Reject</button>
+      `;
+      buttons.querySelector('.approve').onclick = () => {
+        account.status = 'approved';
+        saveAccounts();
+        const approved = read(APPROVED_KEY, []);
+        if (!approved.some(n => n.toLowerCase() === account.name.toLowerCase())) {
+          approved.push(account.name);
+          write(APPROVED_KEY, approved);
+        }
+        renderAccountManagement();
+      };
+      buttons.querySelector('.reject').onclick = () => {
+        accounts = accounts.filter(a => a.name !== account.name);
+        saveAccounts();
+        renderAccountManagement();
+      };
+      row.append(name, buttons);
+      pending.appendChild(row);
+    });
+
+    all.innerHTML = '';
+    accounts.forEach(account => {
+      const row = document.createElement('div');
+      row.className = 'p-3 rounded-lg bg-navy-800 space-y-2';
+      const title = document.createElement('div');
+      title.className = 'text-xs font-bold text-white';
+      title.textContent = `${account.name} — ${account.role} — ${account.status}`;
+      row.appendChild(title);
+
+      const controls = document.createElement('div');
+      controls.className = 'flex flex-wrap gap-2';
+      const reset = document.createElement('button');
+      reset.className = 'px-2 py-1 rounded bg-gold-400/15 text-gold-300 text-xs';
+      reset.textContent = 'Reset Password';
+      reset.onclick = async () => {
+        const newPassword = prompt('Enter a new password (minimum 8 characters):');
+        if (!newPassword) return;
+        if (newPassword.length < 8) return notice('Password must be at least 8 characters.');
+        account.passwordHash = await hashPassword(newPassword);
+        saveAccounts();
+        notice('Password reset. The new password is not stored in plaintext.');
+      };
+      controls.appendChild(reset);
+
+      if (account.name !== activeAccount.name && account.role !== 'OWNER') {
+        const del = document.createElement('button');
+        del.className = 'px-2 py-1 rounded bg-rose-500/15 text-rose-300 text-xs';
+        del.textContent = 'Delete Account';
+        del.onclick = () => {
+          if (!confirm(`Delete ${account.name}?`)) return;
+          accounts = accounts.filter(a => a.name !== account.name);
+          saveAccounts();
+          write(APPROVED_KEY, read(APPROVED_KEY, []).filter(
+            n => n.toLowerCase() !== account.name.toLowerCase()
+          ));
+          renderAccountManagement();
+        };
+        controls.appendChild(del);
+      }
+      row.appendChild(controls);
+      all.appendChild(row);
+    });
+  }
+
+  // Keep XP associated with the active account in this browser.
+  const originalAddXP = addXP;
+  addXP = function(amount) {
+    originalAddXP(amount);
+    if (activeAccount) {
+      activeAccount.xp = currentXP;
+      saveAccounts();
+    }
+  };
+
+  // Let Admins upload content as well as the Owner.
+  function allowUploader(formId, handler) {
+    const oldForm = $(formId);
+    if (!oldForm) return;
+    const form = oldForm.cloneNode(true);
+    oldForm.replaceWith(form);
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!activeAccount ||
+          !['OWNER', 'ADMIN'].includes(activeAccount.role)) {
+        return notice('Upload permission denied.');
+      }
+      handler();
+    });
+  }
+
+  allowUploader('form-upload-pyq', () => {
+    const subject = $('pyq-subject').value;
+    const year = $('pyq-year').value.trim();
+    const link = $('pyq-link').value.trim();
+    if (!year || !/^https:\/\//i.test(link)) return notice('Enter a year and valid HTTPS link.');
+    const list = getStoredList(PYQS_KEY, defaultPYQs);
+    list.unshift({ subject, year, link, by: `${currentUsername} (${currentRole})` });
+    saveStoredList(PYQS_KEY, list);
+    $('pyq-year').value = '';
+    $('pyq-link').value = '';
+    renderPYQs();
+  });
+
+  allowUploader('form-post-notice', () => {
+    const title = $('notice-title').value.trim();
+    const details = $('notice-details').value.trim();
+    if (!title || !details) return notice('Enter a title and details.');
+    const list = getStoredList(NOTICES_KEY, defaultNotices);
+    list.unshift({
+      title, details,
+      by: `${currentUsername} (${currentRole})`,
+      time: new Date().toLocaleString()
+    });
+    saveStoredList(NOTICES_KEY, list);
+    $('notice-title').value = '';
+    $('notice-details').value = '';
+    renderNotices();
+  });
+
+  allowUploader('form-upload-mock', () => {
+    const name = $('mock-name').value.trim();
+    const link = $('mock-link').value.trim();
+    if (!name || !/^https:\/\//i.test(link)) return notice('Enter a test name and valid HTTPS link.');
+    const list = getStoredList(MOCKS_KEY, defaultMocks);
+    list.unshift({ name, link, by: `${currentUsername} (${currentRole})` });
+    saveStoredList(MOCKS_KEY, list);
+    $('mock-name').value = '';
+    $('mock-link').value = '';
+    renderMocks();
+  });
+
+  // Override unlock to retain the registered role and account-specific XP.
+  unlockApp = function() {
+    if (!activeAccount) return;
+    currentUsername = activeAccount.name;
+    currentRole = activeAccount.role;
+    currentXP = activeAccount.xp || 0;
+    hideGate();
+
+    $('home-username').textContent = currentUsername;
+    $('home-owner-name').textContent =
+      localStorage.getItem('qp_owner') || currentUsername;
+    $('home-role-text').textContent = currentRole;
+    $('header-user-subtitle').textContent =
+      `${currentUsername} • WBBSE Class 10`;
+
+    const badge = $('header-role-badge');
+    badge.textContent = currentRole;
+    badge.className = currentRole === 'OWNER'
+      ? 'text-[9px] px-1.5 py-0.5 rounded gold-gradient text-navy-950 font-black uppercase'
+      : 'text-[9px] px-1.5 py-0.5 rounded bg-gold-400/15 text-gold-400 font-extrabold border border-gold-400/30 uppercase';
+
+    ['pyq-owner-form', 'notice-owner-form', 'mock-owner-form']
+      .forEach(id => $(id).classList.toggle(
+        'hidden', !['OWNER', 'ADMIN'].includes(currentRole)
+      ));
+
+    $('owner-approvals-box').classList.toggle('hidden', currentRole !== 'OWNER');
+    updateXPUI();
+    renderAllSections();
+  };
+
+  logoutProfile = function() {
+    if (!confirm('Log out of QP 2.0 HUB?')) return;
+    activeAccount = null;
+    currentUsername = '';
+    currentRole = 'MEMBER';
+    currentXP = 0;
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(USER_STORAGE_KEY);
+    localStorage.removeItem(ROLE_STORAGE_KEY);
+    showGate();
+  };
+
+  // Add a Control Panel button without removing existing UI.
+  function addControlButton() {
+    if ($('qp-control-button')) return;
+    const button = document.createElement('button');
+    button.id = 'qp-control-button';
+    button.className = 'mx-4 mt-3 w-[calc(100%-2rem)] p-3 rounded-xl ' +
+      'border border-gold-400/30 bg-navy-800 text-gold-300 font-bold text-xs';
+    button.textContent = 'OPEN CONTROL PANEL';
+    button.onclick = openControlPanel;
+    document.querySelector('main').prepend(button);
+  }
+
+  const originalRenderAll = renderAllSections;
+  renderAllSections = function() {
+    originalRenderAll();
+    addControlButton();
+    const members = accounts.filter(a => a.status === 'approved');
+    const board = $('leaderboard-list');
+    if (!board) return;
+
+    const ranked = members.map(a => ({
+      name: a.name,
+      batch: a.batch || 'Class 10 - WBBSE Board',
+      xp: a.xp || 0,
+      isMe: activeAccount && a.name === activeAccount.name
+    })).sort((a, b) => b.xp - a.xp);
+
+    board.innerHTML = '';
+    ranked.forEach((member, index) => {
+      const row = document.createElement('div');
+      row.className = 'p-3 rounded-xl bg-navy-900 border border-white/10 flex justify-between gap-2';
+      const left = document.createElement('span');
+      left.className = 'text-xs font-bold';
+      left.textContent = `#${index + 1} ${member.name}${member.isMe ? ' (You)' : ''}`;
+      const right = document.createElement('span');
+      right.className = 'text-xs text-gold-300 font-bold';
+      right.textContent = `${member.xp} XP`;
+      row.append(left, right);
+      board.appendChild(row);
+    });
+
+    const myRank = ranked.findIndex(m => m.isMe);
+    $('rank-user-pos').textContent = myRank >= 0 ? `#${myRank + 1}` : '—';
+  };
+
+  function startExtension() {
+    // Disable the old shared-password login and auto-login handler.
+    window.removeEventListener('DOMContentLoaded', initApp);
+    prepareLogin();
+
+    // Never auto-login using the old, insecure username-only session.
+    localStorage.removeItem(USER_STORAGE_KEY);
+    localStorage.removeItem(ROLE_STORAGE_KEY);
+
+    const savedName = localStorage.getItem(SESSION_KEY);
+    const saved = savedName && findAccount(savedName);
+    if (saved && saved.status === 'approved') {
+      activeAccount = saved;
+      currentUsername = saved.name;
+      currentRole = saved.role;
+      currentXP = saved.xp || 0;
+      unlockApp();
+    } else {
+      showGate();
+    }
+
+    renderAllSections();
+    lucide.createIcons();
+  }
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', startExtension, { once: true });
+  } else {
+    startExtension();
+  }
+})();
+</script>
+</body>
+</html>
