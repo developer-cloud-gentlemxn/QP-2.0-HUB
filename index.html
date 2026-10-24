@@ -434,10 +434,11 @@
   </div>
 
   <script>
-    // 1. Firebase Initialization
+      // 1. Firebase Initialization
     const firebaseConfig = {
       apiKey: "AIzaSyCO6ah6cTQ3mEC99WsY48vGthSeuMTg6ao",
       authDomain: "qp-2-0-hub-09012011.firebaseapp.com",
+      databaseURL: "https://qp-2-0-hub-09012011-default-rtdb.firebaseio.com", // এই লাইনটি যোগ করা হলো
       projectId: "qp-2-0-hub-09012011",
       storageBucket: "qp-2-0-hub-09012011.firebasestorage.app",
       messagingSenderId: "121603897628",
@@ -451,6 +452,7 @@
       db = firebase.firestore();
     } catch (err) {
       console.warn("Firebase fallback to local storage:", err);
+    
     }
 
     // 2. Secret Role Verification (Obfuscated)
