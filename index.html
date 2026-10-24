@@ -3,2002 +3,1539 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>QP 2.0 HUB - WBBSE Class 10 (Madhyamik)</title>
-
-  <!-- Tailwind CSS CDN -->
+  <title>QP 2.0 HUB 3.0 | WBBSE Madhyamik Public Hub</title>
+  
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Howler.js (Included as requested + Web Audio Synth fallback for zero broken links) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
 
-  <!-- Firebase Compat SDKs (App + Firestore for 24/7 Live Sync) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <!-- Firebase Compat SDKs (App, Auth, Firestore) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy: {
-              950: '#090b16',
-              900: '#0f1221',
-              800: '#1c1f3a',
-              700: '#252a4d',
-            },
-            gold: {
-              300: '#f3dfb8',
-              400: '#e8c88a',
-              500: '#d4af68',
-              600: '#b58e46',
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     * {
+      font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
     }
+
+    /* RONG E RONG AURORA ANIMATED BACKGROUND */
     body {
-      background-color: #090b16;
+      background: #060613;
       color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      overflow: hidden;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
     }
-    ::-webkit-scrollbar {
-      width: 4px;
+
+    .aurora-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 15% 15%, rgba(255, 0, 128, 0.32) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(0, 240, 255, 0.28) 0%, transparent 45%),
+        radial-gradient(circle at 50% 55%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 85%, rgba(255, 200, 0, 0.25) 0%, transparent 45%),
+        radial-gradient(circle at 20% 85%, rgba(10, 25, 80, 0.6) 0%, transparent 55%),
+        #050511;
+      filter: saturate(140%);
+      animation: auroraShift 12s ease-in-out infinite alternate;
     }
-    ::-webkit-scrollbar-track {
-      background: #0f1221;
+
+    @keyframes auroraShift {
+      0% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.08) rotate(1deg); }
+      100% { transform: scale(1.02) rotate(-1deg); }
     }
-    ::-webkit-scrollbar-thumb {
-      background: #252a4d;
-      border-radius: 10px;
+
+    /* GLASSMORPHISM + NEON GLOW BORDER */
+    .glass-card {
+      background: rgba(16, 18, 42, 0.62);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.5),
+        inset 0 0 15px rgba(255, 0, 128, 0.1),
+        0 0 18px rgba(0, 242, 254, 0.15);
+      border-radius: 22px;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .gold-gradient {
-      background: linear-gradient(135deg, #e8c88a 0%, #b58e46 100%);
+
+    .glass-card-pink {
+      border-color: rgba(255, 42, 133, 0.45);
+      box-shadow: 0 0 22px rgba(255, 42, 133, 0.25), inset 0 0 12px rgba(255, 42, 133, 0.12);
     }
-    .gold-text-gradient {
-      background: linear-gradient(135deg, #fff3db 0%, #e8c88a 60%, #b58e46 100%);
+
+    .glass-card-cyan {
+      border-color: rgba(0, 242, 254, 0.45);
+      box-shadow: 0 0 22px rgba(0, 242, 254, 0.25), inset 0 0 12px rgba(0, 242, 254, 0.12);
+    }
+
+    .glass-card-gold {
+      border-color: rgba(255, 215, 0, 0.5);
+      box-shadow: 0 0 24px rgba(255, 215, 0, 0.25), inset 0 0 12px rgba(255, 215, 0, 0.12);
+    }
+
+    /* GOLD SHIMMER TEXT GRADIENT */
+    .gold-shimmer {
+      background: linear-gradient(90deg, #ffd700 0%, #fff6a9 25%, #ff2a85 50%, #00f2fe 75%, #ffd700 100%);
+      background-size: 200% auto;
+      color: transparent;
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerText 3.5s linear infinite;
     }
-    .card-surface {
-      background: rgba(28, 31, 58, 0.9);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(232, 200, 138, 0.16);
+
+    @keyframes shimmerText {
+      to { background-position: 200% center; }
     }
-    .nav-active {
-      color: #e8c88a !important;
+
+    /* SEXY GLOW BUTTONS */
+    .btn-glow-pink {
+      background: linear-gradient(135deg, #ff007f 0%, #7928ca 50%, #ff00a0 100%);
+      background-size: 200% 200%;
+      border: 1px solid rgba(255, 180, 220, 0.6);
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.65), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+      transition: all 0.2s ease;
     }
-    .nav-active .nav-indicator {
-      opacity: 1;
-      transform: scaleX(1);
+    .btn-glow-pink:active { transform: scale(0.95); box-shadow: 0 0 32px rgba(255, 0, 128, 0.95); }
+
+    .btn-glow-cyan {
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #00c6ff 100%);
+      border: 1px solid rgba(200, 250, 255, 0.7);
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+      color: #04122c;
+      font-weight: 800;
+      transition: all 0.2s ease;
     }
-    @keyframes floatUp {
-      0% { opacity: 1; transform: translateY(0) scale(0.9); }
-      100% { opacity: 0; transform: translateY(-28px) scale(1.05); }
+    .btn-glow-cyan:active { transform: scale(0.95); }
+
+    .btn-glow-gold {
+      background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ffae00 100%);
+      border: 1px solid rgba(255, 255, 220, 0.8);
+      box-shadow: 0 0 22px rgba(255, 200, 0, 0.65), inset 0 1px 3px rgba(255, 255, 255, 0.7);
+      color: #1a0900;
+      font-weight: 800;
+      transition: all 0.2s ease;
     }
-    .xp-float {
-      animation: floatUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .btn-glow-gold:active { transform: scale(0.95); }
+
+    /* NEON INPUTS */
+    .neon-input {
+      background: rgba(8, 10, 26, 0.75);
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      border-radius: 14px;
+      padding: 12px 14px;
+      width: 100%;
+      outline: none;
+      transition: all 0.25s ease;
+      font-size: 0.94rem;
     }
+    .neon-input:focus {
+      border-color: #00f2fe;
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.45), inset 0 0 8px rgba(0, 242, 254, 0.15);
+    }
+
+    /* SOUND WAVE ANIMATION */
+    .sound-wave {
+      display: inline-flex;
+      align-items: center;
+      gap: 2.5px;
+      height: 16px;
+    }
+    .sound-bar {
+      width: 3px;
+      background: linear-gradient(to top, #ff007f, #00f2fe, #ffd700);
+      border-radius: 99px;
+      animation: waveBounce 0.9s infinite ease-in-out;
+    }
+    .sound-bar:nth-child(1) { height: 6px; animation-delay: 0.0s; }
+    .sound-bar:nth-child(2) { height: 14px; animation-delay: 0.2s; }
+    .sound-bar:nth-child(3) { height: 9px; animation-delay: 0.4s; }
+    .sound-bar:nth-child(4) { height: 15px; animation-delay: 0.1s; }
+    .sound-muted .sound-bar { animation: none !important; height: 4px !important; opacity: 0.4; }
+
+    @keyframes waveBounce {
+      0%, 100% { transform: scaleY(0.45); }
+      50% { transform: scaleY(1.15); }
+    }
+
+    /* ERROR SHAKE ANIMATION */
+    .shake-anim {
+      animation: errorShake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes errorShake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    /* PARTICLE SPARKLE */
+    .sparkle-particle {
+      position: fixed;
+      pointer-events: none;
+      border-radius: 50%;
+      z-index: 9999;
+      animation: particleFly 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes particleFly {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+    }
+
+    /* CUSTOM SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 0, 128, 0.5); border-radius: 10px; }
   </style>
 </head>
-<body class="flex justify-center items-center h-screen w-screen">
+<body class="flex justify-center min-h-screen">
+  <!-- Animated Aurora Background -->
+  <div class="aurora-bg"></div>
 
-  <!-- MOBILE APP SHELL -->
-  <div class="relative w-full max-w-[430px] h-full sm:h-[94vh] sm:rounded-[36px] bg-navy-900 flex flex-col overflow-hidden shadow-2xl border border-gold-400/20">
+  <!-- MOBILE-FIRST CONTAINER (MAX-W 430PX) -->
+  <main id="appRoot" class="w-full max-w-[430px] min-h-screen flex flex-col justify-between p-3.5 pb-24 relative z-10">
 
-    <!-- ==========================================
-         AUTH GATE OVERLAY (LOGIN / REGISTER / FORGOT)
-    =========================================== -->
-    <div id="auth-gate" class="absolute inset-0 z-50 bg-navy-900 flex flex-col justify-between p-6 overflow-y-auto transition-all duration-500">
-      <div class="pt-2 flex flex-col items-center text-center">
-        <!-- GitHub Logo Place 1 -->
-        <div class="w-16 h-16 rounded-3xl gold-gradient p-[2px] shadow-lg shadow-gold-400/20 mb-3">
-          <div class="w-full h-full bg-navy-900 rounded-[22px] flex items-center justify-center overflow-hidden">
-            <img src="https://github.com/developer-cloud-gentlemxn/QP-2.0-HUB/blob/main/LargeTile.scale-100.png?raw=true" alt="QP Hub Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <i data-lucide="shield-check" class="w-8 h-8 text-gold-400 hidden"></i>
+    <!-- ================= TOP HEADER ================= -->
+    <header class="glass-card glass-card-pink px-4 py-3 mb-4 flex items-center justify-between sticky top-2 z-40">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-600 via-purple-600 to-cyan-400 p-[2px] shadow-lg shadow-pink-500/30">
+          <div class="w-full h-full bg-[#090b1a] rounded-[10px] flex items-center justify-center">
+            <i data-lucide="sparkles" class="w-5 h-5 text-yellow-400"></i>
           </div>
         </div>
-        <span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase bg-gold-400/10 text-gold-400 border border-gold-400/25 mb-2">
-          WBBSE Madhyamik • Verified GC Hub
-        </span>
-        <h1 class="text-2xl font-black tracking-tight gold-text-gradient">QP 2.0 HUB</h1>
-        <p class="text-xs font-semibold text-gold-300/90 mt-0.5">WBBSE Class 10 (Madhyamik)</p>
-        <p class="text-[11px] text-slate-400 mt-1 max-w-[290px]">
-          Log in with your personal credentials or enter your Role Access Key to register/override instantly.
-        </p>
-      </div>
-
-      <form id="login-form" class="space-y-3 my-auto py-2">
         <div>
-          <label class="block text-[11px] font-semibold uppercase tracking-wider text-gold-400/90 mb-1">Your GC Name</label>
-          <div class="relative">
-            <i data-lucide="user" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-            <input id="input-username" type="text" required maxlength="24" placeholder="Enter your full name" autocomplete="off"
-              class="w-full bg-navy-800 border border-gold-400/20 focus:border-gold-400 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition" />
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-lg font-black tracking-wider gold-shimmer">QP 2.0 HUB 3.0</h1>
+            <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 font-bold">PUBLIC</span>
           </div>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-semibold uppercase tracking-wider text-gold-400/90 mb-1">Target Board & Stream</label>
-          <div class="relative">
-            <i data-lucide="graduation-cap" class="w-4 h-4 text-gold-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-            <select id="input-batch" class="w-full bg-navy-800 border border-gold-400/20 focus:border-gold-400 rounded-xl pl-10 pr-3.5 py-3 text-sm text-white outline-none transition">
-              <option value="Class 10 - WBBSE Board (Madhyamik)">Class 10 - WBBSE Board (Madhyamik)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-semibold uppercase tracking-wider text-gold-400/90 mb-1">Personal Password</label>
-          <div class="relative">
-            <i data-lucide="lock" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-            <input id="input-password" type="password" required placeholder="Your personal password (min 4 chars)" autocomplete="current-password"
-              class="w-full bg-navy-800 border border-gold-400/20 focus:border-gold-400 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-semibold uppercase tracking-wider text-gold-400/90 mb-1">Secret Role Access Key (For New Account / Direct Login)</label>
-          <div class="relative">
-            <i data-lucide="key-round" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-            <input id="qp-role-key" type="password" placeholder="Enter Role Key to Create or Force Login" autocomplete="off"
-              class="w-full bg-navy-800 border border-gold-400/20 focus:border-gold-400 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition" />
-          </div>
-        </div>
-
-        <p id="auth-status-msg" class="text-xs text-center font-semibold hidden py-1.5 px-2 rounded-lg"></p>
-
-        <button type="submit"
-          class="w-full gold-gradient text-navy-950 font-extrabold py-3.5 rounded-xl shadow-lg shadow-gold-400/20 active:scale-[0.98] transition flex items-center justify-center gap-2">
-          <span>LOGIN TO HUB</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </button>
-
-        <div class="grid grid-cols-2 gap-2 pt-1">
-          <button type="button" id="btn-register-acc"
-            class="bg-navy-800 hover:bg-navy-700 border border-gold-400/30 text-gold-300 font-bold py-2.5 rounded-xl text-xs transition">
-            CREATE ACCOUNT
-          </button>
-          <button type="button" id="btn-forgot-pass"
-            class="bg-navy-800 hover:bg-navy-700 border border-white/10 text-slate-300 font-bold py-2.5 rounded-xl text-xs transition">
-            FORGOT PASSWORD
-          </button>
-        </div>
-      </form>
-
-      <div class="text-center text-[10.5px] text-slate-500">
-        Protected by QP 2.0 Security • Real-Time Cloud Sync
-      </div>
-    </div>
-
-    <!-- ==========================================
-         TOP APP HEADER (PERSISTENT)
-    =========================================== -->
-    <header class="px-3.5 pt-3.5 pb-2.5 bg-navy-900/95 border-b border-gold-400/15 z-20 shrink-0">
-      <div class="flex items-center justify-between gap-2">
-        <div class="flex items-center gap-2 min-w-0">
-          <!-- GitHub Logo Place 2 -->
-          <div class="w-9 h-9 rounded-xl gold-gradient flex items-center justify-center text-navy-950 font-black text-sm shadow shrink-0 p-[1.5px]">
-            <div class="w-full h-full bg-navy-900 rounded-[10px] overflow-hidden flex items-center justify-center">
-              <img src="YOUR_GITHUB_LOGO_LINK_HERE" alt="QP" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-              <span class="w-full h-full hidden items-center justify-center gold-gradient text-navy-950 font-black text-xs">QP</span>
-            </div>
-          </div>
-          <div class="min-w-0">
-            <div class="flex items-center gap-1.5">
-              <h2 class="font-extrabold text-xs sm:text-sm tracking-tight text-white truncate">QP 2.0 HUB</h2>
-              <span id="header-role-badge" class="text-[9px] px-1.5 py-0.5 rounded bg-gold-400/15 text-gold-400 font-extrabold border border-gold-400/30 uppercase shrink-0">
-                MEMBER
-              </span>
-            </div>
-            <div class="flex items-center gap-1.5 mt-0.5">
-              <span id="cloud-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <p id="header-user-subtitle" class="text-[10px] text-slate-400 truncate max-w-[130px]">WBBSE Class 10</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-1.5 shrink-0">
-          <div title="Daily Login Streak (+15 XP/day)" class="flex items-center gap-1 bg-orange-500/15 border border-orange-400/30 px-2 py-1.5 rounded-xl">
-            <i data-lucide="flame" class="w-3.5 h-3.5 text-orange-400 fill-orange-400"></i>
-            <span id="header-streak" class="text-xs font-black text-orange-300">1</span>
-          </div>
-
-          <div class="relative flex items-center gap-2 bg-navy-800 border border-gold-400/25 px-2.5 py-1.5 rounded-xl">
-            <div id="xp-toast-anchor" class="absolute -top-2 right-2 pointer-events-none z-50"></div>
-            <div class="text-right">
-              <div class="flex items-center justify-end gap-1">
-                <span class="text-[9px] uppercase tracking-wider text-slate-400 font-semibold">LVL</span>
-                <span id="header-lvl" class="text-xs font-extrabold text-gold-400">1</span>
-              </div>
-              <div class="w-12 h-1.5 bg-navy-950 rounded-full overflow-hidden mt-0.5">
-                <div id="header-xp-bar" class="h-full gold-gradient transition-all duration-300" style="width: 0%"></div>
-              </div>
-            </div>
-            <div class="text-xs font-bold text-gold-300 border-l border-white/10 pl-2">
-              <span id="header-xp">0</span> <span class="text-[9px] text-slate-400">XP</span>
-            </div>
-          </div>
+          <p class="text-[11px] text-cyan-300/80 font-medium tracking-wide">WBBSE Class 10 • Madhyamik 2026</p>
         </div>
       </div>
 
-      <button id="qp-control-button" onclick="openControlPanel()"
-        class="hidden mt-2.5 w-full py-2 px-3 rounded-xl border border-gold-400/40 bg-navy-800 hover:bg-navy-700 text-gold-300 font-extrabold text-[11px] flex items-center justify-center gap-1.5 shadow transition">
-        <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-gold-400"></i>
-        <span>OPEN OWNER CONTROL PANEL</span>
-        <span id="cp-badge-count" class="hidden ml-1 px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[9px] font-black">0</span>
+      <!-- Sound Wave Toggle Button -->
+      <button type="button" id="soundToggleBtn" class="px-3 py-2 rounded-xl bg-white/5 border border-white/15 flex items-center gap-2 hover:bg-white/10 transition">
+        <div id="soundWaveContainer" class="sound-wave">
+          <span class="sound-bar"></span>
+          <span class="sound-bar"></span>
+          <span class="sound-bar"></span>
+          <span class="sound-bar"></span>
+        </div>
+        <span id="soundStatusText" class="text-[11px] font-bold text-cyan-300">AWAZ ON</span>
       </button>
     </header>
 
-    <!-- ==========================================
-         MAIN VIEWPORT (6 SEPARATE SCREENS)
-    =========================================== -->
-    <main class="flex-1 overflow-y-auto relative">
+    <!-- ================= FIREBASE CONFIG ALERT BANNER (Hidden once configured) ================= -->
+    <div id="firebaseSetupBanner" class="hidden glass-card border-yellow-400/60 bg-yellow-500/10 p-3.5 mb-4 text-xs text-yellow-200">
+      <div class="flex items-center gap-2 font-bold text-yellow-300 mb-1">
+        <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+        <span>Firebase Config Required!</span>
+      </div>
+      <p class="text-[11px] leading-relaxed text-yellow-100/90">
+        Paste your public <code class="bg-black/40 px-1 py-0.5 rounded text-cyan-300">firebaseConfig</code> inside <code class="bg-black/40 px-1 py-0.5 rounded text-pink-300">index.html</code> (Line ~520) and enable <b>Google + Phone Auth</b> &amp; <b>Firestore</b> in Firebase Console.
+      </p>
+    </div>
 
-      <!-- 1. HOME SCREEN -->
-      <section id="screen-home" class="p-4 space-y-4 pb-6">
-        <div class="card-surface rounded-2xl p-4 relative overflow-hidden">
-          <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-gold-400/10 blur-xl pointer-events-none"></div>
-          <div class="flex justify-between items-start gap-2">
-            <div>
-              <span id="home-batch-tag" class="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-gold-400/15 text-gold-400 border border-gold-400/25">
-                Class 10 - WBBSE Board (Madhyamik)
-              </span>
-              <h3 class="text-lg font-extrabold mt-2.5">
-                Welcome, <span id="home-username" class="text-gold-400">Scholar</span>!
-              </h3>
-              <p class="text-xs text-slate-300 mt-0.5 leading-relaxed">
-                Welcome to <strong class="text-gold-300">QP 2.0 HUB - WBBSE Class 10 (Madhyamik)</strong>. Access chapter-wise PYQ PDFs, Pinned Notices, Mock Tests, Live Leaderboard, and Verified GC Chat.
-              </p>
-            </div>
-            <button onclick="logoutProfile()" title="Log Out" class="p-2 rounded-xl bg-navy-900/80 text-slate-400 hover:text-rose-400 border border-white/10 shrink-0 transition">
-              <i data-lucide="log-out" class="w-4 h-4"></i>
-            </button>
-          </div>
+    <!-- ================= NOTIFICATION TOAST ================= -->
+    <div id="toastBox" class="fixed top-16 left-1/2 -translate-x-1/2 w-[90%] max-w-[390px] z-50 pointer-events-none opacity-0 transition-all duration-300 transform -translate-y-3">
+      <div id="toastInner" class="glass-card px-4 py-3 flex items-center gap-3 border-l-4 border-l-cyan-400 shadow-2xl">
+        <i id="toastIcon" data-lucide="bell-ring" class="w-5 h-5 text-cyan-300 shrink-0"></i>
+        <p id="toastText" class="text-xs font-bold tracking-wide text-white"></p>
+      </div>
+    </div>
 
-          <div class="mt-3 pt-2.5 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
-            <span>👑 Owner: <strong id="home-owner-name" class="text-gold-400">—</strong></span>
-            <span>🔥 Streak: <strong id="home-streak-text" class="text-orange-400">1 Day</strong></span>
-            <span>Role: <strong id="home-role-text" class="text-white">MEMBER</strong></span>
-          </div>
+    <!-- ================= AUTHENTICATION VIEW (NO <FORM> TAG AT ALL) ================= -->
+    <section id="authSection" class="space-y-4 my-auto">
+      <div class="glass-card glass-card-cyan p-5 relative overflow-hidden">
+        <!-- Decorative Neon Orbs -->
+        <div class=" -top-12 -right-12 w-32 h-32 bg-pink-500/30 rounded-full blur-2xl pointer-events-none"></div>
+        <div class=" -bottom-12 -left-12 w-32 h-32 bg-cyan-500/30 rounded-full blur-2xl pointer-events-none"></div>
 
-          <div class="mt-3 bg-navy-900/90 rounded-xl p-3 border border-gold-400/15">
-            <div class="flex justify-between items-center text-xs mb-1.5">
-              <span class="font-semibold text-slate-300 flex items-center gap-1.5">
-                <i data-lucide="zap" class="w-3.5 h-3.5 text-gold-400"></i>
-                Level <span id="home-level-int" class="text-gold-400 font-bold">1</span>
-                <span class="text-[10px] text-slate-400">(<span id="home-level-exact">LVL 1.00</span>)</span>
-              </span>
-              <span id="home-xp-fraction" class="text-gold-400 font-bold">0 / 100 XP</span>
-            </div>
-            <div class="w-full h-2.5 bg-navy-950 rounded-full overflow-hidden p-[1px]">
-              <div id="home-xp-bar" class="h-full gold-gradient rounded-full transition-all duration-300" style="width: 0%"></div>
-            </div>
-            <div class="flex justify-between items-center mt-2 text-[10px] text-slate-400">
-              <span>GC Chat: <strong class="text-gold-400">+2 XP</strong> • Daily Streak: <strong class="text-orange-400">+15 XP</strong></span>
-              <span><code class="text-gold-300">Level = XP/100 + 1</code></span>
-            </div>
-          </div>
+        <!-- Title Banner -->
+        <div class="text-center mb-5">
+          <span class="px-3 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-500/20 border border-pink-400/40 text-pink-200">
+            ✨ RONG E RONG • ZERO LOCALSTORAGE ✨
+          </span>
+          <h2 class="text-2xl font-black mt-2 gold-shimmer">WELCOME TO HUB 3.0</h2>
+          <p class="text-xs text-slate-300 mt-0.5">100% Cloud Synced • Same Owner on Every Phone</p>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-          <button onclick="show('pyq')" class="card-surface p-3.5 rounded-2xl text-left hover:border-emerald-400/40 transition group">
-            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-2 group-active:scale-95 transition">
-              <i data-lucide="file-text" class="w-5 h-5"></i>
-            </div>
-            <div class="font-bold text-sm">WBBSE PYQs</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Board Exam PDFs</div>
+        <!-- Mode Switcher Pills: Login / Create Account / Forgot Pass -->
+        <div class="grid grid-cols-3 gap-1.5 bg-black/40 p-1.5 rounded-2xl border border-white/10 mb-5">
+          <button type="button" id="tabLoginBtn" class="py-2 rounded-xl text-xs font-extrabold transition bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-600/30">
+            LOGIN HUB
           </button>
-
-          <button onclick="show('notice')" class="card-surface p-3.5 rounded-2xl text-left hover:border-gold-400/40 transition group">
-            <div class="w-9 h-9 rounded-xl bg-gold-400/15 border border-gold-400/30 flex items-center justify-center text-gold-400 mb-2 group-active:scale-95 transition">
-              <i data-lucide="bell-ring" class="w-5 h-5"></i>
-            </div>
-            <div class="font-bold text-sm">Notice Board</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Pinned Batch Updates</div>
+          <button type="button" id="tabRegisterBtn" class="py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition">
+            CREATE ID
           </button>
-
-          <button onclick="show('mock')" class="card-surface p-3.5 rounded-2xl text-left hover:border-gold-400/40 transition group">
-            <div class="w-9 h-9 rounded-xl bg-gold-400/15 border border-gold-400/30 flex items-center justify-center text-gold-400 mb-2 group-active:scale-95 transition">
-              <i data-lucide="clipboard-check" class="w-5 h-5"></i>
-            </div>
-            <div class="font-bold text-sm">Mock Tests</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Tests & Daily Quiz</div>
-          </button>
-
-          <button onclick="show('chat')" class="card-surface p-3.5 rounded-2xl text-left hover:border-gold-400/40 transition group">
-            <div class="w-9 h-9 rounded-xl bg-gold-400/15 border border-gold-400/30 flex items-center justify-center text-gold-400 mb-2 group-active:scale-95 transition">
-              <i data-lucide="messages-square" class="w-5 h-5"></i>
-            </div>
-            <div class="font-bold text-sm">Live GC Chat</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">24/7 Real-Time (+2 XP)</div>
+          <button type="button" id="tabForgotBtn" class="py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition">
+            RESET PASS
           </button>
         </div>
 
-        <div class="card-surface rounded-2xl p-4">
-          <div class="flex items-center justify-between mb-3">
-            <div>
-              <h4 class="text-xs font-extrabold uppercase tracking-wider gold-text-gradient flex items-center gap-1.5">
-                <i data-lucide="trophy" class="w-4 h-4 text-gold-400"></i> Live Member Standings
-              </h4>
-              <p class="text-[10.5px] text-slate-400 mt-0.5">Real Registered Members • Zero Bots</p>
-            </div>
-            <button onclick="show('leaderboard')" class="px-2.5 py-1 rounded-lg bg-gold-400/15 text-gold-300 border border-gold-400/30 font-bold text-[10px] hover:bg-gold-400/25 transition">
-              View All →
-            </button>
+        <!-- ALL AUTH FIELDS IN PURE <DIV> (NO <FORM> TO PREVENT /? BUG) -->
+        <div id="authFieldsContainer" class="space-y-3.5">
+          
+          <!-- a) GC Name -->
+          <div>
+            <label class="text-[11px] font-bold text-cyan-300 flex items-center gap-1.5 mb-1">
+              <i data-lucide="user-check" class="w-3.5 h-3.5 text-pink-400"></i>
+              <span>GC NAME (UNIQUE ID)</span>
+            </label>
+            <input type="text" id="gcNameInput" placeholder="e.g. Riddhiman_X" autocomplete="off" class="neon-input" />
           </div>
-          <div id="home-leaderboard-preview" class="space-y-2"></div>
-        </div>
-      </section>
 
-      <!-- 2. PYQ SCREEN -->
-      <section id="screen-pyq" class="hidden p-4 space-y-4 pb-6">
-        <div id="pyq-owner-form" class="card-surface rounded-2xl p-4 border border-gold-400/30 hidden">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-sm font-extrabold text-gold-400 flex items-center gap-1.5">
-              <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload WBBSE PYQ PDF
-            </h3>
-            <span class="text-[10px] bg-gold-400/15 text-gold-300 px-2 py-0.5 rounded font-bold border border-gold-400/30">OWNER / ADMIN</span>
-          </div>
-          <form id="form-upload-pyq" class="space-y-3">
-            <div class="grid grid-cols-2 gap-2.5">
-              <div>
-                <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Subject</label>
-                <select id="pyq-subject" required class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white outline-none">
-                  <option value="Bengali">Bengali</option>
-                  <option value="English">English</option>
-                  <option value="Mathematics">Mathematics</option>
-                  <option value="Physical Science">Physical Science</option>
-                  <option value="Life Science">Life Science</option>
-                  <option value="History">History</option>
-                  <option value="Geography">Geography</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Year / Title</label>
-                <input id="pyq-year" type="text" required placeholder="e.g. 2025 Board Paper"
-                  class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
-              </div>
-            </div>
-            <div>
-              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">PDF Link (Google Drive / HTTPS Link)</label>
-              <input id="pyq-link" type="url" required placeholder="https://drive.google.com/..."
-                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
-            </div>
-            <button type="submit" class="w-full gold-gradient text-navy-950 font-extrabold py-2.5 rounded-xl text-xs shadow active:scale-[0.99] transition flex items-center justify-center gap-1.5">
-              <i data-lucide="file-plus-2" class="w-4 h-4"></i>
-              <span>Publish PYQ to Cloud</span>
-            </button>
-          </form>
-        </div>
-
-        <div class="flex items-center justify-between px-1">
-          <h3 class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-            <i data-lucide="book-open-check" class="w-4 h-4"></i> Madhyamik PYQ PDFs
-          </h3>
-          <span class="text-[10px] text-slate-400">WBBSE Archive</span>
-        </div>
-        <div id="pyq-list" class="space-y-3"></div>
-      </section>
-
-      <!-- 3. NOTICE BOARD SCREEN -->
-      <section id="screen-notice" class="hidden p-4 space-y-4 pb-6">
-        <div id="notice-owner-form" class="card-surface rounded-2xl p-4 border border-gold-400/30 hidden">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-sm font-extrabold text-gold-400 flex items-center gap-1.5">
-              <i data-lucide="megaphone" class="w-4 h-4"></i> Post Official Notice
-            </h3>
-            <span class="text-[10px] bg-gold-400/15 text-gold-300 px-2 py-0.5 rounded font-bold border border-gold-400/30">OWNER / ADMIN</span>
-          </div>
-          <form id="form-post-notice" class="space-y-3">
-            <div>
-              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Notice Title</label>
-              <input id="notice-title" type="text" required placeholder="e.g. Physical Science Mock Test Schedule"
-                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
-            </div>
-            <div>
-              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Details</label>
-              <textarea id="notice-details" rows="3" required placeholder="Write full announcement details..."
-                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none"></textarea>
-            </div>
-            <button type="submit" class="w-full gold-gradient text-navy-950 font-extrabold py-2.5 rounded-xl text-xs shadow active:scale-[0.99] transition flex items-center justify-center gap-1.5">
-              <i data-lucide="pin" class="w-4 h-4"></i>
-              <span>Post Live Notice</span>
-            </button>
-          </form>
-        </div>
-
-        <div class="flex items-center justify-between px-1">
-          <h3 class="text-xs font-extrabold uppercase tracking-wider text-gold-400 flex items-center gap-1.5">
-            <i data-lucide="pin" class="w-4 h-4"></i> Pinned Notice Board
-          </h3>
-          <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-semibold">LIVE</span>
-        </div>
-        <div id="notice-list" class="space-y-3"></div>
-      </section>
-
-      <!-- 4. MOCK TESTS SCREEN (WITH RESTORED TEST REQUEST FORM) -->
-      <section id="screen-mock" class="hidden p-4 space-y-4 pb-6">
-        <div id="mock-owner-form" class="card-surface rounded-2xl p-4 border border-gold-400/30 hidden">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-sm font-extrabold text-gold-400 flex items-center gap-1.5">
-              <i data-lucide="file-check-2" class="w-4 h-4"></i> Upload Mock Test
-            </h3>
-            <span class="text-[10px] bg-gold-400/15 text-gold-300 px-2 py-0.5 rounded font-bold border border-gold-400/30">OWNER / ADMIN</span>
-          </div>
-          <form id="form-upload-mock" class="space-y-3">
-            <div>
-              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Mock Name</label>
-              <input id="mock-name" type="text" required placeholder="e.g. Madhyamik Mathematics Full Mock #1"
-                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
-            </div>
-            <div>
-              <label class="block text-[10px] font-bold uppercase text-gold-400 mb-1">Test Link</label>
-              <input id="mock-link" type="url" required placeholder="https://docs.google.com/forms/..."
-                class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-500 outline-none" />
-            </div>
-            <button type="submit" class="w-full gold-gradient text-navy-950 font-extrabold py-2.5 rounded-xl text-xs shadow active:scale-[0.99] transition flex items-center justify-center gap-1.5">
-              <i data-lucide="upload" class="w-4 h-4"></i>
-              <span>Publish Mock Test</span>
-            </button>
-          </form>
-        </div>
-
-        <div class="card-surface rounded-2xl p-4">
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="text-xs font-extrabold uppercase tracking-wider text-gold-400 flex items-center gap-1.5">
-              <i data-lucide="clipboard-list" class="w-4 h-4"></i> Official WBBSE Mock Tests
-            </h4>
-            <span class="text-[10px] text-slate-400">Open to All</span>
-          </div>
-          <div id="mock-list" class="space-y-2.5"></div>
-        </div>
-
-        <div class="card-surface rounded-2xl p-4">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Madhyamik Daily Booster</span>
-            <span class="text-xs text-gold-400 font-bold">+10 XP</span>
-          </div>
-          <p class="text-xs font-medium text-slate-200 leading-relaxed">
-            In WBBSE Physical Science: At STP, what is the volume occupied by <code class="text-gold-300">1 mole</code> of any ideal gas?
-          </p>
-          <div id="quiz-options" class="grid grid-cols-2 gap-2 mt-3 text-xs">
-            <button onclick="answerQuiz(this, false)" class="p-2.5 rounded-xl bg-navy-900 border border-white/10 hover:border-gold-400/40 text-left">A) 11.2 Litres</button>
-            <button onclick="answerQuiz(this, true)" class="p-2.5 rounded-xl bg-navy-900 border border-white/10 hover:border-gold-400/40 text-left">B) 22.4 Litres</button>
-            <button onclick="answerQuiz(this, false)" class="p-2.5 rounded-xl bg-navy-900 border border-white/10 hover:border-gold-400/40 text-left">C) 44.8 Litres</button>
-            <button onclick="answerQuiz(this, false)" class="p-2.5 rounded-xl bg-navy-900 border border-white/10 hover:border-gold-400/40 text-left">D) 24.0 Litres</button>
-          </div>
-          <p id="quiz-feedback" class="text-[11px] mt-2 hidden"></p>
-        </div>
-
-        <!-- RESTORED TEST REQUEST FORM -->
-        <div class="card-surface rounded-2xl p-4">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-sm font-extrabold text-gold-400 flex items-center gap-1.5">
-              <i data-lucide="sparkles" class="w-4 h-4"></i> Request a Chapter Test
-            </h3>
-            <span class="text-[10px] bg-gold-400/10 text-gold-300 px-2 py-0.5 rounded border border-gold-400/20">+5 XP</span>
-          </div>
-          <form id="test-request-form" class="space-y-2.5 mb-4">
-            <input id="req-topic" type="text" required placeholder="Chapter Name (e.g. Light, Quadratic Equations)"
-              class="w-full bg-navy-900 border border-gold-400/20 focus:border-gold-400 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 outline-none" />
-            <div class="grid grid-cols-2 gap-2">
-              <select id="req-subject" class="bg-navy-900 border border-gold-400/20 rounded-xl px-3 py-2 text-xs text-white outline-none">
-                <option value="Physical Science">Physical Science</option>
-                <option value="Life Science">Life Science</option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="History">History</option>
-                <option value="Geography">Geography</option>
-                <option value="English">English</option>
-                <option value="Bengali">Bengali</option>
-              </select>
-              <select id="req-difficulty" class="bg-navy-900 border border-gold-400/20 rounded-xl px-3 py-2 text-xs text-white outline-none">
-                <option value="Madhyamik Board Level">Board Level</option>
-                <option value="Test Paper Sprint">Test Paper (ABTA)</option>
-                <option value="Star Marks High-Order">Star Marks</option>
-              </select>
-            </div>
-            <button type="submit" class="w-full bg-gold-400/15 hover:bg-gold-400/25 text-gold-300 border border-gold-400/35 font-bold py-2 rounded-xl text-xs transition">
-              Submit Test Request (+5 XP)
-            </button>
-          </form>
-          <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Submitted Request Queue</h4>
-          <div id="test-requests-list" class="space-y-2 text-xs"></div>
-        </div>
-      </section>
-
-      <!-- 5. LEADERBOARD SCREEN -->
-      <section id="screen-leaderboard" class="hidden p-4 space-y-4 pb-6">
-        <div class="card-surface rounded-2xl p-4">
-          <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-white/10">
-            <div>
-              <h3 class="text-sm font-black uppercase tracking-wider gold-text-gradient flex items-center gap-1.5">
-                <i data-lucide="trophy" class="w-4 h-4 text-gold-400"></i> WBBSE All-Member Leaderboard
-              </h3>
-              <p class="text-[11px] text-slate-400 mt-0.5">Live Cloud XP Standings • Daily Streak & Level</p>
-            </div>
-            <div class="text-right">
-              <span class="text-[10px] text-slate-400 block">Your Rank</span>
-              <span id="rank-user-pos" class="px-2.5 py-0.5 rounded-lg gold-gradient text-navy-950 font-black text-xs inline-block mt-0.5">#1</span>
-            </div>
-          </div>
-          <div id="leaderboard-list" class="space-y-2.5"></div>
-        </div>
-      </section>
-
-      <!-- 6. LIVE GC CHAT SCREEN -->
-      <section id="screen-chat" class="hidden p-4 space-y-4 pb-6">
-        <div class="card-surface rounded-2xl p-3.5 flex flex-col">
-          <div class="flex items-center justify-between mb-2.5 pb-2 border-b border-white/10">
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="font-bold text-xs text-white">Madhyamik Live GC Chat</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10.5px] text-gold-400 font-bold">+2 XP / Msg</span>
-              <button id="btn-clear-all-chat" onclick="clearAllChats()" class="hidden text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-400/30 font-bold hover:bg-rose-500/30 transition">
-                Clear All
+          <!-- b) Personal Password -->
+          <div>
+            <label class="text-[11px] font-bold text-cyan-300 flex items-center gap-1.5 mb-1">
+              <i data-lucide="lock" class="w-3.5 h-3.5 text-yellow-400"></i>
+              <span id="passLabelText">PERSONAL PASSWORD (MIN 6 CHAR)</span>
+            </label>
+            <div class="relative">
+              <input type="password" id="gcPassInput" placeholder="••••••" autocomplete="off" class="neon-input pr-10" />
+              <button type="button" id="togglePassVisBtn" class=" right-3 top-3 text-slate-400 hover:text-cyan-300">
+                <i data-lucide="eye" class="w-4 h-4"></i>
               </button>
             </div>
           </div>
 
-          <div id="chat-messages" class="h-[370px] overflow-y-auto bg-navy-900/90 border border-gold-400/15 rounded-xl p-3 space-y-2.5 mb-3"></div>
+          <!-- c) Secret Role Access Key (Shown on Register & Forgot) -->
+          <div id="roleKeyWrapper" class="hidden">
+            <label class="text-[11px] font-bold text-yellow-300 flex items-center gap-1.5 mb-1">
+              <i data-lucide="key-round" class="w-3.5 h-3.5 text-yellow-400"></i>
+              <span>SECRET ROLE ACCESS KEY</span>
+            </label>
+            <input type="password" id="roleKeyInput" placeholder="Enter OWNER / ADMIN / MEMBER Key" autocomplete="off" class="neon-input border-yellow-400/40" />
+            <p class="text-[10px] text-slate-400 mt-1">Default Member Key: <span class="text-cyan-300 font-bold">MEMBER@2026</span></p>
+          </div>
 
-          <form id="chat-form" class="flex items-center gap-2">
-            <input id="chat-input" type="text" placeholder="Write a message to WBBSE GC (+2 XP)..." autocomplete="off"
-              class="flex-1 bg-navy-900 border border-gold-400/25 focus:border-gold-400 rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 outline-none" />
-            <button type="submit"
-              class="gold-gradient text-navy-950 font-extrabold px-4 py-3 rounded-xl shadow active:scale-95 transition flex items-center gap-1 text-xs shrink-0">
-              <span>Send</span>
-              <i data-lucide="send" class="w-3.5 h-3.5"></i>
-            </button>
-          </form>
+          <!-- d) Mandatory Phone Number (+91) & Firebase OTP Box -->
+          <div id="phoneVerifyWrapper" class="hidden space-y-2.5 pt-1 border-t border-white/10">
+            <label class="text-[11px] font-bold text-pink-300 flex items-center justify-between">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="smartphone" class="w-3.5 h-3.5 text-pink-400"></i>
+                <span>PHONE (+91 MANDATORY OTP)</span>
+              </span>
+              <span id="phoneBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-400/30">Unverified</span>
+            </label>
 
-          <div id="chat-approval-lock" class="hidden bg-navy-900/95 border border-gold-400/25 rounded-xl p-3.5 text-center">
-            <p class="text-xs text-slate-300 mb-2.5 flex items-center justify-center gap-1.5">
-              <i data-lucide="lock" class="w-4 h-4 text-gold-400"></i>
-              <span>You can read all messages. Sending messages requires OWNER approval.</span>
-            </p>
-            <button id="btn-send-chat-req" onclick="requestChatApproval()"
-              class="w-full gold-gradient text-navy-950 font-extrabold py-2.5 rounded-xl text-xs shadow active:scale-98 transition">
-              Request Chat Permission
+            <div class="flex gap-2">
+              <div class="px-3 py-3 rounded-xl bg-black/60 border border-white/15 text-xs font-bold text-yellow-400 flex items-center">+91</div>
+              <input type="tel" id="phoneInput" maxlength="10" placeholder="9876543210" class="neon-input flex-1" />
+              <button type="button" id="sendOtpBtn" class="btn-glow-cyan px-3.5 rounded-xl text-xs whitespace-nowrap flex items-center gap-1">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                <span>GET OTP</span>
+              </button>
+            </div>
+
+            <!-- Invisible Recaptcha Container for Firebase Phone Auth -->
+            <div id="recaptcha-container"></div>
+
+            <!-- OTP Code Input Box -->
+            <div id="otpConfirmBox" class="hidden flex gap-2 pt-1">
+              <input type="text" id="otpCodeInput" maxlength="6" placeholder="6-Digit OTP" class="neon-input text-center tracking-[0.35em] font-black text-yellow-300" />
+              <button type="button" id="verifyOtpBtn" class="btn-glow-gold px-4 rounded-xl text-xs whitespace-nowrap">
+                VERIFY OTP
+              </button>
+            </div>
+          </div>
+
+          <!-- e) Mandatory Continue With Gmail Button -->
+          <div id="gmailVerifyWrapper" class="hidden pt-1">
+            <label class="text-[11px] font-bold text-cyan-300 flex items-center justify-between mb-1.5">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="mail-check" class="w-3.5 h-3.5 text-cyan-400"></i>
+                <span>GOOGLE ACCOUNT (MANDATORY)</span>
+              </span>
+              <span id="gmailBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-400/30">Not Linked</span>
+            </label>
+
+            <button type="button" id="googleAuthBtn" class="w-full py-3 px-4 rounded-2xl bg-white text-slate-900 font-extrabold text-xs flex items-center justify-center gap-2.5 shadow-lg shadow-white/20 hover:bg-slate-100 active:scale-95 transition">
+              <svg class="w-4 h-4" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+                <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z"/>
+                <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 20.9 7.4 24 12 24z"/>
+              </svg>
+              <span id="googleBtnText">CONTINUE WITH GMAIL</span>
             </button>
+          </div>
+
+          <!-- Pending Approval Message Box -->
+          <div id="pendingAlertBox" class="hidden glass-card glass-card-gold p-3.5 text-center space-y-1">
+            <div class="w-8 h-8 rounded-full bg-yellow-400/20 border border-yellow-400 mx-auto flex items-center justify-center">
+              <i data-lucide="hourglass" class="w-4 h-4 text-yellow-300 animate-spin"></i>
+            </div>
+            <h4 class="text-sm font-black text-yellow-300">Approval er jonno wait koro! ✨</h4>
+            <p class="text-[11px] text-slate-200">Tomar account Firestore-e save hoye geche. OWNER ba ADMIN approve korlei tumi Hub-e dhukte parbe.</p>
+          </div>
+
+          <!-- PRIMARY ACTION BUTTONS -->
+          <div class="pt-2">
+            <!-- Login Button -->
+            <button type="button" id="loginSubmitBtn" class="w-full py-3.5 rounded-2xl btn-glow-pink text-white font-black text-sm tracking-wider flex items-center justify-center gap-2">
+              <i data-lucide="log-in" class="w-4 h-4"></i>
+              <span>LOGIN TO HUB</span>
+            </button>
+
+            <!-- Create Account Button -->
+            <button type="button" id="registerSubmitBtn" class="hidden w-full py-3.5 rounded-2xl btn-glow-gold text-slate-950 font-black text-sm tracking-wider flex items-center justify-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>CREATE ACCOUNT IN CLOUD</span>
+            </button>
+
+            <!-- Reset Password Button -->
+            <button type="button" id="resetPassSubmitBtn" class="hidden w-full py-3.5 rounded-2xl btn-glow-cyan text-slate-950 font-black text-sm tracking-wider flex items-center justify-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4"></i>
+              <span>VERIFY &amp; UPDATE PASSWORD</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MAIN HUB DASHBOARD (VISIBLE WHEN APPROVED & LOGGED IN) ================= -->
+    <section id="hubSection" class="hidden space-y-4">
+      
+      <!-- USER PROFILE + ROLE + XP CARD -->
+      <div class="glass-card glass-card-gold p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-400 via-pink-500 to-cyan-400 p-[2px]">
+            <div class="w-full h-full bg-[#080a1a] rounded-[14px] flex items-center justify-center font-black text-lg text-yellow-300" id="userAvatarInitials">
+              QP
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <h3 id="hubUserName" class="font-black text-base text-white">Student</h3>
+              <span id="hubUserRoleBadge" class="text-[10px] px-2 py-0.5 rounded-full font-extrabold bg-yellow-400 text-black">MEMBER</span>
+            </div>
+            <p id="hubUserContact" class="text-[11px] text-cyan-300/90 truncate max-w-[190px]">Verified Account</p>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="text-[10px] px-2 py-0.5 rounded-md bg-purple-500/30 border border-purple-400/40 text-purple-200 font-bold" id="hubUserXp">🔥 100 XP</span>
+            </div>
           </div>
         </div>
 
-        <div id="owner-approvals-box" class="card-surface rounded-2xl p-4 border-2 border-gold-400/40 hidden">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-xs font-extrabold uppercase tracking-wider text-gold-400 flex items-center gap-1.5">
-              <i data-lucide="shield-alert" class="w-4 h-4"></i> Pending Chat Requests (Owner Only)
+        <button type="button" id="logoutBtn" class="p-2.5 rounded-xl bg-rose-500/20 border border-rose-400/40 text-rose-300 hover:bg-rose-500/30 active:scale-95 transition" title="Logout">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- ================= TAB CONTENT 1: PYQs (MADHYAMIK PAPERS) ================= -->
+      <div id="tabContent_pyqs" class="hub-tab-pane space-y-3">
+        <div class="glass-card p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-black gold-shimmer flex items-center gap-1.5">
+              <i data-lucide="book-open-check" class="w-4 h-4 text-cyan-400"></i>
+              <span>WBBSE MADHYAMIK PYQ VAULT</span>
             </h3>
-            <span class="text-[10px] px-2 py-0.5 rounded bg-gold-400/20 text-gold-300 font-bold">OWNER</span>
+            <span class="text-[10px] text-pink-300 font-bold">LIVE CLOUD</span>
           </div>
-          <div id="pending-approvals-list" class="space-y-2 text-xs"></div>
+
+          <!-- Upload PYQ Box -->
+          <div class="space-y-2 bg-black/35 p-3 rounded-2xl border border-white/10">
+            <p class="text-[11px] font-bold text-cyan-300">Share New Question Paper Link</p>
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" id="pyqSubjectInput" placeholder="Subject (e.g. Math)" class="neon-input text-xs py-2" />
+              <input type="text" id="pyqYearInput" placeholder="Year (e.g. 2025)" class="neon-input text-xs py-2" />
+            </div>
+            <input type="url" id="pyqLinkInput" placeholder="Google Drive / PDF Link (https://...)" class="neon-input text-xs py-2" />
+            <button type="button" id="addPyqBtn" class="w-full py-2.5 rounded-xl btn-glow-pink text-xs font-black flex items-center justify-center gap-1.5">
+              <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+              <span>PUBLISH PYQ (+20 XP)</span>
+            </button>
+          </div>
+
+          <!-- PYQ List -->
+          <div id="pyqListContainer" class="space-y-2.5 max-h-[360px] overflow-y-auto pr-1"></div>
         </div>
-      </section>
+      </div>
 
-    </main>
+      <!-- ================= TAB CONTENT 2: NOTICES ================= -->
+      <div id="tabContent_notices" class="hub-tab-pane hidden space-y-3">
+        <div class="glass-card p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-black gold-shimmer flex items-center gap-1.5">
+              <i data-lucide="megaphone" class="w-4 h-4 text-yellow-400"></i>
+              <span>OFFICIAL HUB NOTICES</span>
+            </h3>
+          </div>
 
-    <!-- BOTTOM NAVIGATION BAR -->
-    <nav class="bg-navy-900/95 border-t border-gold-400/15 px-1 py-1.5 grid grid-cols-6 shrink-0 z-20">
-      <button onclick="show('home')" id="nav-home" class="nav-btn nav-active flex flex-col items-center py-1.5 text-slate-400 transition relative">
-        <span class="nav-indicator absolute top-0 w-6 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
-        <i data-lucide="home" class="w-4 h-4"></i>
-        <span class="text-[9px] font-bold mt-1">HOME</span>
+          <!-- Create Notice (Owner/Admin Only or Public) -->
+          <div id="noticeCreatorBox" class="space-y-2 bg-black/35 p-3 rounded-2xl border border-white/10">
+            <input type="text" id="noticeTitleInput" placeholder="Notice Headline..." class="neon-input text-xs py-2" />
+            <textarea id="noticeDetailsInput" rows="2" placeholder="Write important Madhyamik update..." class="neon-input text-xs py-2"></textarea>
+            <button type="button" id="addNoticeBtn" class="w-full py-2.5 rounded-xl btn-glow-gold text-xs font-black flex items-center justify-center gap-1.5">
+              <i data-lucide="bell-plus" class="w-4 h-4"></i>
+              <span>BROADCAST NOTICE</span>
+            </button>
+          </div>
+
+          <div id="noticeListContainer" class="space-y-2.5 max-h-[360px] overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+
+      <!-- ================= TAB CONTENT 3: MOCK TESTS ================= -->
+      <div id="tabContent_mocks" class="hub-tab-pane hidden space-y-3">
+        <div class="glass-card p-4 space-y-3">
+          <h3 class="text-sm font-black gold-shimmer flex items-center gap-1.5">
+            <i data-lucide="flame" class="w-4 h-4 text-pink-400"></i>
+            <span>LIVE MADHYAMIK MOCK TESTS</span>
+          </h3>
+
+          <div class="space-y-2 bg-black/35 p-3 rounded-2xl border border-white/10">
+            <input type="text" id="mockNameInput" placeholder="Mock Test Title (e.g. Physical Sc Ch-2)" class="neon-input text-xs py-2" />
+            <input type="url" id="mockLinkInput" placeholder="Test URL / Google Form Link" class="neon-input text-xs py-2" />
+            <button type="button" id="addMockBtn" class="w-full py-2.5 rounded-xl btn-glow-cyan text-xs font-black flex items-center justify-center gap-1.5">
+              <i data-lucide="rocket" class="w-4 h-4"></i>
+              <span>LAUNCH MOCK TEST (+25 XP)</span>
+            </button>
+          </div>
+
+          <div id="mockListContainer" class="space-y-2.5 max-h-[360px] overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+
+      <!-- ================= TAB CONTENT 4: PUBLIC LIVE CHAT ================= -->
+      <div id="tabContent_chats" class="hub-tab-pane hidden space-y-3">
+        <div class="glass-card p-4 flex flex-col h-[460px]">
+          <div class="flex items-center justify-between pb-2.5 border-b border-white/10">
+            <h3 class="text-sm font-black gold-shimmer flex items-center gap-1.5">
+              <i data-lucide="message-circle-heart" class="w-4 h-4 text-pink-400"></i>
+              <span>RONGIN ADDA • PUBLIC GC</span>
+            </h3>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">● Real-time</span>
+          </div>
+
+          <div id="chatMessagesContainer" class="flex-1 overflow-y-auto py-3 space-y-2.5 pr-1"></div>
+
+          <div class="pt-2 flex gap-2">
+            <input type="text" id="chatMessageInput" placeholder="Type message to GC..." class="neon-input text-xs py-2.5 flex-1" />
+            <button type="button" id="sendChatBtn" class="btn-glow-pink px-4 rounded-xl flex items-center justify-center">
+              <i data-lucide="send" class="w-4 h-4 text-white"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB CONTENT 5: ADMIN & OWNER PANEL ================= -->
+      <div id="tabContent_admin" class="hub-tab-pane hidden space-y-4">
+        
+        <!-- Pending Approvals Card -->
+        <div class="glass-card glass-card-pink p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-black text-pink-300 flex items-center gap-1.5">
+              <i data-lucide="shield-alert" class="w-4 h-4 text-pink-400"></i>
+              <span>PENDING APPROVALS</span>
+            </h3>
+            <span id="pendingCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-pink-500 text-white font-black">0</span>
+          </div>
+          <div id="pendingListContainer" class="space-y-2.5 max-h-[240px] overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- All Accounts Management Card -->
+        <div class="glass-card glass-card-cyan p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-black text-cyan-300 flex items-center gap-1.5">
+              <i data-lucide="users" class="w-4 h-4 text-cyan-400"></i>
+              <span>ALL CLOUD ACCOUNTS (gc_accounts)</span>
+            </h3>
+          </div>
+          <div id="allAccountsContainer" class="space-y-2.5 max-h-[300px] overflow-y-auto pr-1"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= BOTTOM NAVIGATION BAR (VISIBLE WHEN LOGGED IN) ================= -->
+    <nav id="bottomNav" class="hidden fixed bottom-3 left-1/2 -translate-x-1/2 w-[94%] max-w-[410px] glass-card px-2 py-2 z-40 flex items-center justify-around border-white/20">
+      <button type="button" data-tab="pyqs" class="hub-nav-btn flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-pink-400 bg-white/10">
+        <i data-lucide="book-open" class="w-4 h-4"></i>
+        <span class="text-[10px] font-extrabold">PYQs</span>
       </button>
-      <button onclick="show('pyq')" id="nav-pyq" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
-        <span class="nav-indicator absolute top-0 w-6 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
-        <i data-lucide="file-text" class="w-4 h-4"></i>
-        <span class="text-[9px] font-bold mt-1">PYQ</span>
-      </button>
-      <button onclick="show('notice')" id="nav-notice" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
-        <span class="nav-indicator absolute top-0 w-6 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
+      <button type="button" data-tab="notices" class="hub-nav-btn flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-slate-300">
         <i data-lucide="bell" class="w-4 h-4"></i>
-        <span class="text-[9px] font-bold mt-1">NOTICE</span>
+        <span class="text-[10px] font-bold">Notices</span>
       </button>
-      <button onclick="show('mock')" id="nav-mock" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
-        <span class="nav-indicator absolute top-0 w-6 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
-        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
-        <span class="text-[9px] font-bold mt-1">MOCKS</span>
+      <button type="button" data-tab="mocks" class="hub-nav-btn flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-slate-300">
+        <i data-lucide="zap" class="w-4 h-4"></i>
+        <span class="text-[10px] font-bold">Mocks</span>
       </button>
-      <button onclick="show('leaderboard')" id="nav-leaderboard" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
-        <span class="nav-indicator absolute top-0 w-6 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
-        <i data-lucide="trophy" class="w-4 h-4"></i>
-        <span class="text-[9px] font-bold mt-1">RANKS</span>
+      <button type="button" data-tab="chats" class="hub-nav-btn flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-slate-300">
+        <i data-lucide="message-square" class="w-4 h-4"></i>
+        <span class="text-[10px] font-bold">Adda</span>
       </button>
-      <button onclick="show('chat')" id="nav-chat" class="nav-btn flex flex-col items-center py-1.5 text-slate-400 transition relative">
-        <span class="nav-indicator absolute top-0 w-6 h-0.5 gold-gradient rounded-full opacity-0 scale-x-50 transition-all"></span>
-        <i data-lucide="message-circle" class="w-4 h-4"></i>
-        <span class="text-[9px] font-bold mt-1">CHAT</span>
+      <!-- Admin Tab Button (Only shown if role === OWNER or ADMIN) -->
+      <button type="button" id="adminNavBtn" data-tab="admin" class="hub-nav-btn hidden flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl text-yellow-300">
+        <i data-lucide="crown" class="w-4 h-4"></i>
+        <span class="text-[10px] font-extrabold">Admin</span>
       </button>
     </nav>
-  </div>
 
-  <!-- ==========================================
-       UNIFIED CLOUD + LOCAL APPLICATION ENGINE
-  =========================================== -->
+  </main>
+
+  <!-- ================= APPLICATION JAVASCRIPT ================= -->
   <script>
-    // 1. Firebase Initialization (With your updated databaseURL)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCO6ah6cTQ3mEC99WsY48vGthSeuMTg6ao",
-      authDomain: "qp-2-0-hub-09012011.firebaseapp.com",
-      databaseURL: "https://qp-2-0-hub-09012011-default-rtdb.firebaseio.com",
-      projectId: "qp-2-0-hub-09012011",
-      storageBucket: "qp-2-0-hub-09012011.firebasestorage.app",
-      messagingSenderId: "121603897628",
-      appId: "1:121603897628:web:cfa31e4a0c7b652c32a2d9",
-      measurementId: "G-1VBD4XWFE1"
-    };
+    /********************************************************************
+     * 1. FIREBASE PUBLIC CONFIGURATION (NO LOCALSTORAGE AT ALL!)
+     * Replace the placeholder values below with your Firebase Console
+     * Project Settings -> Web App config.
+     ********************************************************************/
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCO6ah6cTQ3mEC99WsY48vGthSeuMTg6ao",
+  authDomain: "qp-2-0-hub-09012011.firebaseapp.com",
+  databaseURL: "https://qp-2-0-hub-09012011-default-rtdb.firebaseio.com",
+  projectId: "qp-2-0-hub-09012011",
+  storageBucket: "qp-2-0-hub-09012011.firebasestorage.app",
+  messagingSenderId: "121603897628",
+  appId: "1:121603897628:web:cfa31e4a0c7b652c32a2d9",
+  measurementId: "G-1VBD4XWFE1"
+};
 
-    let db = null;
+    let app, auth, db;
+    let isFirebaseReady = false;
+
     try {
-      firebase.initializeApp(firebaseConfig);
-      db = firebase.firestore();
+      if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE_YOUR")) {
+        app = firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+        db = firebase.firestore();
+        // Force Firebase Auth IN-MEMORY or SESSION without any custom localStorage usage
+        isFirebaseReady = true;
+      } else {
+        document.getElementById("firebaseSetupBanner").classList.remove("hidden");
+      }
     } catch (err) {
-      console.warn("Firebase fallback to local storage:", err);
+      console.error("Firebase Init Error:", err);
+      document.getElementById("firebaseSetupBanner").classList.remove("hidden");
     }
 
-    // ==========================================
-    // TELEGRAM BOT INTEGRATION
-    // ==========================================
-    const TELEGRAM_BOT_TOKEN = '8657244935:AAG_1GO2li8GBfcYKPSV85UbkxJsGtByFQo';
-    const TELEGRAM_CHAT_ID   = '8954948076';
+    /********************************************************************
+     * 2. SOUND SYSTEM (AWAZ) - WEB AUDIO SYNTH + HOWLER.JS
+     * Generates instant crystal-clear sound effects without broken links
+     ********************************************************************/
+    let soundEnabled = true;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
 
-    function sendToTelegram(message) {
-      if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return;
-      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: message,
-          parse_mode: 'HTML'
-        })
-      }).catch(err => console.warn("Telegram notification error:", err));
+    function ensureAudioCtx() {
+      if (!audioCtx && AudioCtx) {
+        audioCtx = new AudioCtx();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
     }
 
-    // 2. Secret Role Verification
-    // OWNER: QP2.0HUBOWNER@2026 | ADMIN: QP2.0HUBADMIN@2026 | MEMBER: MEMBER@2026
-    const _ROLE_VERIFY = {
-      OWNER: [81,80,50,46,48,72,85,66,79,87,78,69,82,64,50,48,50,54].map(c => String.fromCharCode(c)).join(''),
-      ADMIN: [81,80,50,46,48,72,85,66,65,68,77,73,78,64,50,48,50,54].map(c => String.fromCharCode(c)).join(''),
-      MEMBER: [77,69,77,66,69,82,64,50,48,50,54].map(c => String.fromCharCode(c)).join('')
+    function playSound(type) {
+      if (!soundEnabled) return;
+      ensureAudioCtx();
+      if (!audioCtx) return;
+
+      const now = audioCtx.currentTime;
+
+      if (type === "pop") {
+        // Click any button -> pop
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(980, now + 0.08);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.09);
+      } 
+      else if (type === "ding") {
+        // Get OTP -> charm ding
+        [880, 1318.5].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.22, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + 0.55);
+        });
+      } 
+      else if (type === "success") {
+        // Login success -> success glow chord
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + i * 0.06);
+          gain.gain.setValueAtTime(0.16, now + i * 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + i * 0.06);
+          osc.stop(now + 0.65);
+        });
+      } 
+      else if (type === "bass") {
+        // Approve/Reject -> bass thud
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(42, now + 0.28);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } 
+      else if (type === "bubble") {
+        // Chat message -> bubble pop
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(380, now);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.11);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      } 
+      else if (type === "error") {
+        // Error -> buzz sound
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.setValueAtTime(115, now + 0.12);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.32);
+      }
+    }
+
+    /********************************************************************
+     * 3. PARTICLE SPARKLE ON BUTTON TAP + GLOBAL CLICK HANDLER
+     ********************************************************************/
+    function spawnSparkles(x, y) {
+      const colors = ["#ff007f", "#00f2fe", "#ffd700", "#c084fc", "#ffffff"];
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement("div");
+        p.className = "sparkle-particle";
+        const size = Math.random() * 6 + 4;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.left = `${x}px`;
+        p.style.top = `${y}px`;
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.boxShadow = `0 0 8px ${p.style.background}`;
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 55 + 20;
+        p.style.setProperty("--tx", `${Math.cos(angle) * dist}px`);
+        p.style.setProperty("--ty", `${Math.sin(angle) * dist}px`);
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 750);
+      }
+    }
+
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (btn) {
+        playSound("pop");
+        spawnSparkles(e.clientX, e.clientY);
+      }
+    });
+
+    // Sound Toggle Header Button
+    document.getElementById("soundToggleBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      soundEnabled = !soundEnabled;
+      const wave = document.getElementById("soundWaveContainer");
+      const txt = document.getElementById("soundStatusText");
+      if (soundEnabled) {
+        wave.classList.remove("sound-muted");
+        txt.textContent = "AWAZ ON";
+        playSound("ding");
+      } else {
+        wave.classList.add("sound-muted");
+        txt.textContent = "MUTE";
+      }
+    });
+
+    /********************************************************************
+     * 4. TOAST & SHAKE HELPER
+     ********************************************************************/
+    let toastTimer = null;
+    function showToast(msg, isError = false) {
+      const box = document.getElementById("toastBox");
+      const inner = document.getElementById("toastInner");
+      const text = document.getElementById("toastText");
+      text.textContent = msg;
+
+      if (isError) {
+        playSound("error");
+        inner.className = "glass-card px-4 py-3 flex items-center gap-3 border-l-4 border-l-rose-500 shadow-2xl";
+        const authCard = document.querySelector("#authSection .glass-card");
+        if (authCard) {
+          authCard.classList.remove("shake-anim");
+          void authCard.offsetWidth;
+          authCard.classList.add("shake-anim");
+        }
+      } else {
+        inner.className = "glass-card px-4 py-3 flex items-center gap-3 border-l-4 border-l-cyan-400 shadow-2xl";
+      }
+
+      box.classList.remove("opacity-0", "-translate-y-3");
+      box.classList.add("opacity-100", "translate-y-0");
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.add("opacity-0", "-translate-y-3");
+        box.classList.remove("opacity-100", "translate-y-0");
+      }, 3400);
+    }
+
+    /********************************************************************
+     * 5. SECRET ROLE ACCESS KEYS & RUNTIME STATE (IN-MEMORY + FIREBASE)
+     ********************************************************************/
+    const ROLE_KEYS = {
+      "QP2.0HUBOWNER@2026": "OWNER",
+      "QP2.0HUBADMIN@2026": "ADMIN",
+      "MEMBER@2026": "MEMBER"
     };
 
-    function resolveRoleFromKey(inputKey) {
-      const k = (inputKey || '').trim();
-      if (k === _ROLE_VERIFY.OWNER) return 'OWNER';
-      if (k === _ROLE_VERIFY.ADMIN) return 'ADMIN';
-      if (k === _ROLE_VERIFY.MEMBER) return 'MEMBER';
-      return null;
+    let authMode = "LOGIN"; // LOGIN | REGISTER | FORGOT
+    let verifiedPhoneNumber = null;
+    let verifiedGmailAddress = null;
+    let confirmationResultObj = null;
+    let currentUserDoc = null; // Active logged-in user document from Firestore
+    let unsubscribeListeners = [];
+
+    /********************************************************************
+     * 6. AUTH MODE TABS (LOGIN / CREATE ID / RESET PASS)
+     ********************************************************************/
+    const tabLoginBtn = document.getElementById("tabLoginBtn");
+    const tabRegisterBtn = document.getElementById("tabRegisterBtn");
+    const tabForgotBtn = document.getElementById("tabForgotBtn");
+
+    const roleKeyWrapper = document.getElementById("roleKeyWrapper");
+    const phoneVerifyWrapper = document.getElementById("phoneVerifyWrapper");
+    const gmailVerifyWrapper = document.getElementById("gmailVerifyWrapper");
+    const passLabelText = document.getElementById("passLabelText");
+    const pendingAlertBox = document.getElementById("pendingAlertBox");
+
+    const loginSubmitBtn = document.getElementById("loginSubmitBtn");
+    const registerSubmitBtn = document.getElementById("registerSubmitBtn");
+    const resetPassSubmitBtn = document.getElementById("resetPassSubmitBtn");
+
+    function switchAuthMode(mode) {
+      authMode = mode;
+      pendingAlertBox.classList.add("hidden");
+
+      const activeClass = "py-2 rounded-xl text-xs font-extrabold transition bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-600/30";
+      const inactiveClass = "py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white transition";
+
+      tabLoginBtn.className = mode === "LOGIN" ? activeClass : inactiveClass;
+      tabRegisterBtn.className = mode === "REGISTER" ? activeClass : inactiveClass;
+      tabForgotBtn.className = mode === "FORGOT" ? activeClass : inactiveClass;
+
+      if (mode === "LOGIN") {
+        roleKeyWrapper.classList.add("hidden");
+        phoneVerifyWrapper.classList.add("hidden");
+        gmailVerifyWrapper.classList.add("hidden");
+        passLabelText.textContent = "PERSONAL PASSWORD (MIN 6 CHAR)";
+        loginSubmitBtn.classList.remove("hidden");
+        registerSubmitBtn.classList.add("hidden");
+        resetPassSubmitBtn.classList.add("hidden");
+      } else if (mode === "REGISTER") {
+        roleKeyWrapper.classList.remove("hidden");
+        phoneVerifyWrapper.classList.remove("hidden");
+        gmailVerifyWrapper.classList.remove("hidden");
+        passLabelText.textContent = "CREATE PERSONAL PASSWORD (MIN 6 CHAR)";
+        loginSubmitBtn.classList.add("hidden");
+        registerSubmitBtn.classList.remove("hidden");
+        resetPassSubmitBtn.classList.add("hidden");
+      } else if (mode === "FORGOT") {
+        roleKeyWrapper.classList.remove("hidden");
+        phoneVerifyWrapper.classList.remove("hidden");
+        gmailVerifyWrapper.classList.remove("hidden");
+        passLabelText.textContent = "SET NEW PASSWORD (MIN 6 CHAR)";
+        loginSubmitBtn.classList.add("hidden");
+        registerSubmitBtn.classList.add("hidden");
+        resetPassSubmitBtn.classList.remove("hidden");
+      }
     }
 
-    // 3. Storage Keys (Data stays in localStorage so accounts don't vanish, Session stays in sessionStorage so refresh/reopen asks login)
-    const SESSION_KEY  = 'qp_hub_live_session_v6';
-    const ACCOUNTS_KEY = 'qp_hub_accounts_v6';
-    const PYQS_KEY     = 'qp_hub_pyqs_v6';
-    const NOTICES_KEY  = 'qp_hub_notices_v6';
-    const MOCKS_KEY    = 'qp_hub_mocks_v6';
-    const CHATS_KEY    = 'qp_hub_chats_v6';
-    const REQS_KEY     = 'qp_hub_test_reqs_v6';
+    tabLoginBtn.addEventListener("click", (e) => { e.preventDefault(); switchAuthMode("LOGIN"); });
+    tabRegisterBtn.addEventListener("click", (e) => { e.preventDefault(); switchAuthMode("REGISTER"); });
+    tabForgotBtn.addEventListener("click", (e) => { e.preventDefault(); switchAuthMode("FORGOT"); });
 
-    let accountsList     = readLocal(ACCOUNTS_KEY, []);
-    let pyqsList         = readLocal(PYQS_KEY, []);
-    let noticesList      = readLocal(NOTICES_KEY, []);
-    let mocksList        = readLocal(MOCKS_KEY, []);
-    let chatsList        = readLocal(CHATS_KEY, []);
-    let testReqsList     = readLocal(REQS_KEY, []);
+    // Toggle Password Visibility
+    document.getElementById("togglePassVisBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      const inp = document.getElementById("gcPassInput");
+      inp.type = inp.type === "password" ? "text" : "password";
+    });
 
-    let activeAccount    = null;
-    let currentUsername  = '';
-    let currentRole      = 'MEMBER';
-    let currentXP        = 0;
-    let currentStreak    = 1;
+    /********************************************************************
+     * 7. FIREBASE PHONE OTP AUTH (+91 MANDATORY)
+     ********************************************************************/
+    document.getElementById("sendOtpBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!isFirebaseReady) return showToast("Add your firebaseConfig in index.html first!", true);
 
-    function readLocal(key, fallback) {
+      const rawPhone = document.getElementById("phoneInput").value.trim();
+      if (!/^\d{10}$/.test(rawPhone)) {
+        return showToast("Enter a valid 10-digit +91 mobile number!", true);
+      }
+
+      const fullPhone = `+91${rawPhone}`;
       try {
-        const raw = localStorage.getItem(key);
-        return raw ? JSON.parse(raw) : fallback;
-      } catch {
-        return fallback;
+        if (!window.recaptchaVerifier) {
+          window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
+            size: "invisible"
+          });
+        }
+        showToast("Sending OTP to " + fullPhone + "...");
+        confirmationResultObj = await auth.signInWithPhoneNumber(fullPhone, window.recaptchaVerifier);
+        playSound("ding");
+        document.getElementById("otpConfirmBox").classList.remove("hidden");
+        showToast("OTP Sent! Check your SMS ✨");
+      } catch (err) {
+        console.error(err);
+        showToast("OTP Error: " + (err.message || "Enable Phone Auth in Firebase"), true);
       }
-    }
+    });
 
-    function writeLocal(key, data) {
+    document.getElementById("verifyOtpBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const code = document.getElementById("otpCodeInput").value.trim();
+      if (!confirmationResultObj || code.length !== 6) {
+        return showToast("Enter the 6-digit OTP code!", true);
+      }
       try {
-        localStorage.setItem(key, JSON.stringify(data));
-      } catch (e) {}
-    }
-
-    function escapeHTML(str) {
-      return String(str || '').replace(/[&<>"']/g, s => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      }[s]));
-    }
-
-    function showAuthMessage(msg, isError = true) {
-      const el = document.getElementById('auth-status-msg');
-      el.textContent = msg;
-      el.className = `text-xs text-center font-bold py-2 px-3 rounded-xl ${
-        isError ? 'bg-rose-500/15 text-rose-300 border border-rose-400/30' : 'bg-emerald-500/15 text-emerald-300 border border-emerald-400/30'
-      }`;
-      el.classList.remove('hidden');
-    }
-
-    // Unified reliable hash function that works identically on file:// and https://
-    async function hashPassword(password) {
-      const str = String(password || '').trim();
-      let h1 = 0xdeadbeef ^ str.length, h2 = 0x41c6ce57 ^ str.length;
-      for (let i = 0, ch; i < str.length; i++) {
-        ch = str.charCodeAt(i);
-        h1 = Math.imul(h1 ^ ch, 2654435761);
-        h2 = Math.imul(h2 ^ ch, 1597334677);
+        const res = await confirmationResultObj.confirm(code);
+        verifiedPhoneNumber = res.user.phoneNumber;
+        playSound("success");
+        const badge = document.getElementById("phoneBadge");
+        badge.textContent = "Verified ✓";
+        badge.className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40";
+        document.getElementById("otpConfirmBox").classList.add("hidden");
+        showToast("Phone Number Verified: " + verifiedPhoneNumber);
+      } catch (err) {
+        showToast("Invalid OTP Code!", true);
       }
-      h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-      h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-      return 'qp_' + (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16);
-    }
+    });
 
-    function getAccountKey(name) {
-      return String(name || '').trim().toLowerCase().replace(/[^a-z0-9_-]/g, '_');
-    }
+    /********************************************************************
+     * 8. FIREBASE GOOGLE GMAIL AUTH (MANDATORY)
+     ********************************************************************/
+    document.getElementById("googleAuthBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!isFirebaseReady) return showToast("Add your firebaseConfig in index.html first!", true);
 
-    function findAccount(name) {
-      if (!name) return null;
-      const target = name.trim().toLowerCase();
-      return accountsList.find(a => a.name && a.name.toLowerCase() === target) || null;
-    }
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await auth.signInWithPopup(provider);
+        verifiedGmailAddress = result.user.email;
+        playSound("ding");
 
-    async function saveAccountToCloud(accountObj) {
-      const idx = accountsList.findIndex(a => a.name && a.name.toLowerCase() === accountObj.name.toLowerCase());
-      if (idx >= 0) accountsList[idx] = accountObj;
-      else accountsList.push(accountObj);
-      writeLocal(ACCOUNTS_KEY, accountsList);
-
-      if (db) {
-        try {
-          await db.collection('qp_accounts').doc(getAccountKey(accountObj.name)).set(accountObj, { merge: true });
-        } catch (e) {
-          console.warn("Cloud account sync error:", e);
-        }
+        const badge = document.getElementById("gmailBadge");
+        badge.textContent = verifiedGmailAddress;
+        badge.className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40";
+        document.getElementById("googleBtnText").textContent = "GMAIL CONNECTED ✓";
+        showToast("Linked Gmail: " + verifiedGmailAddress);
+      } catch (err) {
+        console.error(err);
+        showToast("Google Auth Error: " + err.message, true);
       }
-    }
+    });
 
-    async function deleteAccountFromCloud(accountName) {
-      accountsList = accountsList.filter(a => a.name && a.name.toLowerCase() !== accountName.toLowerCase());
-      writeLocal(ACCOUNTS_KEY, accountsList);
-      if (db) {
-        try {
-          await db.collection('qp_accounts').doc(getAccountKey(accountName)).delete();
-        } catch (e) {}
-      }
-    }
+    /********************************************************************
+     * 9. CREATE ACCOUNT -> FIRESTORE `gc_accounts`
+     ********************************************************************/
+    registerSubmitBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!isFirebaseReady) return showToast("Configure Firebase first!", true);
 
-    // 4. Real-Time Cloud Listeners
-    function startCloudListeners() {
-      if (!db) return;
+      const name = document.getElementById("gcNameInput").value.trim();
+      const myPass = document.getElementById("gcPassInput").value;
+      const roleKey = document.getElementById("roleKeyInput").value.trim();
 
-      db.collection('qp_accounts').onSnapshot(snap => {
-        const list = [];
-        snap.forEach(doc => list.push(doc.data()));
-        if (list.length > 0) {
-          accountsList = list;
-          writeLocal(ACCOUNTS_KEY, accountsList);
+      if (name.length < 2) return showToast("Enter your GC Name!", true);
+      if (myPass.length < 6) return showToast("Password must be at least 6 characters!", true);
+
+      const resolvedRole = ROLE_KEYS[roleKey];
+      if (!resolvedRole) return showToast("Invalid Secret Role Access Key!", true);
+
+      if (!verifiedPhoneNumber) return showToast("Phone (+91) OTP verification is mandatory!", true);
+      if (!verifiedGmailAddress) return showToast("Continue with Gmail is mandatory!", true);
+
+      const docId = name.toLowerCase();
+      try {
+        const existingDoc = await db.collection("gc_accounts").doc(docId).get();
+        if (existingDoc.exists) {
+          return showToast("GC Name already exists in Cloud! Choose another.", true);
         }
 
-        if (activeAccount) {
-          const updatedMe = findAccount(activeAccount.name);
-          if (updatedMe && updatedMe.status === 'rejected') {
-            logoutProfile(true);
-            return;
-          }
-          if (updatedMe) {
-            activeAccount = updatedMe;
-            currentRole = updatedMe.role;
-            currentXP = updatedMe.xp || 0;
-            currentStreak = updatedMe.streak || 1;
-            syncRoleUI();
-            updateXPUI();
+        // Check if this is the very first OWNER in Firestore -> Auto Approve
+        let status = "pending";
+        if (resolvedRole === "OWNER") {
+          const ownerSnap = await db.collection("gc_accounts").where("role", "==", "OWNER").get();
+          if (ownerSnap.empty) {
+            status = "approved";
           }
         }
-        renderLeaderboard();
-        renderChatAndApprovals();
-        updateOwnerBadgeCount();
-        if (document.getElementById('qp-control-panel')) renderControlPanelContents();
-      }, err => console.warn("Accounts listener fallback:", err));
 
-      db.collection('qp_chats').orderBy('createdAt', 'asc').onSnapshot(snap => {
-        const list = [];
-        snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
-        chatsList = list;
-        writeLocal(CHATS_KEY, chatsList);
-        renderChatAndApprovals();
-      }, err => {});
-
-      db.collection('qp_pyqs').orderBy('createdAt', 'desc').onSnapshot(snap => {
-        const list = [];
-        snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
-        pyqsList = list;
-        writeLocal(PYQS_KEY, pyqsList);
-        renderPYQs();
-      }, err => {});
-
-      db.collection('qp_notices').orderBy('createdAt', 'desc').onSnapshot(snap => {
-        const list = [];
-        snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
-        noticesList = list;
-        writeLocal(NOTICES_KEY, noticesList);
-        renderNotices();
-      }, err => {});
-
-      db.collection('qp_mocks').orderBy('createdAt', 'desc').onSnapshot(snap => {
-        const list = [];
-        snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
-        mocksList = list;
-        writeLocal(MOCKS_KEY, mocksList);
-        renderMocks();
-      }, err => {});
-
-      db.collection('qp_test_reqs').orderBy('createdAt', 'desc').onSnapshot(snap => {
-        const list = [];
-        snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
-        testReqsList = list;
-        writeLocal(REQS_KEY, testReqsList);
-        renderTestRequests();
-      }, err => {});
-    }
-
-    // 5. Daily Streak Engine
-    function getTodayDateString() {
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    }
-
-    function getYesterdayDateString() {
-      const d = new Date();
-      d.setDate(d.getDate() - 1);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    }
-
-    async function checkAndUpdateDailyStreak(account) {
-      const today = getTodayDateString();
-      const yesterday = getYesterdayDateString();
-      let streakBonusAwarded = false;
-
-      if (account.lastStreakDate !== today) {
-        if (account.lastStreakDate === yesterday) {
-          account.streak = (account.streak || 1) + 1;
-        } else {
-          account.streak = 1;
-        }
-        account.lastStreakDate = today;
-        account.xp = (account.xp || 0) + 15;
-        streakBonusAwarded = true;
-      }
-
-      account.online = true;
-      account.lastSeen = Date.now();
-      await saveAccountToCloud(account);
-
-      if (streakBonusAwarded) {
-        setTimeout(() => showXPToast(`🔥 Day ${account.streak} Streak! +15 XP`), 600);
-      }
-    }
-
-    setInterval(() => {
-      if (activeAccount) {
-        activeAccount.online = true;
-        activeAccount.lastSeen = Date.now();
-        saveAccountToCloud(activeAccount);
-      }
-    }, 45000);
-
-    // ==========================================
-    // 6. SMART AUTHENTICATION (NEVER BLOCKS OWNER/KEY HOLDERS)
-    // ==========================================
-    async function handleCreateOrOverrideAccount() {
-      const name = document.getElementById('input-username').value.trim();
-      const password = document.getElementById('input-password').value;
-      const roleKey = document.getElementById('qp-role-key').value.trim();
-      const batch = document.getElementById('input-batch').value;
-
-      if (name.length < 2 || name.length > 24) {
-        return showAuthMessage('Enter your name (2 to 24 characters).');
-      }
-      if (password.length < 4) {
-        return showAuthMessage('Personal password must be at least 4 characters.');
-      }
-
-      const assignedRole = resolveRoleFromKey(roleKey);
-      if (!assignedRole) {
-        return showAuthMessage('Invalid Secret Role Access Key! Enter a valid Key.');
-      }
-
-      const passHash = await hashPassword(password);
-      const isAutoApproved = assignedRole === 'OWNER' || assignedRole === 'ADMIN';
-      const existingAcc = findAccount(name);
-
-      // If account already exists and user provided valid Role Key -> Update password & role and log them in!
-      if (existingAcc) {
-        existingAcc.passwordHash = passHash;
-        existingAcc.role = assignedRole;
-        if (isAutoApproved) {
-          existingAcc.status = 'approved';
-          existingAcc.chatApproved = true;
-        }
-        existingAcc.online = true;
-        existingAcc.lastSeen = Date.now();
-        await saveAccountToCloud(existingAcc);
-
-        if (existingAcc.status === 'approved') {
-          activeAccount = existingAcc;
-          sessionStorage.setItem(SESSION_KEY, existingAcc.name);
-          unlockApp();
-          return;
-        } else {
-          return showAuthMessage('Password updated! Waiting for OWNER approval.', false);
-        }
-      }
-
-      // Create brand new account
-      const newAcc = {
-        name,
-        passwordHash: passHash,
-        role: assignedRole,
-        status: isAutoApproved ? 'approved' : 'pending',
-        chatApproved: isAutoApproved,
-        chatRequested: false,
-        forgotPasswordRequested: false,
-        xp: 15,
-        streak: 1,
-        lastStreakDate: getTodayDateString(),
-        batch,
-        online: isAutoApproved,
-        lastSeen: Date.now(),
-        createdAt: new Date().toISOString()
-      };
-
-      await saveAccountToCloud(newAcc);
-      sendToTelegram(`🚀 <b>New Registration!</b>\nName: ${name}\nRole: ${assignedRole}\nStatus: ${newAcc.status}`);
-
-      if (isAutoApproved) {
-        activeAccount = newAcc;
-        sessionStorage.setItem(SESSION_KEY, newAcc.name);
-        unlockApp();
-      } else {
-        showAuthMessage('Account created! Waiting for OWNER approval to enter the Hub.', false);
-      }
-    }
-
-    document.getElementById('btn-register-acc').addEventListener('click', handleCreateOrOverrideAccount);
-
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('input-username').value.trim();
-      const password = document.getElementById('input-password').value;
-      const roleKey = document.getElementById('qp-role-key').value.trim();
-
-      // SMART BYPASS: If user also typed a valid Secret Role Key during Login, auto-create or auto-update password and log right in!
-      if (roleKey && resolveRoleFromKey(roleKey)) {
-        await handleCreateOrOverrideAccount();
-        return;
-      }
-
-      const account = findAccount(name);
-      if (!account) {
-        return showAuthMessage('Account not found! Enter your Secret Role Key below and click CREATE ACCOUNT.');
-      }
-
-      const passHash = await hashPassword(password);
-      // Check both new hash and raw password fallback
-      if (passHash !== account.passwordHash && password !== account.passwordHash) {
-        return showAuthMessage('Incorrect password! Tip: Enter your Secret Role Key below and click LOGIN to reset & enter.');
-      }
-
-      if (account.status !== 'approved') {
-        return showAuthMessage('Your registration is pending OWNER approval.');
-      }
-
-      activeAccount = account;
-      sessionStorage.setItem(SESSION_KEY, account.name);
-      await checkAndUpdateDailyStreak(activeAccount);
-      unlockApp();
-    });
-
-    document.getElementById('btn-forgot-pass').addEventListener('click', async () => {
-      const name = document.getElementById('input-username').value.trim();
-      const newPass = document.getElementById('input-password').value;
-      const roleKey = document.getElementById('qp-role-key').value.trim();
-
-      if (!name) {
-        return showAuthMessage('Enter your registered GC Name first.');
-      }
-
-      // If valid Role Key is provided, immediately update or create account
-      if (roleKey && resolveRoleFromKey(roleKey)) {
-        await handleCreateOrOverrideAccount();
-        return;
-      }
-
-      const account = findAccount(name);
-      if (!account) {
-        return showAuthMessage('Account not found.');
-      }
-
-      account.forgotPasswordRequested = true;
-      account.forgotRequestedAt = new Date().toLocaleString();
-      await saveAccountToCloud(account);
-      sendToTelegram(`🔑 <b>Password Reset Request!</b>\nUser <b>${name}</b> has requested a password reset. Check Owner Panel.`);
-      return showAuthMessage('Password reset request sent to the OWNER Control Panel & Telegram!', false);
-    });
-
-    // 7. Unlock App & Sync UI
-    function unlockApp() {
-      if (!activeAccount) return;
-      currentUsername = activeAccount.name;
-      currentRole = activeAccount.role;
-      currentXP = activeAccount.xp || 0;
-      currentStreak = activeAccount.streak || 1;
-
-      const gate = document.getElementById('auth-gate');
-      gate.classList.add('opacity-0', 'pointer-events-none');
-      setTimeout(() => gate.classList.add('hidden'), 400);
-
-      syncRoleUI();
-      updateXPUI();
-      renderAllSections();
-    }
-
-    function syncRoleUI() {
-      const ownerAcc = accountsList.find(a => a.role === 'OWNER');
-      document.getElementById('home-username').textContent = currentUsername;
-      document.getElementById('home-owner-name').textContent = ownerAcc ? ownerAcc.name : (currentRole === 'OWNER' ? currentUsername : 'Owner');
-      document.getElementById('home-role-text').textContent = currentRole;
-      document.getElementById('header-user-subtitle').textContent = `${currentUsername} • WBBSE X`;
-
-      const badge = document.getElementById('header-role-badge');
-      badge.textContent = currentRole;
-      badge.className = currentRole === 'OWNER'
-        ? 'text-[9px] px-1.5 py-0.5 rounded gold-gradient text-navy-950 font-black uppercase shrink-0'
-        : 'text-[9px] px-1.5 py-0.5 rounded bg-gold-400/15 text-gold-400 font-extrabold border border-gold-400/30 uppercase shrink-0';
-
-      const canUpload = ['OWNER', 'ADMIN'].includes(currentRole);
-      ['pyq-owner-form', 'notice-owner-form', 'mock-owner-form'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.toggle('hidden', !canUpload);
-      });
-
-      const isOwner = currentRole === 'OWNER';
-      document.getElementById('qp-control-button').classList.toggle('hidden', !isOwner);
-      document.getElementById('owner-approvals-box').classList.toggle('hidden', !isOwner);
-      document.getElementById('btn-clear-all-chat').classList.toggle('hidden', !isOwner);
-      updateOwnerBadgeCount();
-    }
-
-    function updateOwnerBadgeCount() {
-      if (currentRole !== 'OWNER') return;
-      const pendingReg = accountsList.filter(a => a.status === 'pending').length;
-      const forgotReqs = accountsList.filter(a => a.forgotPasswordRequested).length;
-      const chatReqs   = accountsList.filter(a => a.chatRequested && !a.chatApproved).length;
-      const total = pendingReg + forgotReqs + chatReqs;
-      const badge = document.getElementById('cp-badge-count');
-      if (total > 0) {
-        badge.textContent = total;
-        badge.classList.remove('hidden');
-      } else {
-        badge.classList.add('hidden');
-      }
-    }
-
-    async function logoutProfile(silent = false) {
-      if (!silent && !confirm('Log out of QP 2.0 HUB?')) return;
-      if (activeAccount) {
-        activeAccount.online = false;
-        activeAccount.lastSeen = Date.now();
-        await saveAccountToCloud(activeAccount);
-      }
-      activeAccount = null;
-      currentUsername = '';
-      currentRole = 'MEMBER';
-      currentXP = 0;
-      sessionStorage.removeItem(SESSION_KEY);
-
-      const panel = document.getElementById('qp-control-panel');
-      if (panel) panel.remove();
-
-      const gate = document.getElementById('auth-gate');
-      document.getElementById('input-password').value = '';
-      document.getElementById('qp-role-key').value = '';
-      document.getElementById('auth-status-msg').classList.add('hidden');
-      gate.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
-    }
-
-    // 8. Navigation
-    function show(screenName) {
-      if (!activeAccount) return;
-      const screens = ['home', 'pyq', 'notice', 'mock', 'leaderboard', 'chat'];
-      screens.forEach(s => {
-        const el = document.getElementById(`screen-${s}`);
-        const nav = document.getElementById(`nav-${s}`);
-        if (s === screenName) {
-          el.classList.remove('hidden');
-          nav.classList.add('nav-active');
-        } else {
-          el.classList.add('hidden');
-          nav.classList.remove('nav-active');
-        }
-      });
-
-      if (screenName === 'chat') {
-        renderChatAndApprovals();
-        scrollToBottomChat();
-      } else if (screenName === 'leaderboard' || screenName === 'home') {
-        renderLeaderboard();
-      }
-    }
-
-    // 9. XP & Streak UI Engine
-    async function addXP(amount) {
-      if (!activeAccount) return;
-      currentXP = (activeAccount.xp || 0) + amount;
-      activeAccount.xp = currentXP;
-      activeAccount.lastSeen = Date.now();
-      showXPToast(`+${amount} XP`);
-      updateXPUI();
-      await saveAccountToCloud(activeAccount);
-      renderLeaderboard();
-    }
-
-    function updateXPUI() {
-      const displayFloorLvl = Math.floor(currentXP / 100) + 1;
-      const exactLevel = (currentXP / 100 + 1).toFixed(2);
-      const progressPercent = currentXP % 100;
-
-      document.getElementById('header-lvl').textContent = displayFloorLvl;
-      document.getElementById('header-xp').textContent = currentXP;
-      document.getElementById('header-xp-bar').style.width = `${progressPercent}%`;
-      document.getElementById('header-streak').textContent = currentStreak;
-
-      document.getElementById('home-level-int').textContent = displayFloorLvl;
-      document.getElementById('home-level-exact').textContent = `LVL ${exactLevel}`;
-      document.getElementById('home-xp-fraction').textContent = `${progressPercent} / 100 XP to LVL ${displayFloorLvl + 1}`;
-      document.getElementById('home-xp-bar').style.width = `${progressPercent}%`;
-      document.getElementById('home-streak-text').textContent = `${currentStreak} ${currentStreak === 1 ? 'Day' : 'Days'}`;
-    }
-
-    function showXPToast(text) {
-      const anchor = document.getElementById('xp-toast-anchor');
-      const badge = document.createElement('div');
-      badge.className = 'xp-float text-[10px] font-black text-gold-400 bg-navy-950 border border-gold-400/40 px-2 py-0.5 rounded-full shadow-lg whitespace-nowrap';
-      badge.textContent = text;
-      anchor.appendChild(badge);
-      setTimeout(() => badge.remove(), 950);
-    }
-
-    function renderAllSections() {
-      renderPYQs();
-      renderNotices();
-      renderMocks();
-      renderTestRequests();
-      renderChatAndApprovals();
-      renderLeaderboard();
-      lucide.createIcons();
-    }
-
-    // 10. PYQ Section
-    document.getElementById('form-upload-pyq').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      if (!activeAccount || !['OWNER', 'ADMIN'].includes(currentRole)) return;
-
-      const subject = document.getElementById('pyq-subject').value;
-      const year = document.getElementById('pyq-year').value.trim();
-      const link = document.getElementById('pyq-link').value.trim();
-      if (!year || !link) return;
-
-      const newItem = {
-        id: 'pyq_' + Date.now(),
-        subject,
-        year,
-        link,
-        by: `${currentUsername} (${currentRole})`,
-        createdAt: Date.now()
-      };
-
-      pyqsList.unshift(newItem);
-      writeLocal(PYQS_KEY, pyqsList);
-      renderPYQs();
-
-      if (db) {
-        try { await db.collection('qp_pyqs').doc(newItem.id).set(newItem); } catch (e) {}
-      }
-
-      document.getElementById('pyq-year').value = '';
-      document.getElementById('pyq-link').value = '';
-    });
-
-    async function deletePYQ(id) {
-      if (currentRole !== 'OWNER') return;
-      if (!confirm('Delete this PYQ PDF permanently?')) return;
-      pyqsList = pyqsList.filter(i => i.id !== id);
-      writeLocal(PYQS_KEY, pyqsList);
-      if (db) { try { await db.collection('qp_pyqs').doc(id).delete(); } catch (e) {} }
-      renderPYQs();
-    }
-
-    function renderPYQs() {
-      const container = document.getElementById('pyq-list');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (pyqsList.length === 0) {
-        container.innerHTML = `<div class="card-surface rounded-2xl p-5 text-center text-xs text-slate-400">No PYQ PDFs uploaded yet.</div>`;
-        return;
-      }
-
-      pyqsList.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'card-surface rounded-2xl p-4 border-l-4 border-l-emerald-400 flex items-center justify-between gap-2';
-        card.innerHTML = `
-          <div class="min-w-0">
-            <div class="text-sm font-extrabold text-white truncate">
-              ${escapeHTML(item.subject)} - <span class="text-gold-400">${escapeHTML(item.year)}</span>
-            </div>
-            <div class="text-[11px] text-slate-400 mt-1">
-              Uploaded By: <strong class="text-slate-200">${escapeHTML(item.by)}</strong>
-            </div>
-          </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <a href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer"
-              class="px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/35 text-xs font-extrabold transition flex items-center gap-1">
-              <span>PDF</span>
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            </a>
-            ${currentRole === 'OWNER' ? `
-              <button onclick="deletePYQ('${escapeHTML(item.id)}')" title="Delete PYQ"
-                class="p-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-              </button>
-            ` : ''}
-          </div>
-        `;
-        container.appendChild(card);
-      });
-      lucide.createIcons();
-    }
-
-    // 11. Notice Board
-    document.getElementById('form-post-notice').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      if (!activeAccount || !['OWNER', 'ADMIN'].includes(currentRole)) return;
-
-      const title = document.getElementById('notice-title').value.trim();
-      const details = document.getElementById('notice-details').value.trim();
-      if (!title || !details) return;
-
-      const newNotice = {
-        id: 'not_' + Date.now(),
-        title,
-        details,
-        by: `${currentUsername} (${currentRole})`,
-        time: new Date().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }),
-        createdAt: Date.now()
-      };
-
-      noticesList.unshift(newNotice);
-      writeLocal(NOTICES_KEY, noticesList);
-      renderNotices();
-
-      if (db) {
-        try { await db.collection('qp_notices').doc(newNotice.id).set(newNotice); } catch (e) {}
-      }
-
-      document.getElementById('notice-title').value = '';
-      document.getElementById('notice-details').value = '';
-    });
-
-    async function deleteNotice(id) {
-      if (currentRole !== 'OWNER') return;
-      if (!confirm('Delete this notice permanently?')) return;
-      noticesList = noticesList.filter(n => n.id !== id);
-      writeLocal(NOTICES_KEY, noticesList);
-      if (db) { try { await db.collection('qp_notices').doc(id).delete(); } catch (e) {} }
-      renderNotices();
-    }
-
-    function renderNotices() {
-      const container = document.getElementById('notice-list');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (noticesList.length === 0) {
-        container.innerHTML = `<div class="card-surface rounded-2xl p-5 text-center text-xs text-slate-400">No official notices posted yet.</div>`;
-        return;
-      }
-
-      noticesList.forEach(n => {
-        const card = document.createElement('div');
-        card.className = 'card-surface rounded-2xl p-4 border-l-4 border-l-gold-400 space-y-1.5';
-        card.innerHTML = `
-          <div class="flex items-center justify-between text-[10px]">
-            <span class="px-2 py-0.5 rounded bg-gold-400/15 text-gold-400 font-bold uppercase tracking-wider">📌 Pinned</span>
-            <div class="flex items-center gap-2">
-              <span class="text-slate-400">${escapeHTML(n.time)}</span>
-              ${currentRole === 'OWNER' ? `
-                <button onclick="deleteNotice('${escapeHTML(n.id)}')" title="Delete Notice"
-                  class="p-1 rounded-lg bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition">
-                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                </button>
-              ` : ''}
-            </div>
-          </div>
-          <h4 class="text-sm font-extrabold text-gold-300 pt-0.5">${escapeHTML(n.title)}</h4>
-          <p class="text-xs text-slate-200 leading-relaxed whitespace-pre-line">${escapeHTML(n.details)}</p>
-          <div class="pt-1 text-[10.5px] text-slate-400">
-            By: <strong class="text-gold-400">${escapeHTML(n.by)}</strong>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-      lucide.createIcons();
-    }
-
-    // 12. Mock Tests & Test Requests
-    document.getElementById('form-upload-mock').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      if (!activeAccount || !['OWNER', 'ADMIN'].includes(currentRole)) return;
-
-      const name = document.getElementById('mock-name').value.trim();
-      const link = document.getElementById('mock-link').value.trim();
-      if (!name || !link) return;
-
-      const newMock = {
-        id: 'mock_' + Date.now(),
-        name,
-        link,
-        by: `${currentUsername} (${currentRole})`,
-        createdAt: Date.now()
-      };
-
-      mocksList.unshift(newMock);
-      writeLocal(MOCKS_KEY, mocksList);
-      renderMocks();
-
-      if (db) {
-        try { await db.collection('qp_mocks').doc(newMock.id).set(newMock); } catch (e) {}
-      }
-
-      document.getElementById('mock-name').value = '';
-      document.getElementById('mock-link').value = '';
-    });
-
-    async function deleteMock(id) {
-      if (currentRole !== 'OWNER') return;
-      if (!confirm('Delete this mock test?')) return;
-      mocksList = mocksList.filter(m => m.id !== id);
-      writeLocal(MOCKS_KEY, mocksList);
-      if (db) { try { await db.collection('qp_mocks').doc(id).delete(); } catch (e) {} }
-      renderMocks();
-    }
-
-    function renderMocks() {
-      const container = document.getElementById('mock-list');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (mocksList.length === 0) {
-        container.innerHTML = `<div class="text-center text-xs text-slate-400 py-3">No Mock Tests uploaded yet.</div>`;
-        return;
-      }
-
-      mocksList.forEach(m => {
-        const item = document.createElement('div');
-        item.className = 'p-3 rounded-xl bg-navy-900/90 border border-gold-400/20 flex items-center justify-between gap-2';
-        item.innerHTML = `
-          <div class="min-w-0">
-            <div class="text-xs font-extrabold text-white truncate">${escapeHTML(m.name)}</div>
-            <div class="text-[10px] text-slate-400 mt-0.5">By: <span class="text-gold-400 font-semibold">${escapeHTML(m.by)}</span></div>
-          </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <a href="${escapeHTML(m.link)}" target="_blank" rel="noopener noreferrer"
-              class="px-3 py-1.5 rounded-xl gold-gradient text-navy-950 font-extrabold text-[11px] shadow">
-              Start ↗
-            </a>
-            ${currentRole === 'OWNER' ? `
-              <button onclick="deleteMock('${escapeHTML(m.id)}')" title="Delete Mock"
-                class="p-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
-            ` : ''}
-          </div>
-        `;
-        container.appendChild(item);
-      });
-      lucide.createIcons();
-    }
-
-    const testReqForm = document.getElementById('test-request-form');
-    if (testReqForm) {
-      testReqForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        if (!activeAccount) return;
-
-        const topicEl = document.getElementById('req-topic');
-        const subjectEl = document.getElementById('req-subject');
-        const diffEl = document.getElementById('req-difficulty');
-
-        const newReq = {
-          id: 'req_' + Date.now(),
-          topic: topicEl.value.trim(),
-          subject: subjectEl.value,
-          difficulty: diffEl.value,
-          by: currentUsername,
-          status: 'Requested',
-          createdAt: Date.now()
+        const newAccount = {
+          name: name,
+          nameLower: docId,
+          myPass: myPass,
+          role: resolvedRole,
+          status: status,
+          xp: 100,
+          phone: verifiedPhoneNumber,
+          gmail: verifiedGmailAddress,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
-        testReqsList.unshift(newReq);
-        writeLocal(REQS_KEY, testReqsList);
-        renderTestRequests();
+        await db.collection("gc_accounts").doc(docId).set(newAccount);
 
-        if (db) {
-          try { await db.collection('qp_test_reqs').doc(newReq.id).set(newReq); } catch (e) {}
+        if (status === "approved") {
+          playSound("success");
+          showToast("First OWNER Auto-Approved! Entering Hub...");
+          enterHubDashboard(newAccount);
+        } else {
+          playSound("ding");
+          pendingAlertBox.classList.remove("hidden");
+          showToast("Approval er jonno wait koro! ✨");
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("Cloud Error: " + err.message, true);
+      }
+    });
+
+    /********************************************************************
+     * 10. LOGIN TO HUB -> FIRESTORE CHECK (ONLY APPROVED ALLOWED)
+     ********************************************************************/
+    loginSubmitBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!isFirebaseReady) return showToast("Configure Firebase first!", true);
+
+      const name = document.getElementById("gcNameInput").value.trim();
+      const myPass = document.getElementById("gcPassInput").value;
+
+      if (!name || !myPass) return showToast("Enter both GC Name and Password!", true);
+
+      const docId = name.toLowerCase();
+      try {
+        const docSnap = await db.collection("gc_accounts").doc(docId).get();
+        if (!docSnap.exists) {
+          return showToast("Account not found in Cloud! Create ID first.", true);
         }
 
-        sendToTelegram(`📝 <b>New Chapter Test Request!</b>\nTopic: ${newReq.topic}\nSubject: ${newReq.subject}\nBy: ${currentUsername}`);
-        topicEl.value = '';
-        addXP(5);
-      });
-    }
+        const acc = docSnap.data();
+        if (acc.myPass !== myPass) {
+          return showToast("Wrong Personal Password!", true);
+        }
 
-    async function deleteTestRequest(id) {
-      if (currentRole !== 'OWNER') return;
-      testReqsList = testReqsList.filter(r => r.id !== id);
-      writeLocal(REQS_KEY, testReqsList);
-      if (db) { try { await db.collection('qp_test_reqs').doc(id).delete(); } catch (e) {} }
-      renderTestRequests();
-    }
+        if (acc.status !== "approved") {
+          pendingAlertBox.classList.remove("hidden");
+          return showToast("Approval er jonno wait koro! Status: PENDING", true);
+        }
 
-    function renderTestRequests() {
-      const list = document.getElementById('test-requests-list');
-      if (!list) return;
-      list.innerHTML = '';
+        playSound("success");
+        showToast(`Welcome back, ${acc.name} (${acc.role})! ✨`);
+        enterHubDashboard(acc);
+      } catch (err) {
+        console.error(err);
+        showToast("Login Error: " + err.message, true);
+      }
+    });
 
-      if (testReqsList.length === 0) {
-        list.innerHTML = `<div class="text-slate-400 text-center py-2 text-xs">No chapter test requests submitted yet.</div>`;
-        return;
+    /********************************************************************
+     * 11. FORGOT PASSWORD -> VERIFY ROLE KEY + PHONE OTP OR GMAIL
+     ********************************************************************/
+    resetPassSubmitBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!isFirebaseReady) return showToast("Configure Firebase first!", true);
+
+      const name = document.getElementById("gcNameInput").value.trim();
+      const newPass = document.getElementById("gcPassInput").value;
+      const roleKey = document.getElementById("roleKeyInput").value.trim();
+
+      if (!name || newPass.length < 6) return showToast("Enter GC Name & New Password (min 6 chars)!", true);
+
+      const expectedRole = ROLE_KEYS[roleKey];
+      if (!expectedRole) return showToast("Invalid Secret Role Key!", true);
+
+      if (!verifiedPhoneNumber && !verifiedGmailAddress) {
+        return showToast("Verify either Phone OTP or Gmail first!", true);
       }
 
-      testReqsList.forEach(r => {
-        const item = document.createElement('div');
-        item.className = 'p-3 rounded-xl bg-navy-900/90 border border-white/5 flex items-center justify-between gap-2';
-        item.innerHTML = `
-          <div class="min-w-0">
-            <div class="font-bold text-white truncate">${escapeHTML(r.topic)}</div>
-            <div class="text-[10px] text-slate-400 mt-0.5">
-              <span class="text-gold-400 font-semibold">${escapeHTML(r.subject)}</span> • ${escapeHTML(r.difficulty)} • By ${escapeHTML(r.by)}
-            </div>
-          </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <span class="text-[10px] px-2 py-0.5 rounded-full bg-gold-400/15 text-gold-300 border border-gold-400/25 font-semibold">
-              ${escapeHTML(r.status)}
-            </span>
-            ${currentRole === 'OWNER' ? `
-              <button onclick="deleteTestRequest('${escapeHTML(r.id)}')" title="Delete Request"
-                class="p-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-              </button>
-            ` : ''}
-          </div>
-        `;
-        list.appendChild(item);
-      });
+      const docId = name.toLowerCase();
+      try {
+        const docSnap = await db.collection("gc_accounts").doc(docId).get();
+        if (!docSnap.exists) return showToast("Account does not exist!", true);
+
+        const acc = docSnap.data();
+        if (acc.role !== expectedRole) return showToast("Role Key does not match your account role!", true);
+
+        const phoneMatch = verifiedPhoneNumber && acc.phone === verifiedPhoneNumber;
+        const gmailMatch = verifiedGmailAddress && acc.gmail === verifiedGmailAddress;
+
+        if (!phoneMatch && !gmailMatch) {
+          return showToast("Verified Phone/Gmail does not match this account!", true);
+        }
+
+        await db.collection("gc_accounts").doc(docId).update({ myPass: newPass });
+        playSound("success");
+        showToast("Password Updated in Firestore! Please Login.");
+        switchAuthMode("LOGIN");
+      } catch (err) {
+        showToast("Reset Error: " + err.message, true);
+      }
+    });
+
+    /********************************************************************
+     * 12. ENTER HUB & REAL-TIME FIRESTORE LISTENERS
+     ********************************************************************/
+    function enterHubDashboard(userAccount) {
+      currentUserDoc = userAccount;
+
+      document.getElementById("authSection").classList.add("hidden");
+      document.getElementById("hubSection").classList.remove("hidden");
+      document.getElementById("bottomNav").classList.remove("hidden");
+
+      // Populate Header Profile
+      document.getElementById("userAvatarInitials").textContent = userAccount.name.slice(0, 2).toUpperCase();
+      document.getElementById("hubUserName").textContent = userAccount.name;
+      document.getElementById("hubUserRoleBadge").textContent = userAccount.role;
+      document.getElementById("hubUserContact").textContent = `${userAccount.gmail || ""} • ${userAccount.phone || ""}`;
+      document.getElementById("hubUserXp").textContent = `🔥 ${userAccount.xp || 100} XP`;
+
+      // Show Admin Tab only if OWNER or ADMIN
+      const adminNavBtn = document.getElementById("adminNavBtn");
+      if (userAccount.role === "OWNER" || userAccount.role === "ADMIN") {
+        adminNavBtn.classList.remove("hidden");
+      } else {
+        adminNavBtn.classList.add("hidden");
+      }
+
+      startRealtimeHubSync();
       lucide.createIcons();
     }
 
-    let quizAnswered = false;
-    function answerQuiz(btn, isCorrect) {
-      if (quizAnswered) return;
-      quizAnswered = true;
-      const feedback = document.getElementById('quiz-feedback');
-      feedback.classList.remove('hidden');
+    // Logout Button
+    document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      unsubscribeListeners.forEach((unsub) => unsub && unsub());
+      unsubscribeListeners = [];
+      currentUserDoc = null;
+      if (auth) await auth.signOut();
 
-      if (isCorrect) {
-        btn.classList.add('border-emerald-400', 'bg-emerald-500/20', 'text-emerald-200');
-        feedback.className = 'text-[11px] mt-2 text-emerald-400 font-semibold';
-        feedback.textContent = 'Correct! 1 mole of any ideal gas at STP occupies 22.4 L (+10 XP awarded).';
-        addXP(10);
-      } else {
-        btn.classList.add('border-rose-400', 'bg-rose-500/20', 'text-rose-200');
-        feedback.className = 'text-[11px] mt-2 text-rose-400 font-semibold';
-        feedback.textContent = 'Not quite! Correct answer is B (22.4 Litres).';
-      }
-    }
+      document.getElementById("hubSection").classList.add("hidden");
+      document.getElementById("bottomNav").classList.add("hidden");
+      document.getElementById("authSection").classList.remove("hidden");
+      showToast("Logged out safely.");
+    });
 
-    // 13. Live GC Chat & Approvals
-    function isChatApprovedUser() {
-      if (!activeAccount) return false;
-      if (['OWNER', 'ADMIN'].includes(activeAccount.role)) return true;
-      return Boolean(activeAccount.chatApproved);
-    }
+    // Bottom Navigation Tab Switcher
+    document.querySelectorAll(".hub-nav-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetTab = btn.getAttribute("data-tab");
 
-    function renderChatAndApprovals() {
-      const container = document.getElementById('chat-messages');
-      if (!container) return;
-      container.innerHTML = '';
+        document.querySelectorAll(".hub-tab-pane").forEach((pane) => pane.classList.add("hidden"));
+        document.getElementById(`tabContent_${targetTab}`).classList.remove("hidden");
 
-      if (chatsList.length === 0) {
-        container.innerHTML = `<div class="text-center text-xs text-slate-500 my-auto py-16">No messages in the GC yet. Start the conversation!</div>`;
-      } else {
-        chatsList.forEach(msg => {
-          const isMe = currentUsername && msg.sender && msg.sender.toLowerCase() === currentUsername.toLowerCase();
-          const msgDiv = document.createElement('div');
-          msgDiv.className = `flex flex-col ${isMe ? 'items-end' : 'items-start'}`;
+        document.querySelectorAll(".hub-nav-btn").forEach((b) => {
+          b.classList.remove("text-pink-400", "bg-white/10");
+          b.classList.add("text-slate-300");
+        });
+        btn.classList.add("text-pink-400", "bg-white/10");
+      });
+    });
 
-          const roleTag = msg.role === 'OWNER' ? '👑 OWNER' : (msg.role === 'ADMIN' ? '🛡️ ADMIN' : '');
+    /********************************************************************
+     * 13. FIRESTORE COLLECTIONS SYNC (pyqs, notices, mocks, chats, gc_accounts)
+     ********************************************************************/
+    function startRealtimeHubSync() {
+      if (!isFirebaseReady) return;
 
-          msgDiv.innerHTML = `
-            <div class="flex items-center gap-1.5 mb-1 px-1">
-              <span class="text-[10px] font-bold ${isMe ? 'text-gold-400' : 'text-slate-300'}">
-                ${escapeHTML(msg.sender)} ${roleTag ? `<span class="text-[9px] text-gold-300">(${roleTag})</span>` : ''}
-              </span>
-              <span class="text-[9px] text-slate-500">${escapeHTML(msg.time)}</span>
-              ${currentRole === 'OWNER' ? `
-                <button onclick="deleteChatMessage('${escapeHTML(msg.id)}')" title="Delete Message"
-                  class="text-rose-400 hover:text-rose-300 ml-1">
-                  <i data-lucide="trash-2" class="w-3 h-3"></i>
-                </button>
-              ` : ''}
+      // Clear previous listeners
+      unsubscribeListeners.forEach((u) => u && u());
+      unsubscribeListeners = [];
+
+      // 1) Listen to current user's live status & XP
+      const unsubSelf = db.collection("gc_accounts").doc(currentUserDoc.nameLower).onSnapshot((doc) => {
+        if (!doc.exists || doc.data().status !== "approved") {
+          document.getElementById("logoutBtn").click();
+          return;
+        }
+        currentUserDoc = doc.data();
+        document.getElementById("hubUserXp").textContent = `🔥 ${currentUserDoc.xp || 100} XP`;
+      });
+      unsubscribeListeners.push(unsubSelf);
+
+      // 2) PYQs Listener
+      const unsubPyqs = db.collection("pyqs").orderBy("createdAt", "desc").onSnapshot((snap) => {
+        const container = document.getElementById("pyqListContainer");
+        container.innerHTML = "";
+        if (snap.empty) {
+          container.innerHTML = `<p class="text-xs text-center text-slate-400 py-6">No PYQs uploaded yet. Be the first!</p>`;
+          return;
+        }
+        snap.forEach((doc) => {
+          const d = doc.data();
+          const item = document.createElement("div");
+          item.className = "p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between";
+          item.innerHTML = `
+            <div>
+              <h4 class="text-xs font-extrabold text-cyan-300">${escapeHtml(d.subject)} • <span class="text-yellow-300">${escapeHtml(d.year)}</span></h4>
+              <p class="text-[10px] text-slate-400">Uploaded by <b class="text-pink-300">${escapeHtml(d.by)}</b></p>
             </div>
-            <div class="max-w-[85%] px-3.5 py-2 rounded-2xl text-xs leading-relaxed break-words ${
+            <a href="${escapeHtml(d.link)}" target="_blank" rel="noopener noreferrer" class="btn-glow-cyan px-3 py-1.5 rounded-lg text-[11px] font-black">
+              OPEN PDF
+            </a>
+          `;
+          container.appendChild(item);
+        });
+      });
+      unsubscribeListeners.push(unsubPyqs);
+
+      // 3) Notices Listener
+      const unsubNotices = db.collection("notices").orderBy("createdAt", "desc").onSnapshot((snap) => {
+        const container = document.getElementById("noticeListContainer");
+        container.innerHTML = "";
+        if (snap.empty) {
+          container.innerHTML = `<p class="text-xs text-center text-slate-400 py-6">No notices posted yet.</p>`;
+          return;
+        }
+        snap.forEach((doc) => {
+          const d = doc.data();
+          const item = document.createElement("div");
+          item.className = "p-3 rounded-xl bg-white/5 border-l-4 border-l-yellow-400 border border-white/10 space-y-1";
+          item.innerHTML = `
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-black text-yellow-300">${escapeHtml(d.title)}</h4>
+              <span class="text-[9px] text-slate-400">${escapeHtml(d.time || "")}</span>
+            </div>
+            <p class="text-xs text-slate-200 leading-relaxed">${escapeHtml(d.details)}</p>
+            <p class="text-[10px] text-pink-300 font-bold">— ${escapeHtml(d.by)}</p>
+          `;
+          container.appendChild(item);
+        });
+      });
+      unsubscribeListeners.push(unsubNotices);
+
+      // 4) Mocks Listener
+      const unsubMocks = db.collection("mocks").orderBy("createdAt", "desc").onSnapshot((snap) => {
+        const container = document.getElementById("mockListContainer");
+        container.innerHTML = "";
+        if (snap.empty) {
+          container.innerHTML = `<p class="text-xs text-center text-slate-400 py-6">No Mock Tests available yet.</p>`;
+          return;
+        }
+        snap.forEach((doc) => {
+          const d = doc.data();
+          const item = document.createElement("div");
+          item.className = "p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between";
+          item.innerHTML = `
+            <div>
+              <h4 class="text-xs font-extrabold text-pink-300">${escapeHtml(d.name)}</h4>
+              <p class="text-[10px] text-slate-400">Created by <b class="text-cyan-300">${escapeHtml(d.by)}</b></p>
+            </div>
+            <a href="${escapeHtml(d.link)}" target="_blank" rel="noopener noreferrer" class="btn-glow-gold px-3 py-1.5 rounded-lg text-[11px] font-black">
+              START TEST
+            </a>
+          `;
+          container.appendChild(item);
+        });
+      });
+      unsubscribeListeners.push(unsubMocks);
+
+      // 5) Public Chats Listener
+      let initialChatLoad = true;
+      const unsubChats = db.collection("chats").orderBy("createdAt", "asc").limitToLast(60).onSnapshot((snap) => {
+        const container = document.getElementById("chatMessagesContainer");
+        container.innerHTML = "";
+        snap.forEach((doc) => {
+          const d = doc.data();
+          const isMe = d.sender === currentUserDoc.name;
+          const bubble = document.createElement("div");
+          bubble.className = `flex flex-col ${isMe ? "items-end" : "items-start"}`;
+          bubble.innerHTML = `
+            <div class="flex items-center gap-1 mb-0.5">
+              <span class="text-[10px] font-extrabold ${isMe ? "text-yellow-300" : "text-cyan-300"}">${escapeHtml(d.sender)}</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-white/10 text-pink-300 font-bold">${escapeHtml(d.role)}</span>
+              <span class="text-[9px] text-slate-500">${escapeHtml(d.time || "")}</span>
+            </div>
+            <div class="px-3 py-2 rounded-2xl max-w-[82%] text-xs ${
               isMe
-                ? 'gold-gradient text-navy-950 font-semibold rounded-br-xs'
-                : 'bg-navy-800 border border-white/10 text-slate-100 rounded-bl-xs'
+                ? "bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-br-none"
+                : "bg-white/10 border border-white/15 text-slate-100 rounded-bl-none"
             }">
-              ${escapeHTML(msg.text)}
+              ${escapeHtml(d.text)}
             </div>
           `;
-          container.appendChild(msgDiv);
+          container.appendChild(bubble);
         });
-      }
+        container.scrollTop = container.scrollHeight;
+        if (!initialChatLoad) playSound("bubble");
+        initialChatLoad = false;
+      });
+      unsubscribeListeners.push(unsubChats);
 
-      scrollToBottomChat();
+      // 6) Admin Panel Listener (Only if OWNER or ADMIN)
+      if (currentUserDoc.role === "OWNER" || currentUserDoc.role === "ADMIN") {
+        const unsubAccounts = db.collection("gc_accounts").onSnapshot((snap) => {
+          const pendingBox = document.getElementById("pendingListContainer");
+          const allBox = document.getElementById("allAccountsContainer");
+          pendingBox.innerHTML = "";
+          allBox.innerHTML = "";
 
-      const canChat = isChatApprovedUser();
-      const chatForm = document.getElementById('chat-form');
-      const lockBox = document.getElementById('chat-approval-lock');
-      const reqBtn = document.getElementById('btn-send-chat-req');
+          let pendingCount = 0;
 
-      if (canChat) {
-        chatForm.classList.remove('hidden');
-        lockBox.classList.add('hidden');
-      } else {
-        chatForm.classList.add('hidden');
-        lockBox.classList.remove('hidden');
+          snap.forEach((doc) => {
+            const acc = doc.data();
 
-        if (activeAccount && activeAccount.chatRequested) {
-          reqBtn.textContent = '⏳ Request Sent (Waiting for OWNER Approval)';
-          reqBtn.disabled = true;
-          reqBtn.classList.add('opacity-60');
-        } else {
-          reqBtn.textContent = 'Request Chat Permission';
-          reqBtn.disabled = false;
-          reqBtn.classList.remove('opacity-60');
-        }
-      }
+            // Render Pending List
+            if (acc.status === "pending") {
+              pendingCount++;
+              const pCard = document.createElement("div");
+              pCard.className = "p-3 rounded-xl bg-black/40 border border-pink-400/30 flex items-center justify-between gap-2";
+              pCard.innerHTML = `
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <h4 class="text-xs font-black text-white truncate">${escapeHtml(acc.name)}</h4>
+                    <span class="text-[9px] px-1.5 py-0.5 rounded bg-yellow-400/20 text-yellow-300 font-bold">${escapeHtml(acc.role)}</span>
+                  </div>
+                  <p class="text-[10px] text-cyan-300 truncate">${escapeHtml(acc.gmail || "")}</p>
+                  <p class="text-[10px] text-slate-400">${escapeHtml(acc.phone || "")}</p>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <button type="button" data-approve="${escapeHtml(acc.nameLower)}" class="px-2.5 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-black text-[10px]">
+                    APPROVE
+                  </button>
+                  <button type="button" data-reject="${escapeHtml(acc.nameLower)}" class="px-2.5 py-1.5 rounded-lg bg-rose-500 text-white font-black text-[10px]">
+                    REJECT
+                  </button>
+                </div>
+              `;
+              pendingBox.appendChild(pCard);
+            }
 
-      const ownerBox = document.getElementById('owner-approvals-box');
-      const pendingListEl = document.getElementById('pending-approvals-list');
-
-      if (currentRole === 'OWNER') {
-        ownerBox.classList.remove('hidden');
-        const pendingChatUsers = accountsList.filter(a => a.chatRequested && !a.chatApproved);
-
-        if (pendingChatUsers.length === 0) {
-          pendingListEl.innerHTML = `<div class="text-slate-400 text-center py-2">No pending chat permission requests.</div>`;
-        } else {
-          pendingListEl.innerHTML = '';
-          pendingChatUsers.forEach(acc => {
-            const row = document.createElement('div');
-            row.className = 'p-3 rounded-xl bg-navy-900 border border-gold-400/25 flex items-center justify-between gap-2';
-            row.innerHTML = `
-              <div>
-                <div class="font-bold text-white text-xs">${escapeHTML(acc.name)}</div>
-                <div class="text-[10px] text-slate-400">Requested Live GC Chat Access</div>
+            // Render All Accounts List
+            const aCard = document.createElement("div");
+            aCard.className = "p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between gap-2";
+            aCard.innerHTML = `
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <h4 class="text-xs font-black text-cyan-300 truncate">${escapeHtml(acc.name)}</h4>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/30 text-purple-200 font-bold">${escapeHtml(acc.role)}</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded ${acc.status === "approved" ? "bg-emerald-500/20 text-emerald-300" : "bg-yellow-500/20 text-yellow-300"}">${escapeHtml(acc.status)}</span>
+                </div>
+                <p class="text-[10px] text-slate-400 truncate">${escapeHtml(acc.gmail || "")} • ${escapeHtml(acc.phone || "")}</p>
               </div>
-              <div class="flex gap-1.5">
-                <button onclick="approveMemberChat('${escapeHTML(acc.name)}', true)"
-                  class="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 font-extrabold text-xs transition">
-                  Approve ✓
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" data-resetpass="${escapeHtml(acc.nameLower)}" class="px-2 py-1 rounded-lg bg-cyan-500/20 border border-cyan-400/40 text-cyan-200 text-[10px] font-bold">
+                  Reset Pass
                 </button>
-                <button onclick="approveMemberChat('${escapeHTML(acc.name)}', false)"
-                  class="px-2.5 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-400/40 font-extrabold text-xs transition">
-                  Deny ✕
+                <button type="button" data-deleteacc="${escapeHtml(acc.nameLower)}" class="px-2 py-1 rounded-lg bg-rose-500/20 border border-rose-400/40 text-rose-300 text-[10px] font-bold">
+                  Delete
                 </button>
               </div>
             `;
-            pendingListEl.appendChild(row);
+            allBox.appendChild(aCard);
           });
-        }
-      } else {
-        ownerBox.classList.add('hidden');
+
+          document.getElementById("pendingCountBadge").textContent = pendingCount;
+          if (pendingCount === 0) {
+            pendingBox.innerHTML = `<p class="text-xs text-center text-slate-400 py-3">All caught up! Zero pending requests.</p>`;
+          }
+        });
+        unsubscribeListeners.push(unsubAccounts);
       }
-
-      lucide.createIcons();
     }
 
-    async function requestChatApproval() {
-      if (!activeAccount) return;
-      activeAccount.chatRequested = true;
-      await saveAccountToCloud(activeAccount);
-      sendToTelegram(`💬 <b>Chat Access Request!</b>\nUser <b>${activeAccount.name}</b> wants to send messages in the GC.`);
-      renderChatAndApprovals();
-    }
-
-    async function approveMemberChat(memberName, isApproved) {
-      if (currentRole !== 'OWNER') return;
-      const acc = findAccount(memberName);
-      if (!acc) return;
-      acc.chatApproved = isApproved;
-      acc.chatRequested = false;
-      await saveAccountToCloud(acc);
-      renderChatAndApprovals();
-      if (document.getElementById('qp-control-panel')) renderControlPanelContents();
-    }
-
-    document.getElementById('chat-form').addEventListener('submit', async function(e) {
+    /********************************************************************
+     * 14. ADD PYQ, NOTICE, MOCK, CHAT & ADMIN ACTIONS (FIRESTORE WRITES)
+     ********************************************************************/
+    // Add PYQ
+    document.getElementById("addPyqBtn").addEventListener("click", async (e) => {
       e.preventDefault();
-      if (!activeAccount || !isChatApprovedUser()) return;
+      const subject = document.getElementById("pyqSubjectInput").value.trim();
+      const year = document.getElementById("pyqYearInput").value.trim();
+      const link = document.getElementById("pyqLinkInput").value.trim();
+      if (!subject || !year || !link) return showToast("Fill Subject, Year and PDF Link!", true);
 
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text) return;
+      await db.collection("pyqs").add({
+        subject,
+        year,
+        link,
+        by: currentUserDoc.name,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      await db.collection("gc_accounts").doc(currentUserDoc.nameLower).update({
+        xp: firebase.firestore.FieldValue.increment(20)
+      });
 
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const msgObj = {
-        id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
-        sender: currentUsername,
-        role: currentRole,
-        text,
-        time: timeStr,
-        createdAt: Date.now()
-      };
-
-      input.value = '';
-      chatsList.push(msgObj);
-      writeLocal(CHATS_KEY, chatsList);
-      renderChatAndApprovals();
-
-      if (db) {
-        try { await db.collection('qp_chats').doc(msgObj.id).set(msgObj); } catch (e) {}
-      }
-
-      addXP(2);
+      document.getElementById("pyqSubjectInput").value = "";
+      document.getElementById("pyqYearInput").value = "";
+      document.getElementById("pyqLinkInput").value = "";
+      playSound("success");
+      showToast("PYQ Published! +20 XP 🔥");
     });
 
-    async function deleteChatMessage(id) {
-      if (currentRole !== 'OWNER') return;
-      chatsList = chatsList.filter(m => m.id !== id);
-      writeLocal(CHATS_KEY, chatsList);
-      if (db) { try { await db.collection('qp_chats').doc(id).delete(); } catch (e) {} }
-      renderChatAndApprovals();
-    }
+    // Add Notice
+    document.getElementById("addNoticeBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("noticeTitleInput").value.trim();
+      const details = document.getElementById("noticeDetailsInput").value.trim();
+      if (!title || !details) return showToast("Enter Notice Headline & Details!", true);
 
-    async function clearAllChats() {
-      if (currentRole !== 'OWNER') return;
-      if (!confirm('Delete ALL chat messages for everyone?')) return;
-      const ids = chatsList.map(c => c.id);
-      chatsList = [];
-      writeLocal(CHATS_KEY, []);
-      if (db) {
-        for (const id of ids) {
-          try { await db.collection('qp_chats').doc(id).delete(); } catch (e) {}
-        }
-      }
-      renderChatAndApprovals();
-    }
+      const timeStr = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      await db.collection("notices").add({
+        title,
+        details,
+        by: `${currentUserDoc.name} (${currentUserDoc.role})`,
+        time: timeStr,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-    function scrollToBottomChat() {
-      const container = document.getElementById('chat-messages');
-      if (container) container.scrollTop = container.scrollHeight;
-    }
+      document.getElementById("noticeTitleInput").value = "";
+      document.getElementById("noticeDetailsInput").value = "";
+      playSound("ding");
+      showToast("Notice Broadcasted to Hub!");
+    });
 
-    // 14. Live Leaderboard
-    function renderLeaderboard() {
-      const fullContainer = document.getElementById('leaderboard-list');
-      const homePreview = document.getElementById('home-leaderboard-preview');
-      if (!fullContainer || !homePreview) return;
+    // Add Mock Test
+    document.getElementById("addMockBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("mockNameInput").value.trim();
+      const link = document.getElementById("mockLinkInput").value.trim();
+      if (!name || !link) return showToast("Enter Mock Test Title & URL!", true);
 
-      const approvedMembers = accountsList
-        .filter(a => a.status === 'approved')
-        .map(a => ({
-          name: a.name,
-          role: a.role,
-          batch: a.batch || 'Class 10 - WBBSE Board',
-          xp: a.xp || 0,
-          streak: a.streak || 1,
-          online: a.online && (Date.now() - (a.lastSeen || 0) < 120000),
-          isMe: activeAccount && a.name.toLowerCase() === activeAccount.name.toLowerCase()
-        }))
-        .sort((a, b) => b.xp - a.xp);
+      await db.collection("mocks").add({
+        name,
+        link,
+        by: currentUserDoc.name,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      await db.collection("gc_accounts").doc(currentUserDoc.nameLower).update({
+        xp: firebase.firestore.FieldValue.increment(25)
+      });
 
-      fullContainer.innerHTML = '';
-      homePreview.innerHTML = '';
+      document.getElementById("mockNameInput").value = "";
+      document.getElementById("mockLinkInput").value = "";
+      playSound("success");
+      showToast("Mock Test Launched! +25 XP 🚀");
+    });
 
-      if (approvedMembers.length === 0) {
-        const emptyHTML = `<div class="text-center text-xs text-slate-400 py-4">No registered members yet.</div>`;
-        fullContainer.innerHTML = emptyHTML;
-        homePreview.innerHTML = emptyHTML;
-        return;
-      }
+    // Send Chat Message
+    async function sendChatMessage() {
+      const inp = document.getElementById("chatMessageInput");
+      const text = inp.value.trim();
+      if (!text) return;
+      inp.value = "";
 
-      approvedMembers.forEach((member, idx) => {
-        const rank = idx + 1;
-        const lvl = (member.xp / 100 + 1).toFixed(2);
-
-        if (member.isMe) {
-          document.getElementById('rank-user-pos').textContent = `#${rank}`;
-        }
-
-        const badgeColor =
-          rank === 1 ? 'gold-gradient text-navy-950' :
-          rank === 2 ? 'bg-slate-300 text-navy-950' :
-          rank === 3 ? 'bg-amber-700 text-white' : 'bg-navy-800 text-slate-400 border border-white/10';
-
-        const rowHTML = `
-          <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-6 h-6 rounded-lg font-extrabold text-[11px] flex items-center justify-center shrink-0 ${badgeColor}">
-              ${rank}
-            </div>
-            <div class="min-w-0">
-              <div class="text-xs font-bold flex items-center gap-1.5 truncate ${member.isMe ? 'text-gold-400' : 'text-white'}">
-                <span class="w-2 h-2 rounded-full shrink-0 ${member.online ? 'bg-emerald-400' : 'bg-slate-600'}"></span>
-                <span class="truncate">${escapeHTML(member.name)} ${member.isMe ? '(You)' : ''}</span>
-                ${member.role === 'OWNER' ? '<span class="text-[9px] px-1 rounded bg-gold-400/20 text-gold-300">OWNER</span>' : ''}
-              </div>
-              <div class="text-[10px] text-slate-400">LVL ${lvl} • 🔥 ${member.streak}d Streak</div>
-            </div>
-          </div>
-          <div class="text-right shrink-0">
-            <span class="text-xs font-extrabold text-gold-300">${member.xp} XP</span>
-          </div>
-        `;
-
-        const row = document.createElement('div');
-        row.className = `p-3 rounded-xl bg-navy-900/90 border flex items-center justify-between gap-2 ${
-          member.isMe ? 'border-gold-400/60 bg-gold-400/10' : 'border-white/5'
-        }`;
-        row.innerHTML = rowHTML;
-        fullContainer.appendChild(row);
-
-        if (idx < 3) {
-          const previewRow = row.cloneNode(true);
-          homePreview.appendChild(previewRow);
-        }
+      const timeStr = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      await db.collection("chats").add({
+        sender: currentUserDoc.name,
+        role: currentUserDoc.role,
+        text: text,
+        time: timeStr,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     }
 
-    // 15. Owner Control Panel
-    function openControlPanel() {
-      if (!activeAccount || activeAccount.role !== 'OWNER') {
-        return alert('Strictly Restricted: OWNER Access Only.');
+    document.getElementById("sendChatBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      sendChatMessage();
+    });
+
+    document.getElementById("chatMessageInput").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendChatMessage();
       }
+    });
 
-      let panel = document.getElementById('qp-control-panel');
-      if (!panel) {
-        panel = document.createElement('div');
-        panel.id = 'qp-control-panel';
-        panel.className = 'absolute inset-0 z-40 bg-navy-900 p-4 overflow-y-auto space-y-4 pb-8';
-        document.querySelector('main').appendChild(panel);
-      }
+    // Admin Panel Delegated Actions (Approve / Reject / Reset Pass / Delete)
+    document.getElementById("tabContent_admin").addEventListener("click", async (e) => {
+      const approveId = e.target.getAttribute("data-approve");
+      const rejectId = e.target.getAttribute("data-reject");
+      const resetId = e.target.getAttribute("data-resetpass");
+      const deleteId = e.target.getAttribute("data-deleteacc");
 
-      renderControlPanelContents();
-    }
-
-    function renderControlPanelContents() {
-      const panel = document.getElementById('qp-control-panel');
-      if (!panel) return;
-
-      const pendingAccounts = accountsList.filter(a => a.status === 'pending');
-      const forgotAccounts  = accountsList.filter(a => a.forgotPasswordRequested);
-
-      panel.innerHTML = `
-        <div class="flex items-center justify-between pb-3 border-b border-gold-400/20">
-          <div>
-            <h2 class="text-base font-black text-gold-400 flex items-center gap-1.5">
-              <i data-lucide="shield-check" class="w-5 h-5"></i> Owner Control Panel
-            </h2>
-            <p class="text-[11px] text-slate-400">Live Users, Approvals, Password Resets & Roles</p>
-          </div>
-          <button onclick="document.getElementById('qp-control-panel').remove()"
-            class="px-3 py-1.5 rounded-xl bg-navy-800 border border-white/10 text-xs font-bold text-white">
-            Close ✕
-          </button>
-        </div>
-
-        <div class="card-surface rounded-2xl p-3.5">
-          <h3 class="text-xs font-extrabold uppercase tracking-wider text-gold-300 mb-2.5 flex items-center justify-between">
-            <span>1. Pending Account Approvals</span>
-            <span class="px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-300 text-[10px]">${pendingAccounts.length}</span>
-          </h3>
-          <div id="cp-pending-list" class="space-y-2"></div>
-        </div>
-
-        <div class="card-surface rounded-2xl p-3.5 border border-rose-400/30">
-          <h3 class="text-xs font-extrabold uppercase tracking-wider text-rose-300 mb-2.5 flex items-center justify-between">
-            <span>2. Forgot Password Requests</span>
-            <span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[10px]">${forgotAccounts.length}</span>
-          </h3>
-          <div id="cp-forgot-list" class="space-y-2"></div>
-        </div>
-
-        <div class="card-surface rounded-2xl p-3.5">
-          <h3 class="text-xs font-extrabold uppercase tracking-wider text-emerald-300 mb-2.5 flex items-center justify-between">
-            <span>3. All Members & Live Login Status</span>
-            <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px]">${accountsList.length} Users</span>
-          </h3>
-          <div id="cp-all-list" class="space-y-2.5"></div>
-        </div>
-      `;
-
-      const pendingEl = document.getElementById('cp-pending-list');
-      if (pendingAccounts.length === 0) {
-        pendingEl.innerHTML = `<p class="text-xs text-slate-400">No pending registrations.</p>`;
-      } else {
-        pendingAccounts.forEach(acc => {
-          const row = document.createElement('div');
-          row.className = 'p-2.5 rounded-xl bg-navy-900 border border-white/10 flex items-center justify-between gap-2';
-          row.innerHTML = `
-            <div>
-              <div class="text-xs font-bold text-white">${escapeHTML(acc.name)}</div>
-              <div class="text-[10px] text-slate-400">Role: ${escapeHTML(acc.role)}</div>
-            </div>
-            <div class="flex gap-1.5">
-              <button onclick="ownerApproveAccount('${escapeHTML(acc.name)}')" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-bold">Approve</button>
-              <button onclick="ownerDeleteAccount('${escapeHTML(acc.name)}')" class="px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 text-xs font-bold">Reject</button>
-            </div>
-          `;
-          pendingEl.appendChild(row);
-        });
-      }
-
-      const forgotEl = document.getElementById('cp-forgot-list');
-      if (forgotAccounts.length === 0) {
-        forgotEl.innerHTML = `<p class="text-xs text-slate-400">No users waiting for password reset.</p>`;
-      } else {
-        forgotAccounts.forEach(acc => {
-          const row = document.createElement('div');
-          row.className = 'p-2.5 rounded-xl bg-navy-900 border border-rose-400/30 flex items-center justify-between gap-2';
-          row.innerHTML = `
-            <div>
-              <div class="text-xs font-bold text-white">${escapeHTML(acc.name)}</div>
-              <div class="text-[10px] text-rose-300">Requested: ${escapeHTML(acc.forgotRequestedAt || 'Recently')}</div>
-            </div>
-            <button onclick="ownerResetUserPassword('${escapeHTML(acc.name)}')"
-              class="px-2.5 py-1.5 rounded-lg gold-gradient text-navy-950 font-extrabold text-xs">
-              Set New Password
-            </button>
-          `;
-          forgotEl.appendChild(row);
-        });
-      }
-
-      const allEl = document.getElementById('cp-all-list');
-      accountsList.forEach(acc => {
-        const isOnline = acc.online && (Date.now() - (acc.lastSeen || 0) < 120000);
-        const row = document.createElement('div');
-        row.className = 'p-3 rounded-xl bg-navy-900 border border-white/10 space-y-2';
-        row.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full ${isOnline ? 'bg-emerald-400 animate-pulse' : 'bg-slate-600'}"></span>
-              <span class="text-xs font-extrabold text-white">${escapeHTML(acc.name)}</span>
-              <span class="text-[10px] px-1.5 py-0.5 rounded bg-gold-400/15 text-gold-300 font-bold">${escapeHTML(acc.role)}</span>
-            </div>
-            <span class="text-[10px] font-bold ${isOnline ? 'text-emerald-400' : 'text-slate-500'}">
-              ${isOnline ? '● ONLINE NOW' : 'Offline'}
-            </span>
-          </div>
-          <div class="text-[10px] text-slate-400 flex justify-between">
-            <span>Status: <strong class="text-slate-200">${escapeHTML(acc.status)}</strong> • Chat: <strong class="text-slate-200">${acc.chatApproved ? 'Allowed' : 'Locked'}</strong></span>
-            <span>XP: <strong class="text-gold-300">${acc.xp || 0}</strong> • 🔥 ${acc.streak || 1}d</span>
-          </div>
-          <div class="flex flex-wrap gap-1.5 pt-1">
-            <button onclick="ownerResetUserPassword('${escapeHTML(acc.name)}')"
-              class="px-2 py-1 rounded bg-gold-400/15 text-gold-300 text-[11px] font-bold">
-              Reset Password
-            </button>
-            <button onclick="approveMemberChat('${escapeHTML(acc.name)}', ${!acc.chatApproved})"
-              class="px-2 py-1 rounded bg-emerald-500/15 text-emerald-300 text-[11px] font-bold">
-              ${acc.chatApproved ? 'Lock Chat' : 'Approve Chat'}
-            </button>
-            ${acc.role !== 'OWNER' ? `
-              <button onclick="ownerToggleAdmin('${escapeHTML(acc.name)}')"
-                class="px-2 py-1 rounded bg-sky-500/15 text-sky-300 text-[11px] font-bold">
-                Make ${acc.role === 'ADMIN' ? 'MEMBER' : 'ADMIN'}
-              </button>
-              <button onclick="ownerDeleteAccount('${escapeHTML(acc.name)}')"
-                class="px-2 py-1 rounded bg-rose-500/15 text-rose-300 text-[11px] font-bold">
-                Delete User
-              </button>
-            ` : ''}
-          </div>
-        `;
-        allEl.appendChild(row);
-      });
-
-      lucide.createIcons();
-    }
-
-    async function ownerApproveAccount(name) {
-      const acc = findAccount(name);
-      if (!acc) return;
-      acc.status = 'approved';
-      acc.chatApproved = true;
-      await saveAccountToCloud(acc);
-      renderControlPanelContents();
-    }
-
-    async function ownerResetUserPassword(name) {
-      const acc = findAccount(name);
-      if (!acc) return;
-      const newPass = prompt(`Enter a new password for ${acc.name} (min 4 characters):`);
-      if (!newPass) return;
-      if (newPass.length < 4) return alert('Password must be at least 4 characters.');
-      acc.passwordHash = await hashPassword(newPass);
-      acc.forgotPasswordRequested = false;
-      await saveAccountToCloud(acc);
-      alert(`Password updated for ${acc.name}!`);
-      renderControlPanelContents();
-    }
-
-    async function ownerToggleAdmin(name) {
-      const acc = findAccount(name);
-      if (!acc || acc.role === 'OWNER') return;
-      acc.role = acc.role === 'ADMIN' ? 'MEMBER' : 'ADMIN';
-      acc.chatApproved = true;
-      await saveAccountToCloud(acc);
-      renderControlPanelContents();
-    }
-
-    async function ownerDeleteAccount(name) {
-      if (!confirm(`Delete account "${name}" permanently?`)) return;
-      await deleteAccountFromCloud(name);
-      renderControlPanelContents();
-    }
-
-    // 16. Boot Application
-    async function initHub() {
-      lucide.createIcons();
-      startCloudListeners();
-
-      const savedName = sessionStorage.getItem(SESSION_KEY);
-      if (savedName) {
-        const found = findAccount(savedName);
-        if (found && found.status === 'approved') {
-          activeAccount = found;
-          await checkAndUpdateDailyStreak(activeAccount);
-          unlockApp();
-          return;
+      if (approveId) {
+        e.preventDefault();
+        playSound("bass");
+        await db.collection("gc_accounts").doc(approveId).update({ status: "approved" });
+        showToast(`Approved ${approveId}!`);
+      } else if (rejectId) {
+        e.preventDefault();
+        playSound("bass");
+        await db.collection("gc_accounts").doc(rejectId).delete();
+        showToast(`Rejected & removed ${rejectId}.`);
+      } else if (resetId) {
+        e.preventDefault();
+        const newPass = prompt(`Enter new password (min 6 chars) for ${resetId}:`, "123456");
+        if (newPass && newPass.length >= 6) {
+          playSound("bass");
+          await db.collection("gc_accounts").doc(resetId).update({ myPass: newPass });
+          showToast(`Password updated for ${resetId}`);
         }
+      } else if (deleteId) {
+        e.preventDefault();
+        if (deleteId === currentUserDoc.nameLower) {
+          return showToast("You cannot delete your own active account!", true);
+        }
+        playSound("bass");
+        await db.collection("gc_accounts").doc(deleteId).delete();
+        showToast(`Deleted account: ${deleteId}`);
       }
-      renderAllSections();
+    });
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
-    window.addEventListener('DOMContentLoaded', initHub);
+    // Initialize Lucide Icons
+    lucide.createIcons();
   </script>
 </body>
 </html>
